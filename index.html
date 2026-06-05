@@ -142,6 +142,24 @@ td[contenteditable="true"]:focus { background: #EEF5FF !important; box-shadow: i
 .bl-item { display: flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--gray-600); }
 .bl-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
 
+/* ── ADD ROW / DELETE ── */
+.add-row-btn {
+  display: flex; align-items: center; gap: 6px;
+  margin: 0; padding: 8px 14px;
+  background: var(--gray-50); border: none; border-top: var(--border);
+  color: var(--blue); font-size: 12px; font-weight: 500; font-family: var(--font);
+  cursor: pointer; width: 100%; text-align: left; transition: background .1s;
+}
+.add-row-btn:hover { background: var(--blue-lt); }
+.add-row-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+.del-btn {
+  background: none; border: none; cursor: pointer; color: var(--gray-400);
+  padding: 2px 4px; border-radius: 3px; font-size: 13px; line-height: 1;
+  transition: color .1s, background .1s;
+}
+.del-btn:hover { color: var(--red); background: var(--red-bg); }
+td.del-col { width: 28px; text-align: center !important; padding: 6px 6px; }
+
 /* ── TWO / THREE COL ── */
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
@@ -249,9 +267,27 @@ hr { border: none; border-top: var(--border); margin: 24px 0; }
       <div class="section-note">Kosten vs. verwachte opbrengst</div>
     </div>
     <div class="three-col">
-      <div><div class="col-title">Parel <span class="tag-blue">1.330 fl.</span></div><div class="tbl-wrap"><table><thead><tr><th>Categorie</th><th>Flessen</th><th>Euro</th></tr></thead><tbody id="parel"></tbody></table></div></div>
-      <div><div class="col-title">Johanniter <span class="tag-blue">660 fl.</span></div><div class="tbl-wrap"><table><thead><tr><th>Categorie</th><th>Flessen</th><th>Euro</th></tr></thead><tbody id="johanniter"></tbody></table></div></div>
-      <div><div class="col-title">Barrique <span class="tag-blue">300 fl.</span></div><div class="tbl-wrap"><table><thead><tr><th>Categorie</th><th>Flessen</th><th>Euro</th></tr></thead><tbody id="barrique"></tbody></table></div></div>
+      <div>
+        <div class="col-title" id="title-parel">Parel <span class="tag-blue">1.330 fl.</span></div>
+        <div class="tbl-wrap">
+          <table><thead><tr><th>Categorie</th><th>Flessen</th><th>Euro</th><th></th></tr></thead><tbody id="parel"></tbody></table>
+          <button class="add-row-btn" onclick="addRow('parel')"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="3" x2="8" y2="13"/><line x1="3" y1="8" x2="13" y2="8"/></svg>Rij toevoegen</button>
+        </div>
+      </div>
+      <div>
+        <div class="col-title" id="title-johanniter">Johanniter <span class="tag-blue">660 fl.</span></div>
+        <div class="tbl-wrap">
+          <table><thead><tr><th>Categorie</th><th>Flessen</th><th>Euro</th><th></th></tr></thead><tbody id="johanniter"></tbody></table>
+          <button class="add-row-btn" onclick="addRow('johanniter')"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="3" x2="8" y2="13"/><line x1="3" y1="8" x2="13" y2="8"/></svg>Rij toevoegen</button>
+        </div>
+      </div>
+      <div>
+        <div class="col-title" id="title-barrique">Barrique <span class="tag-blue">300 fl.</span></div>
+        <div class="tbl-wrap">
+          <table><thead><tr><th>Categorie</th><th>Flessen</th><th>Euro</th><th></th></tr></thead><tbody id="barrique"></tbody></table>
+          <button class="add-row-btn" onclick="addRow('barrique')"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="3" x2="8" y2="13"/><line x1="3" y1="8" x2="13" y2="8"/></svg>Rij toevoegen</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -315,9 +351,13 @@ function eur(v) { if (v == null || isNaN(v)) return '—'; const s = Math.abs(v)
 
 function kTot(r) { return r.prijs + (r.extra||0) + (r.accijns||0) + (r.etiket||0) + (r.wax||0) + (r.saalhof||0); }
 
-function ed(td, obj, key, int) {
+function ed(td, obj, key, int, isText) {
   td.setAttribute('contenteditable', 'true');
   td.addEventListener('blur', () => {
+    if (isText) {
+      obj[key] = td.textContent.trim() || obj[key];
+      dirty(); render(); return;
+    }
     const raw = td.textContent.replace(/[€\s−]/g,'').replace(/\./g,'').replace(',','.').trim();
     const v = int ? parseInt(raw) : parseFloat(raw);
     if (!isNaN(v)) { obj[key] = v; dirty(); }
@@ -334,6 +374,13 @@ function render() {
   renderDetail('johanniter', D.johanniter);
   renderDetail('barrique', D.barrique);
   renderBars();
+  // update col titles with current flask counts from kostprijs
+  ['parel','johanniter','barrique'].forEach(id => {
+    const wijn = id.charAt(0).toUpperCase() + id.slice(1);
+    const fl = D.kost.find(k => k.wijn === wijn)?.fl || 0;
+    const el = document.getElementById('title-' + id);
+    if (el) el.innerHTML = `${wijn} <span class="tag-blue">${ni(fl)} fl.</span>`;
+  });
 }
 
 function renderKPI() {
@@ -397,17 +444,68 @@ function renderVerd() {
 
 function renderDetail(id, rows) {
   const tb = document.getElementById(id); tb.innerHTML = '';
-  rows.forEach(r => {
+
+  // data rows (skip tot sentinel)
+  const dataRows = rows.filter(r => !r.tot);
+
+  // compute totals
+  const totFl  = dataRows.reduce((s,r) => s + (r.fl  || 0), 0);
+  const totEur = dataRows.reduce((s,r) => s + (r.euro || 0), 0);
+
+  dataRows.forEach((r, i) => {
     const tr = document.createElement('tr');
-    if (r.tot) tr.className = 'tot-row';
-    const cls = r.euro < 0 ? 'neg' : r.euro > 0 ? 'pos' : 'muted';
-    const eStr = r.euro === 0 ? '<span class="muted">€ 0</span>' : `<span class="${cls}">${eur(r.euro)}</span>`;
-    tr.innerHTML = `<td>${r.cat}</td>
-      <td class="num"${r.tot?'':' data-f="fl"'}>${ni(r.fl)}</td>
-      <td>${eStr}</td>`;
+    const ecls = r.euro < 0 ? 'neg' : r.euro > 0 ? 'pos' : 'muted';
+    const eDisp = r.euro === 0 ? '€ 0' : eur(r.euro);
+    tr.innerHTML = `
+      <td data-f="cat">${r.cat}</td>
+      <td class="num" data-f="fl">${ni(r.fl)}</td>
+      <td class="num ${ecls}" data-f="euro">${eDisp}</td>
+      <td class="del-col"><button class="del-btn" title="Rij verwijderen">×</button></td>`;
     tb.appendChild(tr);
-    if (!r.tot) ed(tr.querySelector(`[data-f="fl"]`), r, 'fl', true);
+
+    // editable: categorie
+    ed(tr.querySelector('[data-f="cat"]'), r, 'cat', false, true);
+    // editable: flessen
+    ed(tr.querySelector('[data-f="fl"]'), r, 'fl', true);
+    // editable: euro (allow negative via minus sign)
+    edEuro(tr.querySelector('[data-f="euro"]'), r);
+    // delete
+    tr.querySelector('.del-btn').addEventListener('click', () => {
+      rows.splice(rows.indexOf(r), 1);
+      dirty(); render();
+    });
   });
+
+  // totaal row
+  const tot = document.createElement('tr'); tot.className = 'tot-row';
+  const tcls = totEur < 0 ? 'neg' : totEur > 0 ? 'pos' : 'muted';
+  tot.innerHTML = `<td>Totaal</td><td class="num">${ni(totFl)}</td><td class="num ${tcls}">${totEur === 0 ? '€ 0' : eur(totEur)}</td><td></td>`;
+  tb.appendChild(tot);
+}
+
+function edEuro(td, obj) {
+  td.setAttribute('contenteditable', 'true');
+  td.addEventListener('focus', () => {
+    // show raw number for easy editing
+    td.textContent = obj.euro != null ? obj.euro.toString().replace('.', ',') : '0';
+  });
+  td.addEventListener('blur', () => {
+    const raw = td.textContent.replace(/[€\s]/g,'').replace(/\./g,'').replace(',','.').trim();
+    const v = parseFloat(raw);
+    if (!isNaN(v)) { obj.euro = v; dirty(); }
+    render();
+  });
+  td.addEventListener('keydown', e => { if (e.key==='Enter'||e.key==='Tab') { e.preventDefault(); td.blur(); } });
+}
+
+function addRow(id) {
+  D[id].push({ cat: 'Nieuwe rij', fl: 0, euro: 0 });
+  dirty(); render();
+  // focus the new cat cell
+  const tb = document.getElementById(id);
+  const lastRow = tb.querySelectorAll('tr:not(.tot-row)');
+  const lastCat = lastRow[lastRow.length-1]?.querySelector('[data-f="cat"]');
+  if (lastCat) { lastCat.focus(); document.execCommand('selectAll', false, null); }
 }
 
 function renderBars() {
