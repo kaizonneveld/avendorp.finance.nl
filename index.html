@@ -574,30 +574,48 @@ td.is-editing .cell-inp{display:inline-block}
         <div class="ph">
           <div class="ph-text">
             <div class="ph-eyebrow">Flessenregistratie</div>
-            <h1 class="ph-title">Aflever<em>ingen</em></h1>
-          </div>
-          <div class="ph-actions">
-            <button class="btn btn-primary" onclick="openRegModal()">+ Nieuwe aflevering</button>
+            <h1 class="ph-title">Ophaal &amp; <em>Verkoop</em></h1>
           </div>
         </div>
 
-        <div class="metric-strip" id="regStats"></div>
+        <!-- TOTAAL OVERZICHT STRIP -->
+        <div class="metric-strip" id="regTotaalStrip"></div>
 
-        <div class="section">
-          <div class="section-header">
-            <div class="section-title">Overzicht</div>
+        <!-- TWO COLUMNS -->
+        <div class="split" style="align-items:start;gap:28px">
+
+          <!-- LEFT: WIJNGENOTEN OPHAALLIJST -->
+          <div class="section">
+            <div class="section-header">
+              <div class="section-title">Wijngenoten — ophaallijst</div>
+              <button class="btn btn-primary btn-sm" onclick="openOphalenModal()">+ Toevoegen</button>
+            </div>
+            <p style="font-size:11px;color:var(--ink3);margin-bottom:12px;font-style:italic">Klik op ✓ / ✗ om ophaalstatus te wisselen</p>
+            <div class="table-wrap"><table>
+              <thead><tr>
+                <th>Naam</th><th>Wijnstok</th><th>Flessen</th><th>Opgehaald</th><th></th>
+              </tr></thead>
+              <tbody id="ophalenBody"></tbody>
+              <tfoot id="ophalenFoot"></tfoot>
+            </table></div>
           </div>
-          <div class="tabbar">
-            <div class="tabbar-item active" onclick="filterReg('alle',this)">Alle</div>
-            <div class="tabbar-item" onclick="filterReg('open',this)">Open</div>
-            <div class="tabbar-item" onclick="filterReg('betaald',this)">Betaald</div>
-            <div class="tabbar-item" onclick="filterReg('gereserveerd',this)">Gereserveerd</div>
+
+          <!-- RIGHT: LOSSE VERKOOP -->
+          <div class="section">
+            <div class="section-header">
+              <div class="section-title">Losse verkoop</div>
+              <button class="btn btn-primary btn-sm" onclick="openVerkoopModal()">+ Verkoop</button>
+            </div>
+            <p style="font-size:11px;color:var(--ink3);margin-bottom:12px;font-style:italic">Klik op status om te wisselen</p>
+            <div class="table-wrap"><table>
+              <thead><tr>
+                <th>Naam</th><th>E-mail</th><th>Fles</th><th>Prijs</th><th>Status</th><th></th>
+              </tr></thead>
+              <tbody id="verkoopBody"></tbody>
+              <tfoot id="verkoopFoot"></tfoot>
+            </table></div>
           </div>
-          <div class="table-wrap"><table>
-            <thead><tr><th>Naam</th><th>Wijn</th><th>Flessen</th><th>Prijs p/fles</th><th>Totaal</th><th>Status</th><th>Datum</th><th></th></tr></thead>
-            <tbody id="regBody"></tbody>
-            <tfoot id="regFoot"></tfoot>
-          </table></div>
+
         </div>
       </div>
 
@@ -645,42 +663,93 @@ td.is-editing .cell-inp{display:inline-block}
   </div>
 </div>
 
-<!-- MODAL: Aflevering -->
-<div class="overlay" id="regModal">
+<!-- MODAL: Ophalen toevoegen -->
+<div class="overlay" id="ophalenModal">
   <div class="modal">
-    <div class="modal-title">Nieuwe <span>aflevering</span></div>
+    <div class="modal-title">Wijngenoot <span>toevoegen</span></div>
     <div class="field-row">
       <div class="field" style="flex:1">
         <label>Naam</label>
-        <select id="regNaam" style="width:100%"><option value="">— kies lid —</option></select>
+        <input type="text" id="opNaam" placeholder="Voor- en achternaam" style="width:100%">
       </div>
     </div>
     <div class="field-row">
       <div class="field" style="flex:1">
-        <label>Wijn</label>
-        <select id="regWijn" style="width:100%" onchange="updateRegPrijs()">
-          <option value="parel">Parel</option>
+        <label>Wijnstok</label>
+        <select id="opStok" style="width:100%">
+          <option value="regent">Regent</option>
           <option value="johanniter">Johanniter</option>
-          <option value="barrique">Barrique</option>
+          <option value="souvignier">Souvignier Gris</option>
         </select>
       </div>
-      <div class="field"><label>Flessen</label><input type="number" id="regFlessen" value="6" min="1" style="width:80px" oninput="updateRegTotaal()"></div>
+      <div class="field">
+        <label>Flessen</label>
+        <input type="number" id="opFlessen" value="6" min="1" style="width:80px">
+      </div>
     </div>
     <div class="field-row">
-      <div class="field"><label>Prijs p/fles (€)</label><input type="number" id="regPrijs" value="27.50" step="0.01" style="width:120px" oninput="updateRegTotaal()"></div>
-      <div class="field"><label>Status</label>
-        <select id="regStatus">
-          <option value="open">Open</option>
-          <option value="betaald">Betaald</option>
-          <option value="gereserveerd">Gereserveerd</option>
+      <div class="field" style="flex:1">
+        <label>Opgehaald?</label>
+        <select id="opStatus" style="width:100%">
+          <option value="nee">Nog niet opgehaald</option>
+          <option value="ja">Opgehaald</option>
         </select>
       </div>
-      <div class="field"><label>Datum</label><input type="date" id="regDatum" style="width:145px"></div>
     </div>
-    <div class="preview-row">Totaal: <strong id="regTotaalPreview">—</strong></div>
     <div class="modal-foot">
-      <button class="btn btn-ghost" onclick="closeModal('regModal')">Annuleren</button>
-      <button class="btn btn-primary" onclick="addRegistratie()">Toevoegen</button>
+      <button class="btn btn-ghost" onclick="closeModal('ophalenModal')">Annuleren</button>
+      <button class="btn btn-primary" onclick="addOphalen()">Toevoegen</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Losse verkoop -->
+<div class="overlay" id="verkoopModal">
+  <div class="modal">
+    <div class="modal-title">Losse <span>verkoop</span></div>
+    <div class="field-row">
+      <div class="field" style="flex:1">
+        <label>Naam koper</label>
+        <input type="text" id="vkNaam" placeholder="Voor- en achternaam" style="width:100%">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field" style="flex:1">
+        <label>E-mailadres</label>
+        <input type="email" id="vkEmail" placeholder="naam@email.nl" style="width:100%">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field" style="flex:1">
+        <label>Fles</label>
+        <select id="vkFles" style="width:100%" onchange="updateVkPrijs()">
+          <option value="parel">Parel — €27,50</option>
+          <option value="johanniter">Johanniter — €35,00</option>
+          <option value="barrique">Johanniter Barrique — €35,00</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Aantal</label>
+        <input type="number" id="vkAantal" value="1" min="1" style="width:70px" oninput="updateVkTotaal()">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Prijs p/fles (€)</label>
+        <input type="number" id="vkPrijs" value="27.50" step="0.01" style="width:120px" oninput="updateVkTotaal()">
+      </div>
+      <div class="field">
+        <label>Status</label>
+        <select id="vkStatus">
+          <option value="gereserveerd">Gereserveerd</option>
+          <option value="betaald">Betaald</option>
+        </select>
+      </div>
+    </div>
+    <div class="preview-row">Totaal: <strong id="vkTotaalPreview">—</strong></div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('verkoopModal')">Annuleren</button>
+      <button class="btn btn-primary" onclick="addVerkoop()">Toevoegen</button>
     </div>
   </div>
 </div>
@@ -708,19 +777,23 @@ const DEFAULT={
     {id:7,naam:'STIEL gasten',       rol:'extern',oud:false,parel:110,johanniter:0,  barrique:0},
     {id:8,naam:'Sponsoring Fels',    rol:'extern',oud:false,parel:24, johanniter:0,  barrique:0},
   ],
-  registraties:[
-    {id:1,naam:'Geert van Zonneveld',wijn:'parel',      flessen:30, prijs:0,    status:'betaald',     datum:'2024-12-10'},
-    {id:2,naam:'Jan de Vries',       wijn:'parel',      flessen:24, prijs:27.5, status:'betaald',     datum:'2024-12-12'},
-    {id:3,naam:'Marie Janssen',      wijn:'parel',      flessen:18, prijs:27.5, status:'open',        datum:'2024-12-15'},
-    {id:4,naam:'STIEL gasten',       wijn:'parel',      flessen:110,prijs:8.88, status:'betaald',     datum:'2024-12-08'},
-    {id:5,naam:'Jan de Vries',       wijn:'johanniter', flessen:18, prijs:35,   status:'gereserveerd',datum:'2024-12-18'},
-    {id:6,naam:'Karin Bakker',       wijn:'barrique',   flessen:6,  prijs:35,   status:'open',        datum:'2024-12-20'},
+  registraties:[],
+  ophalen:[
+    {id:1, naam:'Geert van Zonneveld', stok:'regent',     flessen:30, opgehaald:true},
+    {id:2, naam:'Jan de Vries',        stok:'johanniter', flessen:24, opgehaald:false},
+    {id:3, naam:'Marie Janssen',       stok:'johanniter', flessen:18, opgehaald:false},
+    {id:4, naam:'Karin Bakker',        stok:'souvignier', flessen:6,  opgehaald:true},
+    {id:5, naam:'Piet Smit',           stok:'regent',     flessen:12, opgehaald:false},
   ],
-  nextId:9,nextRegId:7,
+  verkopen:[
+    {id:1, naam:'Lucia Fontaine',  email:'lucia@mail.nl',  fles:'parel',      aantal:3, prijs:27.5, status:'betaald'},
+    {id:2, naam:'Bas Hoekstra',    email:'bas@mail.nl',    fles:'johanniter', aantal:6, prijs:35,   status:'gereserveerd'},
+    {id:3, naam:'Anke Willems',    email:'anke@mail.nl',   fles:'barrique',   aantal:2, prijs:35,   status:'betaald'},
+  ],
+  nextId:9, nextRegId:7, nextOpId:6, nextVkId:4,
 };
 
-let D=JSON.parse(localStorage.getItem('avendorp_v4')||'null')||DEFAULT;
-let regFilter='alle';
+let D=JSON.parse(localStorage.getItem('avendorp_v5')||'null')||DEFAULT;
 
 // ── UTILS ────────────────────────────────────────────────
 const eur=n=>new Intl.NumberFormat('nl-NL',{style:'currency',currency:'EUR'}).format(n||0);
@@ -729,7 +802,7 @@ const calcTP=w=>(w.prijs+(w.accijns||0)+(w.etiket||0)+(w.wax||0))*BTW;
 const wgFl=wid=>D.leden.filter(l=>l.rol==='lid').reduce((s,l)=>s+(l[wid]||0),0);
 const calcVVK=w=>Math.max(0,w.flessen-w.geert-wgFl(w.id));
 
-function saveAll(){localStorage.setItem('avendorp_v4',JSON.stringify(D));toast('Wijzigingen opgeslagen')}
+function saveAll(){localStorage.setItem('avendorp_v5',JSON.stringify(D));toast('Wijzigingen opgeslagen')}
 function toast(msg,icon='✓'){
   const t=document.getElementById('toast');
   t.innerHTML=`<span>${icon}</span><span>${msg}</span>`;
@@ -954,90 +1027,149 @@ function renderLeden(){
 }
 
 // ── REGISTRATIE ──────────────────────────────────────────
-function openRegModal(){
-  const sel=document.getElementById('regNaam');
-  sel.innerHTML='<option value="">— kies lid —</option>'+D.leden.map(l=>`<option>${l.naam}</option>`).join('');
-  document.getElementById('regDatum').value=new Date().toISOString().split('T')[0];
-  updateRegPrijs();openModal('regModal');
+const STOK_LABELS = {regent:'Regent', johanniter:'Johanniter', souvignier:'Souvignier Gris'};
+const STOK_COLORS = {regent:'#f87171', johanniter:'#86efac', souvignier:'#c4b5fd'};
+const FLES_LABELS = {parel:'Parel', johanniter:'Johanniter', barrique:'Barrique'};
+const FLES_PRIJZEN = {parel:27.5, johanniter:35, barrique:35};
+
+function openOphalenModal(){
+  document.getElementById('opNaam').value='';
+  document.getElementById('opFlessen').value=6;
+  openModal('ophalenModal');
 }
-function updateRegPrijs(){
-  const w=D.wines.find(x=>x.id===document.getElementById('regWijn').value);
-  if(w)document.getElementById('regPrijs').value=(w.verkoopprijs||0).toFixed(2);
-  updateRegTotaal();
-}
-function updateRegTotaal(){
-  const fl=+document.getElementById('regFlessen').value||0;
-  const pr=+document.getElementById('regPrijs').value||0;
-  document.getElementById('regTotaalPreview').textContent=eur(fl*pr);
-}
-function addRegistratie(){
-  const naam=document.getElementById('regNaam').value;
-  if(!naam){alert('Kies een naam');return}
-  D.registraties.push({
-    id:D.nextRegId++,naam,
-    wijn:document.getElementById('regWijn').value,
-    flessen:+document.getElementById('regFlessen').value||0,
-    prijs:+document.getElementById('regPrijs').value||0,
-    status:document.getElementById('regStatus').value,
-    datum:document.getElementById('regDatum').value,
+function addOphalen(){
+  const naam=document.getElementById('opNaam').value.trim();
+  if(!naam){alert('Voer een naam in');return}
+  D.ophalen.push({
+    id:D.nextOpId++, naam,
+    stok: document.getElementById('opStok').value,
+    flessen: +document.getElementById('opFlessen').value||1,
+    opgehaald: document.getElementById('opStatus').value==='ja',
   });
-  closeModal('regModal');saveAll();renderRegistratie();
+  closeModal('ophalenModal');saveAll();renderRegistratie();
 }
-function deleteReg(id){if(!confirm('Verwijderen?'))return;D.registraties=D.registraties.filter(r=>r.id!==id);saveAll();renderRegistratie();}
-function toggleStatus(id){
-  const r=D.registraties.find(x=>x.id===id);if(!r)return;
-  const s=['open','gereserveerd','betaald'];
-  r.status=s[(s.indexOf(r.status)+1)%3];
-  saveAll();renderRegistratie();
+function toggleOphalen(id){
+  const r=D.ophalen.find(x=>x.id===id);
+  if(r){r.opgehaald=!r.opgehaald;saveAll();renderRegistratie();}
 }
-function filterReg(f,el){
-  regFilter=f;
-  document.querySelectorAll('.tabbar-item').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  renderRegistratie();
+function deleteOphalen(id){
+  if(!confirm('Verwijderen?'))return;
+  D.ophalen=D.ophalen.filter(r=>r.id!==id);saveAll();renderRegistratie();
+}
+
+function openVerkoopModal(){
+  document.getElementById('vkNaam').value='';
+  document.getElementById('vkEmail').value='';
+  document.getElementById('vkAantal').value=1;
+  updateVkPrijs();
+  openModal('verkoopModal');
+}
+function updateVkPrijs(){
+  const fles=document.getElementById('vkFles').value;
+  document.getElementById('vkPrijs').value=(FLES_PRIJZEN[fles]||0).toFixed(2);
+  updateVkTotaal();
+}
+function updateVkTotaal(){
+  const a=+document.getElementById('vkAantal').value||0;
+  const p=+document.getElementById('vkPrijs').value||0;
+  document.getElementById('vkTotaalPreview').textContent=eur(a*p);
+}
+function addVerkoop(){
+  const naam=document.getElementById('vkNaam').value.trim();
+  if(!naam){alert('Voer een naam in');return}
+  D.verkopen.push({
+    id:D.nextVkId++, naam,
+    email: document.getElementById('vkEmail').value.trim(),
+    fles:  document.getElementById('vkFles').value,
+    aantal:+document.getElementById('vkAantal').value||1,
+    prijs: +document.getElementById('vkPrijs').value||0,
+    status:document.getElementById('vkStatus').value,
+  });
+  closeModal('verkoopModal');saveAll();renderRegistratie();
+}
+function toggleVerkoop(id){
+  const r=D.verkopen.find(x=>x.id===id);
+  if(r){r.status=r.status==='betaald'?'gereserveerd':'betaald';saveAll();renderRegistratie();}
+}
+function deleteVerkoop(id){
+  if(!confirm('Verwijderen?'))return;
+  D.verkopen=D.verkopen.filter(r=>r.id!==id);saveAll();renderRegistratie();
 }
 
 function renderRegistratie(){
-  document.getElementById('regStats').innerHTML=D.wines.map(wn=>{
-    const reg=D.registraties.filter(r=>r.wijn===wn.id);
-    const geleverd=reg.reduce((s,r)=>s+r.flessen,0);
-    const pct=Math.min(100,Math.round(geleverd/wn.flessen*100));
-    const betaaldEur=reg.filter(r=>r.status==='betaald').reduce((s,r)=>s+r.flessen*r.prijs,0);
-    return `<div class="metric">
-      <div class="metric-label"><span class="wdot" style="background:${CDOTS[wn.id]};vertical-align:middle"></span>${wn.name}</div>
-      <div class="metric-value">${num(geleverd)}<span style="font-size:1rem;color:var(--ink3)"> / ${num(wn.flessen)}</span></div>
-      <div class="prog-wrap"><div class="prog-fill" style="width:${pct}%"></div></div>
-      <div class="metric-sub">${eur(betaaldEur)} ontvangen · ${pct}%</div>
-    </div>`;
-  }).join('');
+  // ── totaal strip ──
+  const totFlessen    = D.ophalen.reduce((s,r)=>s+r.flessen,0);
+  const opgehaald     = D.ophalen.filter(r=>r.opgehaald).reduce((s,r)=>s+r.flessen,0);
+  const nietOpgehaald = totFlessen - opgehaald;
+  const vkAantallen   = D.verkopen.reduce((s,r)=>s+r.aantal,0);
+  const vkOmzet       = D.verkopen.reduce((s,r)=>s+r.aantal*r.prijs,0);
+  const vkBetaald     = D.verkopen.filter(r=>r.status==='betaald').reduce((s,r)=>s+r.aantal*r.prijs,0);
 
-  const rows=regFilter==='alle'?D.registraties:D.registraties.filter(r=>r.status===regFilter);
-  const rb=document.getElementById('regBody');
-  rb.innerHTML=rows.map(r=>{
-    const wn=D.wines.find(x=>x.id===r.wijn);
-    return `<tr>
-      <td>${r.naam}</td>
-      <td><span class="name-cell"><span class="wdot" style="background:${CDOTS[r.wijn]||'#ccc'}"></span>${wn?wn.name:r.wijn}</span></td>
-      <td class="regedit" data-rid="${r.id}" data-key="flessen" data-eur="0" style="cursor:pointer">${eCell(r.flessen,num)}</td>
-      <td class="regedit" data-rid="${r.id}" data-key="prijs"   data-eur="1" style="cursor:pointer">${eCell(r.prijs,eur)}</td>
-      <td class="val-pos">${eur(r.flessen*r.prijs)}</td>
-      <td><span class="badge badge-${r.status}" onclick="toggleStatus(${r.id})" title="Klik om te wisselen">${
-        r.status==='betaald'?'Betaald':r.status==='open'?'Open':'Gereserveerd'
-      }</span></td>
-      <td class="val-neutral" style="font-size:12px">${r.datum||'—'}</td>
-      <td><button class="btn btn-danger btn-sm" onclick="deleteReg(${r.id})">✕</button></td>
-    </tr>`;
-  }).join('');
-  rb.querySelectorAll('.regedit').forEach(td=>{
-    td.querySelector('.editable-cell')?.addEventListener('click',()=>{
-      const r=D.registraties.find(x=>x.id===+td.dataset.rid);
-      if(r)makeEditable(td,()=>r[td.dataset.key],v=>{r[td.dataset.key]=v;},td.dataset.eur==='1');
-    });
+  // Calculate remaining per wine from wines data minus ophalen minus verkopen
+  const restPerWijn = D.wines.map(w=>{
+    const gaan   = D.ophalen.filter(r=>r.stok===w.id).reduce((s,r)=>s+r.flessen,0);
+    const vk     = D.verkopen.filter(r=>r.fles===w.id).reduce((s,r)=>s+r.aantal,0);
+    return Math.max(0, calcVVK(w) - gaan - vk);
   });
+  const totRest = restPerWijn.reduce((a,b)=>a+b,0);
 
-  const tF=rows.reduce((s,r)=>s+r.flessen,0);
-  const tE=rows.reduce((s,r)=>s+r.flessen*r.prijs,0);
-  document.getElementById('regFoot').innerHTML=`<tr><td>Totaal</td><td>—</td><td>${num(tF)}</td><td>—</td><td>${eur(tE)}</td><td>—</td><td>—</td><td></td></tr>`;
+  document.getElementById('regTotaalStrip').innerHTML=[
+    {l:'Totaal wijngenoten', v:D.ophalen.length,    s:`${totFlessen} flessen`,  c:''},
+    {l:'Opgehaald',          v:num(opgehaald),       s:'flessen',               c:'rouge'},
+    {l:'Nog ophalen',        v:num(nietOpgehaald),   s:'flessen',               c:'gold'},
+    {l:'Losse verkoop',      v:num(vkAantallen),     s:`${eur(vkOmzet)} totaal`,c:''},
+    {l:'Ontvangen',          v:eur(vkBetaald),       s:'betaald',               c:''},
+    {l:'Nog te koop',        v:num(totRest),         s:'flessen beschikbaar',   c:''},
+  ].map(k=>`<div class="metric"><div class="metric-label">${k.l}</div><div class="metric-value ${k.c}">${k.v}</div><div class="metric-sub">${k.s}</div></div>`).join('');
+
+  // ── ophalen tabel ──
+  const ob=document.getElementById('ophalenBody');
+  const sorted=[...D.ophalen].sort((a,b)=>a.opgehaald-b.opgehaald);
+  ob.innerHTML=sorted.map(r=>`<tr style="opacity:${r.opgehaald?.6:1}">
+    <td style="font-weight:600">${r.naam}</td>
+    <td><span style="display:inline-flex;align-items:center;gap:6px">
+      <span style="width:8px;height:8px;border-radius:50%;background:${STOK_COLORS[r.stok]||'#ccc'};flex-shrink:0"></span>
+      ${STOK_LABELS[r.stok]||r.stok}
+    </span></td>
+    <td>${r.flessen}</td>
+    <td>
+      <span onclick="toggleOphalen(${r.id})" style="cursor:pointer;font-size:18px;line-height:1" title="Klik om te wisselen">
+        ${r.opgehaald ? '✅' : '⬜'}
+      </span>
+    </td>
+    <td><button class="btn btn-danger btn-sm" onclick="deleteOphalen(${r.id})">✕</button></td>
+  </tr>`).join('');
+
+  const totOp=D.ophalen.reduce((s,r)=>s+r.flessen,0);
+  const totOpH=D.ophalen.filter(r=>r.opgehaald).reduce((s,r)=>s+r.flessen,0);
+  document.getElementById('ophalenFoot').innerHTML=`<tr>
+    <td>Totaal (${D.ophalen.length})</td><td>—</td>
+    <td>${totOp} fl.</td>
+    <td style="color:var(--rouge)">${totOpH} opgehaald</td><td></td>
+  </tr>`;
+
+  // ── verkoop tabel ──
+  const vb=document.getElementById('verkoopBody');
+  vb.innerHTML=D.verkopen.map(r=>`<tr>
+    <td style="font-weight:600">${r.naam}</td>
+    <td style="font-size:12px;color:var(--ink3)">${r.email||'—'}</td>
+    <td><span style="display:inline-flex;align-items:center;gap:6px">
+      <span style="width:8px;height:8px;border-radius:50%;background:${CDOTS[r.fles]||'#ccc'};flex-shrink:0"></span>
+      ${FLES_LABELS[r.fles]||r.fles} ×${r.aantal}
+    </span></td>
+    <td>${eur(r.aantal*r.prijs)}</td>
+    <td><span class="badge badge-${r.status}" onclick="toggleVerkoop(${r.id})" title="Klik om te wisselen">
+      ${r.status==='betaald'?'Betaald':'Gereserveerd'}
+    </span></td>
+    <td><button class="btn btn-danger btn-sm" onclick="deleteVerkoop(${r.id})">✕</button></td>
+  </tr>`).join('');
+
+  const tvk=D.verkopen.reduce((s,r)=>s+r.aantal,0);
+  const tve=D.verkopen.reduce((s,r)=>s+r.aantal*r.prijs,0);
+  document.getElementById('verkoopFoot').innerHTML=`<tr>
+    <td>Totaal (${D.verkopen.length})</td><td>—</td>
+    <td>${tvk} flessen</td><td>${eur(tve)}</td><td>—</td><td></td>
+  </tr>`;
 }
 
 // ── INIT ─────────────────────────────────────────────────
