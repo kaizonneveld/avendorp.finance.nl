@@ -6,291 +6,206 @@
 <title>Wijnverdeling 2025/2026</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --blue:    #0066CC;
-  --blue-dk: #004EA8;
-  --blue-lt: #E8F0FB;
-  --blue-bg: #F0F5FF;
-  --green:   #1A7A4A;
-  --green-bg:#E6F4ED;
-  --red:     #C0392B;
-  --red-bg:  #FDECEA;
-  --gray-50: #F7F8FA;
-  --gray-100:#EEF0F3;
-  --gray-200:#D8DBE0;
-  --gray-400:#9AA0AA;
-  --gray-600:#5C6370;
-  --gray-800:#2C3038;
-  --black:   #1A1D22;
-  --white:   #FFFFFF;
-  --border:  1px solid var(--gray-200);
-  --radius:  6px;
-  --font:    'IBM Plex Sans', sans-serif;
-  --mono:    'IBM Plex Mono', monospace;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0066CC;--blue-dk:#004EA8;--blue-lt:#E8F0FB;--blue-bg:#F0F5FF;
+  --green:#1A7A4A;--red:#C0392B;--red-bg:#FDECEA;
+  --g50:#F7F8FA;--g100:#EEF0F3;--g200:#D8DBE0;--g400:#9AA0AA;--g600:#5C6370;--g800:#2C3038;
+  --black:#1A1D22;--white:#FFFFFF;
+  --bd:1px solid var(--g200);--r:6px;
+  --font:'IBM Plex Sans',sans-serif;--mono:'IBM Plex Mono',monospace;
 }
+html{font-size:14px}
+body{font-family:var(--font);background:var(--g50);color:var(--black);line-height:1.5;min-height:100vh;overflow-x:hidden}
 
-html { font-size: 14px; }
-body { font-family: var(--font); background: var(--gray-50); color: var(--black); line-height: 1.5; min-height: 100vh; }
+/* TOPBAR */
+.topbar{background:var(--white);border-bottom:var(--bd);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.topbar-l{display:flex;align-items:center;gap:20px}
+.logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600;color:var(--black);letter-spacing:-.01em}
+.logo-mark{width:28px;height:28px;background:var(--blue);border-radius:6px;display:flex;align-items:center;justify-content:center}
+.logo-mark svg{width:16px;height:16px;fill:white}
+.bc{font-size:13px;color:var(--g400);display:flex;align-items:center;gap:6px}
+.bc span{color:var(--g800)}
+.topbar-r{font-size:12px;color:var(--g400)}
+.topbar-r strong{color:var(--g800);font-weight:500}
 
-/* ── TOP BAR ── */
-.topbar {
-  background: var(--white);
-  border-bottom: var(--border);
-  padding: 0 32px;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky; top: 0; z-index: 10;
+/* LAYOUT */
+.main{max-width:1080px;margin:0 auto;padding:28px 32px 80px}
+
+/* TABLE SCROLL WRAPPER */
+.tw{background:var(--white);border:var(--bd);border-radius:var(--r);overflow:hidden}
+.tw-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+/* PAGE HEADER */
+.ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px}
+.ph h1{font-size:20px;font-weight:600;color:var(--black);letter-spacing:-.01em}
+.ph p{font-size:13px;color:var(--g600);margin-top:2px}
+.badge{font-size:11px;background:var(--blue-lt);color:var(--blue);padding:4px 10px;border-radius:20px;font-weight:500;white-space:nowrap;border:1px solid #C5D9F5}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:28px}
+.kpi{background:var(--white);border:var(--bd);border-radius:var(--r);padding:16px 18px}
+.kpi .kl{font-size:11px;color:var(--g400);font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.kpi .kv{font-size:22px;font-weight:600;color:var(--black);letter-spacing:-.02em;line-height:1}
+.kpi .ks{font-size:11px;color:var(--g400);margin-top:4px}
+.kpi.kblue{border-top:3px solid var(--blue)}
+.kpi.kgreen{border-top:3px solid var(--green)}
+
+/* SECTION */
+.sec{margin-bottom:28px}
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.sec-title{font-size:12px;font-weight:600;color:var(--g600);text-transform:uppercase;letter-spacing:.07em}
+.sec-note{font-size:11px;color:var(--g400)}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;min-width:400px}
+thead tr{border-bottom:var(--bd);background:var(--g50)}
+th{padding:9px 14px;font-size:11px;font-weight:600;color:var(--g600);text-transform:uppercase;letter-spacing:.06em;text-align:right;white-space:nowrap}
+th:first-child{text-align:left}
+th.th-del{width:32px;padding:9px 6px}
+td{padding:9px 14px;font-size:13px;color:var(--black);text-align:right;border-bottom:1px solid var(--g100)}
+td:first-child{text-align:left;font-weight:500}
+tr.data-row:last-of-type td{border-bottom:var(--bd)}
+tr.tot-row td{background:var(--g50);font-weight:600;font-size:12.5px;border-bottom:none}
+tr.data-row:hover td{background:#FAFBFF}
+.num{font-family:var(--mono);font-size:12.5px}
+.pos{color:var(--green)}
+.neg{color:var(--red)}
+.muted{color:var(--g400)}
+.tag{display:inline-block;background:var(--blue-lt);color:var(--blue);font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px}
+
+/* EDITABLE */
+td[contenteditable="true"]{cursor:text;outline:none;border-radius:3px;transition:background .1s,box-shadow .1s}
+td[contenteditable="true"]:hover{background:var(--blue-lt)!important}
+td[contenteditable="true"]:focus{background:#EEF5FF!important;box-shadow:inset 0 0 0 1.5px var(--blue)}
+
+/* DEL BUTTON */
+td.del-col{width:32px;text-align:center!important;padding:6px 4px}
+.del-btn{background:none;border:none;cursor:pointer;color:var(--g400);padding:2px 5px;border-radius:3px;font-size:14px;line-height:1;transition:color .1s,background .1s}
+.del-btn:hover{color:var(--red);background:var(--red-bg)}
+
+/* ADD ROW */
+.add-btn{display:flex;align-items:center;gap:6px;width:100%;padding:8px 14px;background:var(--g50);border:none;border-top:var(--bd);color:var(--blue);font-size:12px;font-weight:500;font-family:var(--font);cursor:pointer;transition:background .1s}
+.add-btn:hover{background:var(--blue-lt)}
+.add-btn svg{width:13px;height:13px;flex-shrink:0}
+
+/* BARS */
+.bar-box{background:var(--white);border:var(--bd);border-radius:var(--r);padding:20px 22px}
+.bar-bl{margin-bottom:20px}
+.bar-bl:last-child{margin-bottom:0}
+.bar-name{font-size:13px;font-weight:600;color:var(--black);margin-bottom:8px;display:flex;justify-content:space-between;align-items:baseline}
+.bar-name span{font-size:12px;color:var(--g400);font-weight:400}
+.bar-track{height:14px;background:var(--g100);border-radius:4px;overflow:hidden;display:flex}
+.bar-seg{height:100%;transition:width .4s}
+.bar-leg{display:flex;gap:16px;margin-top:7px;flex-wrap:wrap}
+.bl-i{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--g600)}
+.bl-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+
+/* GRIDS */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.col-hd{font-size:13px;font-weight:600;color:var(--black);margin-bottom:8px}
+
+/* SAVE BAR */
+.save-bar{position:fixed;bottom:0;left:0;right:0;background:var(--blue-dk);color:white;display:flex;align-items:center;justify-content:space-between;padding:12px 32px;font-size:13px;transform:translateY(100%);transition:transform .2s;z-index:50;border-top:2px solid var(--blue)}
+.save-bar.on{transform:translateY(0)}
+.save-bar button{background:white;color:var(--blue-dk);border:none;padding:6px 20px;border-radius:4px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font)}
+.save-bar button:hover{background:var(--blue-lt)}
+#toast{position:fixed;bottom:24px;right:24px;background:var(--black);color:white;padding:8px 16px;border-radius:5px;font-size:12.5px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:100}
+#toast.on{opacity:1}
+
+@media(max-width:800px){
+  .kpi-row{grid-template-columns:repeat(2,1fr)}
+  .two-col,.three-col{grid-template-columns:1fr}
+  .main{padding:16px 16px 80px}
+  .topbar{padding:0 16px}
+  .bc{display:none}
+  .ph{flex-direction:column;gap:10px}
+  .save-bar{padding:12px 16px}
 }
-.topbar-left { display: flex; align-items: center; gap: 20px; }
-.logo {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 15px; font-weight: 600; color: var(--black); letter-spacing: -.01em;
+@media(max-width:480px){
+  .kpi-row{grid-template-columns:repeat(2,1fr)}
+  .kpi .kv{font-size:18px}
 }
-.logo-mark {
-  width: 28px; height: 28px; background: var(--blue); border-radius: 6px;
-  display: flex; align-items: center; justify-content: center;
-}
-.logo-mark svg { width: 16px; height: 16px; fill: white; }
-.breadcrumb { font-size: 13px; color: var(--gray-400); display: flex; align-items: center; gap: 6px; }
-.breadcrumb span { color: var(--gray-800); }
-.topbar-right { font-size: 12px; color: var(--gray-400); }
-.topbar-right strong { color: var(--gray-800); font-weight: 500; }
-
-/* ── MAIN ── */
-.main { max-width: 1080px; margin: 0 auto; padding: 28px 32px 80px; }
-
-/* ── PAGE HEADER ── */
-.page-header {
-  display: flex; align-items: flex-start; justify-content: space-between;
-  margin-bottom: 24px;
-}
-.page-header h1 { font-size: 20px; font-weight: 600; color: var(--black); letter-spacing: -.01em; }
-.page-header p { font-size: 13px; color: var(--gray-600); margin-top: 2px; }
-.edit-badge {
-  font-size: 11px; background: var(--blue-lt); color: var(--blue);
-  padding: 4px 10px; border-radius: 20px; font-weight: 500; white-space: nowrap;
-  border: 1px solid #C5D9F5;
-}
-
-/* ── KPI ROW ── */
-.kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 28px; }
-.kpi {
-  background: var(--white); border: var(--border); border-radius: var(--radius);
-  padding: 16px 18px;
-}
-.kpi .k-label { font-size: 11px; color: var(--gray-400); font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
-.kpi .k-val { font-size: 22px; font-weight: 600; color: var(--black); letter-spacing: -.02em; line-height: 1; }
-.kpi .k-sub { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
-.kpi.blue { border-top: 3px solid var(--blue); }
-.kpi.green { border-top: 3px solid var(--green); }
-
-/* ── SECTION ── */
-.section { margin-bottom: 28px; }
-.section-head {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 10px;
-}
-.section-title { font-size: 12px; font-weight: 600; color: var(--gray-600); text-transform: uppercase; letter-spacing: .07em; }
-.section-note { font-size: 11px; color: var(--gray-400); }
-
-/* ── ALERT BAR ── */
-.alert {
-  background: var(--blue-bg); border: 1px solid #C5D9F5; border-radius: var(--radius);
-  padding: 10px 16px; font-size: 12.5px; color: var(--blue-dk);
-  margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
-}
-.alert-icon { width: 16px; height: 16px; flex-shrink: 0; }
-
-/* ── TABLE ── */
-.tbl-wrap { background: var(--white); border: var(--border); border-radius: var(--radius); overflow: hidden; }
-table { width: 100%; border-collapse: collapse; }
-thead tr { border-bottom: var(--border); background: var(--gray-50); }
-th {
-  padding: 9px 14px; font-size: 11px; font-weight: 600; color: var(--gray-600);
-  text-transform: uppercase; letter-spacing: .06em; text-align: right; white-space: nowrap;
-}
-th:first-child { text-align: left; }
-td { padding: 10px 14px; font-size: 13px; color: var(--black); text-align: right; border-bottom: 1px solid var(--gray-100); }
-td:first-child { text-align: left; font-weight: 500; }
-tr:last-child td { border-bottom: none; }
-tr.tot-row td { background: var(--gray-50); font-weight: 600; border-top: var(--border); font-size: 12.5px; }
-tr:hover:not(.tot-row) td { background: #FAFBFF; }
-.num { font-family: var(--mono); font-size: 12.5px; }
-.pos { color: var(--green); }
-.neg { color: var(--red); }
-.muted { color: var(--gray-400); }
-.tag-blue { display: inline-block; background: var(--blue-lt); color: var(--blue); font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px; }
-
-/* ── EDITABLE ── */
-td[contenteditable="true"] { cursor: text; outline: none; border-radius: 4px; transition: background .1s, box-shadow .1s; }
-td[contenteditable="true"]:hover { background: var(--blue-lt) !important; }
-td[contenteditable="true"]:focus { background: #EEF5FF !important; box-shadow: inset 0 0 0 1.5px var(--blue); }
-
-/* ── BARS ── */
-.bar-section { background: var(--white); border: var(--border); border-radius: var(--radius); padding: 20px 22px; }
-.bar-block { margin-bottom: 20px; }
-.bar-block:last-child { margin-bottom: 0; }
-.bar-name { font-size: 13px; font-weight: 600; color: var(--black); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: baseline; }
-.bar-name span { font-size: 12px; color: var(--gray-400); font-weight: 400; }
-.bar-track { height: 14px; background: var(--gray-100); border-radius: 4px; overflow: hidden; display: flex; }
-.bar-seg { height: 100%; transition: width .4s; }
-.bar-legend { display: flex; gap: 16px; margin-top: 7px; flex-wrap: wrap; }
-.bl-item { display: flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--gray-600); }
-.bl-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
-
-/* ── ADD ROW / DELETE ── */
-.add-row-btn {
-  display: flex; align-items: center; gap: 6px;
-  margin: 0; padding: 8px 14px;
-  background: var(--gray-50); border: none; border-top: var(--border);
-  color: var(--blue); font-size: 12px; font-weight: 500; font-family: var(--font);
-  cursor: pointer; width: 100%; text-align: left; transition: background .1s;
-}
-.add-row-btn:hover { background: var(--blue-lt); }
-.add-row-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
-.del-btn {
-  background: none; border: none; cursor: pointer; color: var(--gray-400);
-  padding: 2px 4px; border-radius: 3px; font-size: 13px; line-height: 1;
-  transition: color .1s, background .1s;
-}
-.del-btn:hover { color: var(--red); background: var(--red-bg); }
-td.del-col { width: 28px; text-align: center !important; padding: 6px 6px; }
-
-/* ── TWO / THREE COL ── */
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.col-title { font-size: 13px; font-weight: 600; color: var(--black); margin-bottom: 8px; }
-@media (max-width: 800px) { .kpi-row { grid-template-columns: repeat(2,1fr); } .two-col, .three-col { grid-template-columns: 1fr; } }
-
-/* ── SAVE BAR ── */
-.save-bar {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  background: var(--blue-dk); color: white;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 12px 32px; font-size: 13px;
-  transform: translateY(100%); transition: transform .2s; z-index: 50;
-  border-top: 2px solid var(--blue);
-}
-.save-bar.on { transform: translateY(0); }
-.save-bar button {
-  background: white; color: var(--blue-dk); border: none;
-  padding: 6px 20px; border-radius: 4px; font-size: 13px; font-weight: 600;
-  cursor: pointer; font-family: var(--font);
-}
-.save-bar button:hover { background: var(--blue-lt); }
-
-#toast {
-  position: fixed; bottom: 24px; right: 24px;
-  background: var(--black); color: white;
-  padding: 8px 16px; border-radius: 5px; font-size: 12.5px;
-  opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 100;
-}
-#toast.on { opacity: 1; }
-
-/* divider */
-hr { border: none; border-top: var(--border); margin: 24px 0; }
 </style>
 </head>
 <body>
 
-<!-- TOP BAR -->
 <div class="topbar">
-  <div class="topbar-left">
+  <div class="topbar-l">
     <div class="logo">
-      <div class="logo-mark">
-        <svg viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
-      </div>
+      <div class="logo-mark"><svg viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg></div>
       Wijnverdeling
     </div>
-    <div class="breadcrumb">/ <span>Overzicht 2025–2026</span></div>
+    <div class="bc">/ <span>Overzicht 2025–2026</span></div>
   </div>
-  <div class="topbar-right">Saalhof &nbsp;·&nbsp; <strong id="h-totaal">2.290</strong> flessen</div>
+  <div class="topbar-r"><strong id="h-tot">2.290</strong> flessen</div>
 </div>
 
 <div class="main">
 
-  <!-- PAGE HEADER -->
-  <div class="page-header">
+  <div class="ph">
     <div>
       <h1>Wijnverdeling 2025 / 2026</h1>
-      <p>20% Geert (193 fl.) · verdeling Parel, Johanniter en Barrique · zie app contact 7 december</p>
+      <p>20% Geert (193 fl.) · Parel, Johanniter en Barrique · zie app contact 7 december</p>
     </div>
-    <div class="edit-badge">✎ &nbsp;Klik elk getal om te bewerken</div>
+    <div class="badge">✎ &nbsp;Klik elk getal om te bewerken</div>
   </div>
 
-  <!-- KPI -->
   <div class="kpi-row" id="kpi"></div>
 
   <!-- KOSTPRIJS -->
-  <div class="section">
-    <div class="section-head">
-      <div class="section-title">Kostprijs per fles</div>
-      <div class="section-note">Alle bedragen in euro's incl. btw</div>
-    </div>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr>
-          <th>Wijn</th><th>Flessen</th><th>Prijs/fles</th><th>Extra</th>
-          <th>Accijns + Trans.</th><th>Etiket</th><th>Wax</th><th>Saalhof</th><th>Totaal/fles</th>
-        </tr></thead>
-        <tbody id="kb"></tbody>
-      </table>
-    </div>
+  <div class="sec">
+    <div class="sec-head"><div class="sec-title">Kostprijs per fles</div><div class="sec-note">Alle bedragen in euro's incl. btw</div></div>
+    <div class="tw"><div class="tw-scroll"><table>
+      <thead><tr><th>Wijn</th><th>Flessen</th><th>Prijs/fles</th><th>Extra</th><th>Accijns+Trans.</th><th>Etiket</th><th>Wax</th><th>Saalhof</th><th>Totaal/fles</th></tr></thead>
+      <tbody id="kb"></tbody>
+    </table></div></div>
   </div>
 
-  <!-- VERDELING + BARS -->
-  <div class="section">
-    <div class="section-head">
-      <div class="section-title">Verkoopverdeling</div>
-    </div>
+  <!-- VERKOOPVERDELING -->
+  <div class="sec">
+    <div class="sec-head"><div class="sec-title">Verkoopverdeling</div></div>
     <div class="two-col">
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr>
-            <th>Wijn</th><th>Totaal</th><th>Geert</th><th>Wijngenoten</th><th>Verkoop</th><th>Prijs</th><th>Omzet</th>
-          </tr></thead>
-          <tbody id="vb"></tbody>
-        </table>
-      </div>
-      <div class="bar-section" id="bars"></div>
+      <div class="tw"><div class="tw-scroll"><table>
+        <thead><tr><th>Wijn</th><th>Totaal</th><th>Geert</th><th>Wijngenoten</th><th>Verkoop</th><th>Prijs</th><th>Omzet</th></tr></thead>
+        <tbody id="vb"></tbody>
+      </table></div></div>
+      <div class="bar-box" id="bars"></div>
     </div>
   </div>
 
   <!-- DETAIL PER WIJN -->
-  <div class="section">
-    <div class="section-head">
-      <div class="section-title">Verkoopresultaat per wijn</div>
-      <div class="section-note">Kosten vs. verwachte opbrengst</div>
-    </div>
+  <div class="sec">
+    <div class="sec-head"><div class="sec-title">Verkoopresultaat per wijn</div><div class="sec-note">Kosten vs. verwachte opbrengst</div></div>
     <div class="three-col">
+
       <div>
-        <div class="col-title" id="title-parel">Parel <span class="tag-blue">1.330 fl.</span></div>
-        <div class="tbl-wrap">
-          <table><thead><tr><th>Categorie</th><th>Flessen</th><th>Euro</th><th></th></tr></thead><tbody id="parel"></tbody></table>
-          <button class="add-row-btn" onclick="addRow('parel')"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="3" x2="8" y2="13"/><line x1="3" y1="8" x2="13" y2="8"/></svg>Rij toevoegen</button>
+        <div class="col-hd" id="hd-parel">Parel <span class="tag">1.330 fl.</span></div>
+        <div class="tw">
+          <div class="tw-scroll"><table><thead><tr><th>Categorie</th><th>Flessen</th><th>Euro</th><th class="th-del"></th></tr></thead><tbody id="parel"></tbody></table></div>
+          <button class="add-btn" onclick="addRow('parel')"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>Rij toevoegen</button>
         </div>
       </div>
+
       <div>
-        <div class="col-title" id="title-johanniter">Johanniter <span class="tag-blue">660 fl.</span></div>
-        <div class="tbl-wrap">
-          <table><thead><tr><th>Categorie</th><th>Flessen</th><th>Euro</th><th></th></tr></thead><tbody id="johanniter"></tbody></table>
-          <button class="add-row-btn" onclick="addRow('johanniter')"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="3" x2="8" y2="13"/><line x1="3" y1="8" x2="13" y2="8"/></svg>Rij toevoegen</button>
+        <div class="col-hd" id="hd-johanniter">Johanniter <span class="tag">660 fl.</span></div>
+        <div class="tw">
+          <div class="tw-scroll"><table><thead><tr><th>Categorie</th><th>Flessen</th><th>Euro</th><th class="th-del"></th></tr></thead><tbody id="johanniter"></tbody></table></div>
+          <button class="add-btn" onclick="addRow('johanniter')"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>Rij toevoegen</button>
         </div>
       </div>
+
       <div>
-        <div class="col-title" id="title-barrique">Barrique <span class="tag-blue">300 fl.</span></div>
-        <div class="tbl-wrap">
-          <table><thead><tr><th>Categorie</th><th>Flessen</th><th>Euro</th><th></th></tr></thead><tbody id="barrique"></tbody></table>
-          <button class="add-row-btn" onclick="addRow('barrique')"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="3" x2="8" y2="13"/><line x1="3" y1="8" x2="13" y2="8"/></svg>Rij toevoegen</button>
+        <div class="col-hd" id="hd-barrique">Barrique <span class="tag">300 fl.</span></div>
+        <div class="tw">
+          <div class="tw-scroll"><table><thead><tr><th>Categorie</th><th>Flessen</th><th>Euro</th><th class="th-del"></th></tr></thead><tbody id="barrique"></tbody></table></div>
+          <button class="add-btn" onclick="addRow('barrique')"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>Rij toevoegen</button>
         </div>
       </div>
+
     </div>
   </div>
-
 </div>
 
 <div id="toast"></div>
@@ -300,8 +215,9 @@ hr { border: none; border-top: var(--border); margin: 24px 0; }
 </div>
 
 <script>
-const KEY = 'wijn2025v3';
+const KEY = 'wijn2025v4';
 
+// EXACTE DATA UIT EXCEL — geen sentinel rijen, totaal wordt altijd live berekend
 const DEF = {
   kost: [
     {wijn:'Parel',      fl:1330, prijs:4.64,  extra:0, accijns:0.819, etiket:1.382, wax:0.5, saalhof:1.19},
@@ -313,6 +229,7 @@ const DEF = {
     {wijn:'Johanniter', geert:112, wjg:337, vprijs:35},
     {wijn:'Barrique',   geert:51,  wjg:0,   vprijs:35},
   ],
+  // Detail: alleen data-rijen. Totaal wordt live berekend.
   parel: [
     {cat:'Totaal inkoop',           fl:1330, euro:-13728.94},
     {cat:'Geert',                   fl:30,   euro:0},
@@ -320,89 +237,104 @@ const DEF = {
     {cat:'STIEL gasten',            fl:110,  euro:1135.48},
     {cat:'STIEL verkoop verwacht',  fl:308,  euro:8470},
     {cat:'Sponsoring Fels',         fl:24,   euro:247.74},
-    {cat:'Totaal',                  fl:618,  euro:-3875.72, tot:true},
   ],
   johanniter: [
     {cat:'Totaal inkoop',          fl:660, euro:-3298.22},
     {cat:'Geert',                  fl:112, euro:0},
     {cat:'Wijngenoten',            fl:268, euro:0},
     {cat:'STIEL verkoop verwacht', fl:0,   euro:0},
-    {cat:'Totaal',                 fl:280, euro:-3298.22, tot:true},
   ],
   barrique: [
     {cat:'Totaal inkoop', fl:300, euro:-2188.89},
     {cat:'Geert',         fl:51,  euro:0},
     {cat:'Wijngenoten',   fl:0,   euro:0},
-    {cat:'Totaal',        fl:249, euro:-2188.89, tot:true},
   ],
 };
 
 let D = JSON.parse(JSON.stringify(DEF));
 
 function loadStored() { try { const s = localStorage.getItem(KEY); if (s) D = JSON.parse(s); } catch(e) {} }
-function save() { try { localStorage.setItem(KEY, JSON.stringify(D)); } catch(e) {} dirty(false); toast('Opgeslagen'); }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(D)); } catch(e) {} setDirty(false); toast('Opgeslagen'); }
 function toast(m) { const t = document.getElementById('toast'); t.textContent = m; t.classList.add('on'); setTimeout(() => t.classList.remove('on'), 2000); }
-function dirty(on = true) { document.getElementById('sb').classList.toggle('on', on); }
+function setDirty(on=true) { document.getElementById('sb').classList.toggle('on', on); }
 
-// Formatting
-function ni(v) { if (v == null || isNaN(v)) return '—'; return Math.round(v).toLocaleString('nl-NL'); }
-function nd(v, d=2) { if (v == null || isNaN(v)) return '—'; return v.toLocaleString('nl-NL', {minimumFractionDigits:d, maximumFractionDigits:d}); }
-function eur(v) { if (v == null || isNaN(v)) return '—'; const s = Math.abs(v).toLocaleString('nl-NL',{minimumFractionDigits:2,maximumFractionDigits:2}); return (v < 0 ? '−' : '') + '€\u202f' + s; }
+// ── Formattering ──
+function ni(v)    { if (v==null||isNaN(v)) return '—'; return Math.round(v).toLocaleString('nl-NL'); }
+function nd(v,d=2){ if (v==null||isNaN(v)) return '—'; return v.toLocaleString('nl-NL',{minimumFractionDigits:d,maximumFractionDigits:d}); }
+function eur(v)   {
+  if (v==null||isNaN(v)) return '—';
+  const abs = Math.abs(v).toLocaleString('nl-NL',{minimumFractionDigits:2,maximumFractionDigits:2});
+  return (v < 0 ? '−' : '') + '€\u202f' + abs;
+}
+function eurCls(v) { return v < 0 ? 'neg' : v > 0 ? 'pos' : 'muted'; }
 
 function kTot(r) { return r.prijs + (r.extra||0) + (r.accijns||0) + (r.etiket||0) + (r.wax||0) + (r.saalhof||0); }
 
-function ed(td, obj, key, int, isText) {
+// ── Editable helpers ──
+function makeEd(td, getVal, setVal) {
   td.setAttribute('contenteditable', 'true');
-  td.addEventListener('blur', () => {
-    if (isText) {
-      obj[key] = td.textContent.trim() || obj[key];
-      dirty(); render(); return;
+  td.addEventListener('focus', () => { td.textContent = getVal(); selectAll(td); });
+  td.addEventListener('blur',  () => { const v = setVal(td.textContent); if (v !== null) setDirty(); render(); });
+  td.addEventListener('keydown', e => { if (e.key==='Enter'||e.key==='Tab') { e.preventDefault(); td.blur(); } });
+}
+function selectAll(el) { const r = document.createRange(); r.selectNodeContents(el); const s = window.getSelection(); s.removeAllRanges(); s.addRange(r); }
+
+function edNum(td, obj, key, isInt) {
+  makeEd(td,
+    () => String(obj[key] ?? 0).replace('.', ','),
+    raw => {
+      const clean = raw.replace(/[€\s\u202f]/g,'').replace(/−/,'-').replace(/\./g,'').replace(',','.');
+      const v = isInt ? parseInt(clean) : parseFloat(clean);
+      if (!isNaN(v)) { obj[key] = v; return v; }
+      return null;
     }
-    const raw = td.textContent.replace(/[€\s−]/g,'').replace(/\./g,'').replace(',','.').trim();
-    const v = int ? parseInt(raw) : parseFloat(raw);
-    if (!isNaN(v)) { obj[key] = v; dirty(); }
-    render();
-  });
+  );
+}
+
+function edText(td, obj, key) {
+  td.setAttribute('contenteditable', 'true');
+  td.addEventListener('blur', () => { const v = td.textContent.trim(); if (v) { obj[key] = v; setDirty(); } render(); });
   td.addEventListener('keydown', e => { if (e.key==='Enter'||e.key==='Tab') { e.preventDefault(); td.blur(); } });
 }
 
+// ── Render ──
 function render() {
   renderKPI();
   renderKost();
   renderVerd();
-  renderDetail('parel', D.parel);
-  renderDetail('johanniter', D.johanniter);
-  renderDetail('barrique', D.barrique);
+  ['parel','johanniter','barrique'].forEach(id => renderDetail(id, D[id]));
   renderBars();
-  // update col titles with current flask counts from kostprijs
-  ['parel','johanniter','barrique'].forEach(id => {
-    const wijn = id.charAt(0).toUpperCase() + id.slice(1);
-    const fl = D.kost.find(k => k.wijn === wijn)?.fl || 0;
-    const el = document.getElementById('title-' + id);
-    if (el) el.innerHTML = `${wijn} <span class="tag-blue">${ni(fl)} fl.</span>`;
+  updateHeaders();
+}
+
+function updateHeaders() {
+  [{id:'parel',wijn:'Parel'},{id:'johanniter',wijn:'Johanniter'},{id:'barrique',wijn:'Barrique'}].forEach(({id,wijn}) => {
+    const fl = D.kost.find(k=>k.wijn===wijn)?.fl || 0;
+    const el = document.getElementById('hd-'+id);
+    if (el) el.innerHTML = `${wijn} <span class="tag">${ni(fl)} fl.</span>`;
   });
 }
 
 function renderKPI() {
-  const tot = D.kost.reduce((s,r) => s+r.fl, 0);
-  const geert = D.verd.reduce((s,r) => s+r.geert, 0);
-  const wjg = D.verd.reduce((s,r) => s+r.wjg, 0);
-  const vk = D.verd.reduce((s,r) => { const f=D.kost.find(k=>k.wijn===r.wijn)?.fl||0; return s+f-r.geert-r.wjg; }, 0);
-  const om = D.verd.reduce((s,r) => { const f=D.kost.find(k=>k.wijn===r.wijn)?.fl||0; return s+(f-r.geert-r.wjg)*r.vprijs; }, 0);
-  document.getElementById('h-totaal').textContent = ni(tot);
+  const tot  = D.kost.reduce((s,r) => s+r.fl, 0);
+  const geert= D.verd.reduce((s,r) => s+r.geert, 0);
+  const wjg  = D.verd.reduce((s,r) => s+r.wjg, 0);
+  const vk   = D.verd.reduce((s,r) => { const f=D.kost.find(k=>k.wijn===r.wijn)?.fl||0; return s+f-r.geert-r.wjg; }, 0);
+  const om   = D.verd.reduce((s,r) => { const f=D.kost.find(k=>k.wijn===r.wijn)?.fl||0; return s+(f-r.geert-r.wjg)*r.vprijs; }, 0);
+  document.getElementById('h-tot').textContent = ni(tot);
   document.getElementById('kpi').innerHTML = `
-    <div class="kpi blue"><div class="k-label">Totaal flessen</div><div class="k-val">${ni(tot)}</div><div class="k-sub">3 wijnen</div></div>
-    <div class="kpi"><div class="k-label">Geert</div><div class="k-val">${ni(geert)}</div><div class="k-sub">20% reservering</div></div>
-    <div class="kpi"><div class="k-label">Wijngenoten</div><div class="k-val">${ni(wjg)}</div><div class="k-sub">flessen</div></div>
-    <div class="kpi"><div class="k-label">Voor verkoop</div><div class="k-val">${ni(vk)}</div><div class="k-sub">flessen</div></div>
-    <div class="kpi green"><div class="k-label">Verwachte omzet</div><div class="k-val">${eur(om)}</div><div class="k-sub">verkoopflessen</div></div>`;
+    <div class="kpi kblue"><div class="kl">Totaal flessen</div><div class="kv">${ni(tot)}</div><div class="ks">3 wijnen</div></div>
+    <div class="kpi"><div class="kl">Geert</div><div class="kv">${ni(geert)}</div><div class="ks">20% reservering</div></div>
+    <div class="kpi"><div class="kl">Wijngenoten</div><div class="kv">${ni(wjg)}</div><div class="ks">flessen</div></div>
+    <div class="kpi"><div class="kl">Voor verkoop</div><div class="kv">${ni(vk)}</div><div class="ks">flessen</div></div>
+    <div class="kpi kgreen"><div class="kl">Verwachte omzet</div><div class="kv">${eur(om)}</div><div class="ks">verkoopflessen</div></div>`;
 }
 
 function renderKost() {
   const tb = document.getElementById('kb'); tb.innerHTML = '';
   D.kost.forEach(r => {
     const tot = kTot(r);
-    const tr = document.createElement('tr');
+    const tr = document.createElement('tr'); tr.className = 'data-row';
     tr.innerHTML = `<td>${r.wijn}</td>
       <td class="num" data-f="fl">${ni(r.fl)}</td>
       <td class="num" data-f="prijs">${nd(r.prijs)}</td>
@@ -413,19 +345,21 @@ function renderKost() {
       <td class="num" data-f="saalhof">${nd(r.saalhof)}</td>
       <td class="num" style="font-weight:600;color:var(--blue-dk)">${nd(tot)}</td>`;
     tb.appendChild(tr);
-    ['fl','prijs','extra','accijns','etiket','wax','saalhof'].forEach(f => ed(tr.querySelector(`[data-f="${f}"]`), r, f, f==='fl'));
+    ['fl','prijs','extra','accijns','etiket','wax','saalhof'].forEach(f =>
+      edNum(tr.querySelector(`[data-f="${f}"]`), r, f, f==='fl')
+    );
   });
 }
 
 function renderVerd() {
   const tb = document.getElementById('vb'); tb.innerHTML = '';
-  let tf=0, tg=0, tw=0, tv=0, to=0;
+  let tf=0,tg=0,tw=0,tv=0,to=0;
   D.verd.forEach(r => {
-    const fl = D.kost.find(k=>k.wijn===r.wijn)?.fl || 0;
+    const fl = D.kost.find(k=>k.wijn===r.wijn)?.fl||0;
     const vk = fl - r.geert - r.wjg;
     const om = vk * r.vprijs;
     tf+=fl; tg+=r.geert; tw+=r.wjg; tv+=vk; to+=om;
-    const tr = document.createElement('tr');
+    const tr = document.createElement('tr'); tr.className = 'data-row';
     tr.innerHTML = `<td>${r.wijn}</td>
       <td class="num">${ni(fl)}</td>
       <td class="num" data-f="geert">${ni(r.geert)}</td>
@@ -434,8 +368,8 @@ function renderVerd() {
       <td class="num" data-f="vprijs">${nd(r.vprijs)}</td>
       <td class="num pos">${eur(om)}</td>`;
     tb.appendChild(tr);
-    ['geert','wjg'].forEach(f => ed(tr.querySelector(`[data-f="${f}"]`), r, f, true));
-    ed(tr.querySelector(`[data-f="vprijs"]`), r, 'vprijs', false);
+    ['geert','wjg'].forEach(f => edNum(tr.querySelector(`[data-f="${f}"]`), r, f, true));
+    edNum(tr.querySelector(`[data-f="vprijs"]`), r, 'vprijs', false);
   });
   const tot = document.createElement('tr'); tot.className='tot-row';
   tot.innerHTML = `<td>Totaal</td><td class="num">${ni(tf)}</td><td class="num">${ni(tg)}</td><td class="num">${ni(tw)}</td><td class="num">${ni(tv)}</td><td class="muted">—</td><td class="num pos">${eur(to)}</td>`;
@@ -445,67 +379,48 @@ function renderVerd() {
 function renderDetail(id, rows) {
   const tb = document.getElementById(id); tb.innerHTML = '';
 
-  // data rows (skip tot sentinel)
-  const dataRows = rows.filter(r => !r.tot);
+  let totFl = 0, totEur = 0;
 
-  // compute totals
-  const totFl  = dataRows.reduce((s,r) => s + (r.fl  || 0), 0);
-  const totEur = dataRows.reduce((s,r) => s + (r.euro || 0), 0);
+  rows.forEach(r => {
+    totFl  += (r.fl   || 0);
+    totEur += (r.euro || 0);
 
-  dataRows.forEach((r, i) => {
-    const tr = document.createElement('tr');
-    const ecls = r.euro < 0 ? 'neg' : r.euro > 0 ? 'pos' : 'muted';
-    const eDisp = r.euro === 0 ? '€ 0' : eur(r.euro);
+    const tr = document.createElement('tr'); tr.className = 'data-row';
     tr.innerHTML = `
       <td data-f="cat">${r.cat}</td>
       <td class="num" data-f="fl">${ni(r.fl)}</td>
-      <td class="num ${ecls}" data-f="euro">${eDisp}</td>
-      <td class="del-col"><button class="del-btn" title="Rij verwijderen">×</button></td>`;
+      <td class="num ${eurCls(r.euro)}" data-f="euro">${r.euro === 0 ? '€\u202f0,00' : eur(r.euro)}</td>
+      <td class="del-col"><button class="del-btn" title="Verwijderen">×</button></td>`;
     tb.appendChild(tr);
 
-    // editable: categorie
-    ed(tr.querySelector('[data-f="cat"]'), r, 'cat', false, true);
-    // editable: flessen
-    ed(tr.querySelector('[data-f="fl"]'), r, 'fl', true);
-    // editable: euro (allow negative via minus sign)
-    edEuro(tr.querySelector('[data-f="euro"]'), r);
-    // delete
+    edText(tr.querySelector('[data-f="cat"]'), r, 'cat');
+    edNum(tr.querySelector('[data-f="fl"]'),   r, 'fl',   true);
+    edNum(tr.querySelector('[data-f="euro"]'), r, 'euro', false);
+
     tr.querySelector('.del-btn').addEventListener('click', () => {
-      rows.splice(rows.indexOf(r), 1);
-      dirty(); render();
+      const idx = rows.indexOf(r);
+      if (idx > -1) { rows.splice(idx, 1); setDirty(); render(); }
     });
   });
 
-  // totaal row
+  // Totaalrij — altijd live berekend
   const tot = document.createElement('tr'); tot.className = 'tot-row';
-  const tcls = totEur < 0 ? 'neg' : totEur > 0 ? 'pos' : 'muted';
-  tot.innerHTML = `<td>Totaal</td><td class="num">${ni(totFl)}</td><td class="num ${tcls}">${totEur === 0 ? '€ 0' : eur(totEur)}</td><td></td>`;
+  tot.innerHTML = `
+    <td>Totaal</td>
+    <td class="num">${ni(totFl)}</td>
+    <td class="num ${eurCls(totEur)}">${totEur === 0 ? '€\u202f0,00' : eur(totEur)}</td>
+    <td></td>`;
   tb.appendChild(tot);
-}
-
-function edEuro(td, obj) {
-  td.setAttribute('contenteditable', 'true');
-  td.addEventListener('focus', () => {
-    // show raw number for easy editing
-    td.textContent = obj.euro != null ? obj.euro.toString().replace('.', ',') : '0';
-  });
-  td.addEventListener('blur', () => {
-    const raw = td.textContent.replace(/[€\s]/g,'').replace(/\./g,'').replace(',','.').trim();
-    const v = parseFloat(raw);
-    if (!isNaN(v)) { obj.euro = v; dirty(); }
-    render();
-  });
-  td.addEventListener('keydown', e => { if (e.key==='Enter'||e.key==='Tab') { e.preventDefault(); td.blur(); } });
 }
 
 function addRow(id) {
   D[id].push({ cat: 'Nieuwe rij', fl: 0, euro: 0 });
-  dirty(); render();
-  // focus the new cat cell
-  const tb = document.getElementById(id);
-  const lastRow = tb.querySelectorAll('tr:not(.tot-row)');
-  const lastCat = lastRow[lastRow.length-1]?.querySelector('[data-f="cat"]');
-  if (lastCat) { lastCat.focus(); document.execCommand('selectAll', false, null); }
+  setDirty(); render();
+  // Focus de naam van de nieuwe rij
+  const tb  = document.getElementById(id);
+  const rows = tb.querySelectorAll('tr.data-row');
+  const last = rows[rows.length - 1];
+  if (last) { const cat = last.querySelector('[data-f="cat"]'); if (cat) { cat.focus(); selectAll(cat); } }
 }
 
 function renderBars() {
@@ -514,24 +429,22 @@ function renderBars() {
   D.verd.forEach(r => {
     const fl = D.kost.find(k=>k.wijn===r.wijn)?.fl || 1;
     const vk = Math.max(0, fl - r.geert - r.wjg);
-    const segs = [
-      {l:'Geert', v:r.geert, c:COLORS.geert},
-      {l:'Wijngenoten', v:r.wjg, c:COLORS.wjg},
-      {l:'Verkoop', v:vk, c:COLORS.vk},
-    ];
-    const pct = v => (v/fl*100).toFixed(1);
-    const div = document.createElement('div'); div.className='bar-block';
+    const segs = [{l:'Geert',v:r.geert,c:COLORS.geert},{l:'Wijngenoten',v:r.wjg,c:COLORS.wjg},{l:'Verkoop',v:vk,c:COLORS.vk}];
+    const pct  = v => (v / fl * 100).toFixed(1);
+    const div  = document.createElement('div'); div.className = 'bar-bl';
     div.innerHTML = `
       <div class="bar-name">${r.wijn} <span>${ni(fl)} flessen</span></div>
       <div class="bar-track">${segs.map(s=>`<div class="bar-seg" style="width:${pct(s.v)}%;background:${s.c}" title="${s.l}: ${ni(s.v)}"></div>`).join('')}</div>
-      <div class="bar-legend">${segs.map(s=>`<div class="bl-item"><div class="bl-dot" style="background:${s.c}"></div>${s.l}: <strong>${ni(s.v)}</strong> (${pct(s.v)}%)</div>`).join('')}</div>`;
+      <div class="bar-leg">${segs.map(s=>`<div class="bl-i"><div class="bl-dot" style="background:${s.c}"></div>${s.l}: <strong>${ni(s.v)}</strong> (${pct(s.v)}%)</div>`).join('')}</div>`;
     c.appendChild(div);
   });
 }
 
 loadStored();
 render();
-window.addEventListener('beforeunload', e => { if (document.getElementById('sb').classList.contains('on')) { e.preventDefault(); e.returnValue=''; } });
+window.addEventListener('beforeunload', e => {
+  if (document.getElementById('sb').classList.contains('on')) { e.preventDefault(); e.returnValue = ''; }
+});
 </script>
 </body>
 </html>
