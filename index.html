@@ -3,673 +3,461 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Avendorp Wijnbeheer</title>
+<title>Avendorp — Wijnverdeling 2025/2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --sidebar-bg:   #1a2e1a;
-  --sidebar-text: rgba(255,255,255,.75);
-  --sidebar-active-bg: rgba(255,255,255,.12);
-  --sidebar-active-text: #fff;
-  --bg:           #f5f0e8;
-  --bg2:          #ede8df;
-  --bg3:          #e4ddd2;
-  --white:        #ffffff;
-  --border:       #ddd8ce;
-  --border2:      #e8e3da;
-  --text:         #1a1a1a;
-  --text2:        #4a4a4a;
-  --text3:        #7a7a7a;
-  --green:        #2d5a2d;
-  --green2:       #3d7a3d;
-  --green-light:  #e8f0e8;
-  --green-mid:    #c8ddc8;
-  --amber:        #b45309;
-  --amber-light:  #fef3c7;
-  --red:          #b91c1c;
-  --red-light:    #fee2e2;
-  --blue:         #1d4ed8;
-  --blue-light:   #dbeafe;
-  --radius:       8px;
-  --radius-lg:    12px;
-  --shadow:       0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
-  --shadow-md:    0 4px 6px rgba(0,0,0,.07), 0 2px 4px rgba(0,0,0,.06);
+  --sb:    #1a2e1a;
+  --sb2:   #243824;
+  --g:     #3d7a3d;
+  --g2:    #2d5a2d;
+  --gl:    #e8f4e8;
+  --gm:    #c8ddc8;
+  --bg:    #f5f0e8;
+  --bg2:   #ede8df;
+  --bg3:   #e4ddd2;
+  --wh:    #ffffff;
+  --bdr:   #ddd8ce;
+  --bdr2:  #e8e3da;
+  --tx:    #1a1a1a;
+  --tx2:   #4a4a4a;
+  --tx3:   #7a7a7a;
+  --amb:   #b45309;
+  --ambl:  #fef3c7;
+  --red:   #b91c1c;
+  --redl:  #fee2e2;
+  --blu:   #1d4ed8;
+  --blul:  #dbeafe;
+  --r:     8px;
+  --rl:    12px;
+  --sh:    0 1px 3px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.05);
+  --sh2:   0 4px 12px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.05);
 }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'Inter',sans-serif;font-size:14px;line-height:1.5;color:var(--tx);background:var(--bg);-webkit-font-smoothing:antialiased}
 
-*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
-html { height:100%; }
-body {
-  font-family:'Inter',sans-serif;
-  font-size:14px;
-  line-height:1.5;
-  color:var(--text);
-  background:var(--bg);
-  height:100%;
-  -webkit-font-smoothing:antialiased;
-}
+/* ── SHELL ── */
+.app{display:flex;height:100vh;overflow:hidden}
 
-/* ── LAYOUT ─────────────────────────────── */
-.app { display:flex; height:100vh; overflow:hidden; }
+/* ── SIDEBAR ── */
+.sb{width:240px;flex-shrink:0;background:var(--sb);display:flex;flex-direction:column;overflow-y:auto}
+.sb-brand{padding:20px 18px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sb-logo{display:flex;align-items:center;gap:9px;margin-bottom:3px}
+.sb-logo span{font-size:22px}
+.sb-name{font-size:15px;font-weight:700;color:#fff}
+.sb-sub{font-size:11px;color:rgba(255,255,255,.4);padding-left:31px}
+.sb-nav{padding:10px 10px 6px}
+.sb-lbl{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.28);padding:0 8px;margin-bottom:3px}
+.sb-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--r);cursor:pointer;font-size:13px;font-weight:500;color:rgba(255,255,255,.65);transition:all .14s;margin-bottom:1px}
+.sb-item:hover{background:rgba(255,255,255,.07);color:#fff}
+.sb-item.on{background:var(--g);color:#fff}
+.sb-ico{font-size:14px;width:16px;text-align:center;flex-shrink:0}
+.sb-divider{height:1px;background:rgba(255,255,255,.07);margin:8px 10px}
 
-/* ── SIDEBAR ────────────────────────────── */
-.sidebar {
-  width:260px; flex-shrink:0;
-  background:var(--sidebar-bg);
-  display:flex; flex-direction:column;
-  height:100vh; overflow-y:auto;
-}
-.sidebar-brand {
-  padding:20px 20px 16px;
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-.brand-logo { display:flex; align-items:center; gap:8px; margin-bottom:2px; }
-.brand-logo span { font-size:22px; }
-.brand-name { font-size:16px; font-weight:700; color:#fff; }
-.brand-sub  { font-size:12px; color:rgba(255,255,255,.45); padding-left:30px; }
+/* ── CONTENT ── */
+.cnt{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.topbar{height:52px;flex-shrink:0;background:var(--wh);border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.tb-title{font-size:14px;font-weight:600;color:var(--tx)}
+.tb-right{display:flex;align-items:center;gap:10px}
+.live{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--tx3)}
+.pulse{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:rpl 2s infinite;box-shadow:0 0 0 2px rgba(34,197,94,.2)}
+@keyframes rpl{0%,100%{box-shadow:0 0 0 2px rgba(34,197,94,.2)}50%{box-shadow:0 0 0 5px rgba(34,197,94,.06)}}
 
-.nav-section { padding:12px 12px 4px; }
-.nav-label {
-  font-size:10px; font-weight:600; letter-spacing:.1em;
-  text-transform:uppercase; color:rgba(255,255,255,.3);
-  padding:0 8px; margin-bottom:4px;
-}
-.nav-item {
-  display:flex; align-items:center; gap:10px;
-  padding:9px 12px; border-radius:var(--radius);
-  cursor:pointer; font-size:13px; font-weight:500;
-  color:var(--sidebar-text);
-  transition:all .15s;
-  margin-bottom:2px;
-}
-.nav-item:hover { background:rgba(255,255,255,.07); color:#fff; }
-.nav-item.active { background:var(--green2); color:#fff; }
-.nav-icon { font-size:15px; width:18px; text-align:center; flex-shrink:0; }
+/* ── MAIN ── */
+.main{flex:1;overflow-y:auto;padding:24px}
 
-/* ── MAIN AREA ──────────────────────────── */
-.content { flex:1; display:flex; flex-direction:column; overflow:hidden; min-width:0; }
+/* ── PAGE ── */
+.page{display:none}.page.on{display:block;animation:fi .18s ease}
+@keyframes fi{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+.ph{margin-bottom:20px}
+.ph-title{font-size:20px;font-weight:700;margin-bottom:2px}
+.ph-sub{font-size:12px;color:var(--tx3)}
 
-.topbar {
-  height:56px; flex-shrink:0;
-  background:var(--white);
-  border-bottom:1px solid var(--border);
-  display:flex; align-items:center; justify-content:space-between;
-  padding:0 28px;
-}
-.topbar-title { font-size:15px; font-weight:600; color:var(--text); }
-.topbar-right { display:flex; align-items:center; gap:10px; }
-.live-dot { width:7px; height:7px; border-radius:50%; background:#22c55e; flex-shrink:0;
-  box-shadow:0 0 0 2px rgba(34,197,94,.25); animation:ripple 2s infinite; }
-@keyframes ripple { 0%,100%{box-shadow:0 0 0 2px rgba(34,197,94,.25)} 50%{box-shadow:0 0 0 5px rgba(34,197,94,.08)} }
-.live-text { font-size:12px; color:var(--text3); }
+/* ── STAT STRIP ── */
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:20px}
+.stat{background:var(--wh);border:1px solid var(--bdr);border-radius:var(--rl);padding:14px 16px;transition:box-shadow .14s}
+.stat:hover{box-shadow:var(--sh2)}
+.stat-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--tx3);margin-bottom:5px}
+.stat-val{font-size:20px;font-weight:700;color:var(--tx);line-height:1}
+.stat-val.g{color:var(--g)}.stat-val.a{color:var(--amb)}.stat-val.r{color:var(--red)}.stat-val.b{color:var(--blu)}
+.stat-sub{font-size:11px;color:var(--tx3);margin-top:3px}
+.stat.click{cursor:pointer}
+.stat.click:hover{border-color:var(--g);background:var(--gl)}
+.stat.click .stat-lbl::after{content:' ✎';opacity:.35}
+.stat-inp{width:100%;background:transparent;border:none;border-bottom:2px solid var(--g);font-size:20px;font-weight:700;color:var(--tx);outline:none;font-family:'Inter',sans-serif;padding:0}
 
-.main { flex:1; overflow-y:auto; padding:28px; }
+/* ── CARD ── */
+.card{background:var(--wh);border:1px solid var(--bdr);border-radius:var(--rl);overflow:hidden;box-shadow:var(--sh);margin-bottom:18px}
+.card-hd{padding:12px 18px;border-bottom:1px solid var(--bdr2);display:flex;align-items:center;justify-content:space-between;background:var(--wh)}
+.card-title{font-size:13px;font-weight:600;color:var(--tx)}
+.card-note{font-size:11px;color:var(--tx3);margin-top:1px}
 
-/* ── PAGE ───────────────────────────────── */
-.page { display:none; }
-.page.active { display:block; animation:fadeIn .2s ease; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:none} }
+/* ── TABLE ── */
+table{width:100%;border-collapse:collapse}
+thead th{padding:9px 14px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--tx3);background:var(--bg);border-bottom:1px solid var(--bdr);white-space:nowrap}
+thead th:not(:first-child){text-align:right}
+tbody tr{border-bottom:1px solid var(--bdr2);transition:background .1s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:var(--bg)}
+tbody td{padding:10px 14px;font-size:13px;color:var(--tx2);text-align:right}
+tbody td:first-child{text-align:left;color:var(--tx);font-weight:500}
+tfoot td{padding:10px 14px;font-size:13px;font-weight:700;background:var(--bg2);border-top:2px solid var(--bdr);color:var(--tx);text-align:right}
+tfoot td:first-child{text-align:left}
 
-.page-header { margin-bottom:24px; }
-.page-title  { font-size:22px; font-weight:700; color:var(--text); margin-bottom:2px; }
-.page-sub    { font-size:13px; color:var(--text3); }
+/* ── INLINE EDIT ── */
+.ec{cursor:pointer;border-bottom:1px dashed transparent;transition:all .1s;display:inline}
+.ec:hover{border-bottom-color:var(--g);color:var(--g)}
+td.ed .ec{display:none}
+.ei{display:none;width:80px;background:var(--wh);border:1px solid var(--g);color:var(--tx);font-family:'Inter',sans-serif;font-size:13px;padding:2px 7px;border-radius:5px;text-align:right;outline:none;box-shadow:0 0 0 3px rgba(61,122,61,.1)}
+td.ed .ei{display:inline-block}
 
-/* ── STAT STRIP ─────────────────────────── */
-.stat-strip {
-  display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-  gap:12px; margin-bottom:24px;
-}
-.stat {
-  background:var(--white); border:1px solid var(--border);
-  border-radius:var(--radius-lg); padding:16px 18px;
-  transition:box-shadow .15s;
-}
-.stat:hover { box-shadow:var(--shadow-md); }
-.stat-label { font-size:11px; font-weight:600; text-transform:uppercase;
-  letter-spacing:.06em; color:var(--text3); margin-bottom:6px; }
-.stat-value { font-size:22px; font-weight:700; color:var(--text); line-height:1; }
-.stat-value.green { color:var(--green); }
-.stat-value.amber { color:var(--amber); }
-.stat-value.red   { color:var(--red); }
-.stat-sub   { font-size:11px; color:var(--text3); margin-top:3px; }
-.stat.clickable { cursor:pointer; }
-.stat.clickable:hover { border-color:var(--green2); background:var(--green-light); }
-.stat.clickable .stat-label::after { content:' ✎'; opacity:.4; }
-.stat-editing input {
-  width:100%; background:transparent; border:none; border-bottom:2px solid var(--green2);
-  font-size:22px; font-weight:700; color:var(--text); outline:none;
-  font-family:'Inter',sans-serif; padding:0;
-}
+/* ── GRID ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;align-items:start}
+@media(max-width:1050px){.g3{grid-template-columns:1fr 1fr}}
+@media(max-width:720px){.g2,.g3{grid-template-columns:1fr}.sb{display:none}.main{padding:14px}.mobile-nav{display:flex!important}}
 
-/* ── CARD / TABLE ───────────────────────── */
-.card {
-  background:var(--white); border:1px solid var(--border);
-  border-radius:var(--radius-lg); overflow:hidden;
-  box-shadow:var(--shadow); margin-bottom:20px;
-}
-.card-header {
-  padding:14px 20px; border-bottom:1px solid var(--border2);
-  display:flex; align-items:center; justify-content:space-between;
-  background:var(--white);
-}
-.card-title { font-size:13px; font-weight:600; color:var(--text); }
-.card-sub   { font-size:12px; color:var(--text3); margin-top:1px; }
+/* ── SECTION LABEL ── */
+.slbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.slbl::after{content:'';flex:1;height:1px;background:var(--bdr)}
 
-table { width:100%; border-collapse:collapse; }
-thead th {
-  padding:10px 16px; text-align:left;
-  font-size:11px; font-weight:600; text-transform:uppercase;
-  letter-spacing:.06em; color:var(--text3);
-  background:var(--bg); border-bottom:1px solid var(--border);
-  white-space:nowrap;
-}
-thead th:not(:first-child) { text-align:right; }
-tbody tr { border-bottom:1px solid var(--border2); transition:background .1s; }
-tbody tr:last-child { border-bottom:none; }
-tbody tr:hover { background:var(--bg); }
-tbody td { padding:11px 16px; font-size:13px; color:var(--text2); text-align:right; }
-tbody td:first-child { text-align:left; color:var(--text); font-weight:500; }
-tfoot td {
-  padding:11px 16px; font-size:13px; font-weight:600;
-  background:var(--bg2); border-top:2px solid var(--border);
-  color:var(--text); text-align:right;
-}
-tfoot td:first-child { text-align:left; }
+/* ── BADGES ── */
+.bdg{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;cursor:pointer;white-space:nowrap;transition:opacity .1s}
+.bdg:hover{opacity:.75}
+.bdg::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.bdg-ja{background:var(--gl);color:var(--g2)}.bdg-ja::before{background:var(--g)}
+.bdg-nee{background:var(--ambl);color:var(--amb)}.bdg-nee::before{background:var(--amb)}
+.bdg-betaald{background:var(--gl);color:var(--g2)}.bdg-betaald::before{background:var(--g)}
+.bdg-geres{background:var(--blul);color:var(--blu)}.bdg-geres::before{background:var(--blu)}
 
-/* ── WIJN DOT ───────────────────────────── */
-.wdot { width:8px; height:8px; border-radius:50%; display:inline-block;
-  flex-shrink:0; margin-right:8px; vertical-align:middle; }
-.name-cell { display:flex; align-items:center; }
+/* ── SALDO CARDS ── */
+.sc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.sc{background:var(--wh);border:1px solid var(--bdr);border-radius:var(--rl);overflow:hidden;box-shadow:var(--sh)}
+.sc-hd{padding:11px 15px;background:var(--bg);border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:7px;font-weight:600;font-size:13px}
+.sc-row{display:flex;justify-content:space-between;padding:8px 15px;border-bottom:1px solid var(--bdr2);font-size:12px;transition:background .1s}
+.sc-row:hover{background:var(--bg)}
+.sc-lbl{color:var(--tx3)}
+.sc-nums{display:flex;gap:14px}
+.sc-fl{min-width:32px;text-align:right;color:var(--tx2)}
+.sc-eu{min-width:80px;text-align:right}
+.sc-ft{padding:11px 15px;background:var(--sb);display:flex;justify-content:space-between;align-items:center}
+.sc-ft-lbl{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.sc-ft-val{font-size:16px;font-weight:700;color:#fff}
+.sc-ft-val.pos{color:#86efac}.sc-ft-val.neg{color:#fca5a5}
 
-/* ── INLINE EDIT ────────────────────────── */
-.ecell { cursor:pointer; border-bottom:1px dashed transparent; transition:all .12s; }
-.ecell:hover { border-bottom-color:var(--green2); color:var(--green2); }
-td.editing .ecell { display:none; }
-.einp {
-  display:none; width:80px;
-  background:var(--white); border:1px solid var(--green2);
-  color:var(--text); font-family:'Inter',sans-serif; font-size:13px;
-  padding:3px 7px; border-radius:5px; text-align:right; outline:none;
-  box-shadow:0 0 0 3px rgba(61,122,61,.1);
-}
-td.editing .einp { display:inline-block; }
+/* ── RAS CARDS ── */
+.ras-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:18px}
+.ras-card{background:var(--wh);border:1px solid var(--bdr);border-radius:var(--rl);padding:14px 16px;box-shadow:var(--sh)}
+.ras-hd{display:flex;align-items:center;gap:7px;margin-bottom:10px}
+.ras-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.ras-name{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--tx3)}
+.ras-nums{display:flex;gap:14px;align-items:baseline}
+.ras-big{font-size:22px;font-weight:700;line-height:1}
+.ras-small{font-size:11px;color:var(--tx3);margin-top:2px}
+.prog{height:4px;background:var(--bdr);border-radius:2px;overflow:hidden;margin-top:8px}
+.prog-fill{height:100%;border-radius:2px;transition:width .5s}
 
-/* ── BADGES ─────────────────────────────── */
-.badge {
-  display:inline-flex; align-items:center; gap:5px;
-  font-size:11px; font-weight:600; padding:3px 10px;
-  border-radius:20px; cursor:pointer; transition:opacity .1s; white-space:nowrap;
-}
-.badge:hover { opacity:.8; }
-.badge::before { content:''; width:5px; height:5px; border-radius:50%; flex-shrink:0; }
-.badge-ja      { background:var(--green-light); color:var(--green); }
-.badge-ja::before { background:var(--green2); }
-.badge-nee     { background:var(--amber-light); color:var(--amber); }
-.badge-nee::before { background:var(--amber); }
-.badge-betaald { background:var(--green-light); color:var(--green); }
-.badge-betaald::before { background:var(--green2); }
-.badge-gereserveerd { background:var(--blue-light); color:var(--blue); }
-.badge-gereserveerd::before { background:var(--blue); }
-.badge-open    { background:var(--amber-light); color:var(--amber); }
-.badge-open::before { background:var(--amber); }
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:var(--r);border:none;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .14s;white-space:nowrap}
+.btn-p{background:var(--g);color:#fff}.btn-p:hover{background:var(--g2)}
+.btn-s{background:var(--wh);color:var(--tx2);border:1px solid var(--bdr)}.btn-s:hover{background:var(--bg2)}
+.btn-g{background:transparent;color:var(--tx3);border:1px solid var(--bdr)}.btn-g:hover{background:var(--bg2);color:var(--tx)}
+.btn-d{background:transparent;color:var(--red);border:1px solid rgba(185,28,28,.18)}.btn-d:hover{background:var(--redl)}
+.btn-a{background:var(--ambl);color:var(--amb);border:1px solid rgba(180,83,9,.18)}.btn-a:hover{filter:brightness(.95)}
+.btn-b{background:var(--blul);color:var(--blu);border:1px solid rgba(29,78,216,.18)}.btn-b:hover{filter:brightness(.95)}
+.btn-sm{padding:4px 10px;font-size:11px}
+.tbar{display:flex;align-items:center;gap:7px;margin-bottom:12px;flex-wrap:wrap}
 
-/* ── PROGRESS ───────────────────────────── */
-.prog { height:4px; background:var(--border); border-radius:2px; overflow:hidden; margin-top:6px; }
-.prog-fill { height:100%; background:var(--green2); border-radius:2px; transition:width .5s; }
+/* ── MODAL ── */
+.ovl{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .17s}
+.ovl.on{opacity:1;pointer-events:all}
+.mdl{background:var(--wh);border-radius:var(--rl);padding:26px;width:100%;max-width:440px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.14);transform:scale(.97) translateY(6px);transition:transform .17s}
+.ovl.on .mdl{transform:none}
+.mdl-title{font-size:16px;font-weight:700;margin-bottom:18px}
+.fr{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:12px}
+.fi{display:flex;flex-direction:column;gap:4px}
+.fi label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--tx3)}
+.fi input,.fi select{background:var(--bg);border:1px solid var(--bdr);color:var(--tx);font-family:'Inter',sans-serif;font-size:13px;padding:7px 10px;border-radius:var(--r);outline:none;transition:border-color .14s}
+.fi input:focus,.fi select:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(61,122,61,.1)}
+.fi select option{background:var(--wh)}
+.prev{background:var(--bg);border:1px solid var(--bdr);border-radius:var(--r);padding:10px 13px;font-size:13px;color:var(--tx3);margin-bottom:4px}
+.prev strong{color:var(--g);font-size:15px}
+.mft{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
 
-/* ── BUTTONS ────────────────────────────── */
-.btn {
-  display:inline-flex; align-items:center; gap:6px;
-  padding:8px 16px; border-radius:var(--radius); border:none;
-  font-family:'Inter',sans-serif; font-size:13px; font-weight:600;
-  cursor:pointer; transition:all .15s; white-space:nowrap;
-}
-.btn-primary { background:var(--green2); color:#fff; }
-.btn-primary:hover { background:var(--green); }
-.btn-secondary { background:var(--white); color:var(--text2); border:1px solid var(--border); }
-.btn-secondary:hover { background:var(--bg2); }
-.btn-ghost { background:transparent; color:var(--text3); border:1px solid var(--border); }
-.btn-ghost:hover { background:var(--bg2); color:var(--text); }
-.btn-danger { background:transparent; color:var(--red); border:1px solid rgba(185,28,28,.2); }
-.btn-danger:hover { background:var(--red-light); }
-.btn-amber { background:var(--amber-light); color:var(--amber); border:1px solid rgba(180,83,9,.2); }
-.btn-amber:hover { background:#fde68a; }
-.btn-sm { padding:5px 11px; font-size:12px; }
-.btn-lg { padding:10px 20px; font-size:14px; }
+/* ── TOAST ── */
+.toast{position:fixed;bottom:22px;right:22px;z-index:300;background:var(--tx);color:#fff;font-size:12px;font-weight:500;padding:10px 16px;border-radius:var(--r);display:flex;align-items:center;gap:7px;box-shadow:var(--sh2);transform:translateY(10px);opacity:0;transition:all .2s}
+.toast.on{transform:none;opacity:1}
 
-/* ── TOOLBAR ────────────────────────────── */
-.toolbar { display:flex; align-items:center; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+/* ── WDOT ── */
+.wd{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0;margin-right:7px;vertical-align:middle}
+.nc{display:flex;align-items:center}
 
-/* ── SPLIT ──────────────────────────────── */
-.split2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:start; }
-.split3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; align-items:start; }
-@media(max-width:1100px){ .split3 { grid-template-columns:1fr 1fr; } }
-@media(max-width:780px)  { .split2,.split3 { grid-template-columns:1fr; } }
+/* ── TIPS ── */
+.tip{font-size:11px;color:var(--tx3);font-style:italic;margin-top:8px}
+.val-p{color:var(--g);font-weight:600}.val-n{color:var(--red)}.val-d{color:var(--tx3)}
 
-/* ── MODAL ──────────────────────────────── */
-.overlay {
-  position:fixed; inset:0; z-index:200;
-  background:rgba(0,0,0,.45);
-  display:flex; align-items:center; justify-content:center;
-  opacity:0; pointer-events:none; transition:opacity .18s;
-}
-.overlay.open { opacity:1; pointer-events:all; }
-.modal {
-  background:var(--white); border-radius:var(--radius-lg);
-  padding:28px; width:100%; max-width:460px; max-height:90vh; overflow-y:auto;
-  box-shadow:0 20px 60px rgba(0,0,0,.15);
-  transform:scale(.97) translateY(6px); transition:transform .18s;
-}
-.overlay.open .modal { transform:none; }
-.modal-title { font-size:17px; font-weight:700; color:var(--text); margin-bottom:20px; }
-.field-row { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; margin-bottom:14px; }
-.field { display:flex; flex-direction:column; gap:5px; }
-.field label { font-size:11px; font-weight:600; text-transform:uppercase;
-  letter-spacing:.06em; color:var(--text3); }
-.field input,.field select {
-  background:var(--bg); border:1px solid var(--border);
-  color:var(--text); font-family:'Inter',sans-serif; font-size:13px;
-  padding:8px 11px; border-radius:var(--radius); outline:none;
-  transition:border-color .15s;
-}
-.field input:focus,.field select:focus { border-color:var(--green2); box-shadow:0 0 0 3px rgba(61,122,61,.1); }
-.field select option { background:var(--white); }
-.preview-box {
-  background:var(--bg); border:1px solid var(--border);
-  border-radius:var(--radius); padding:11px 14px;
-  font-size:13px; color:var(--text3); margin-bottom:4px;
-}
-.preview-box strong { color:var(--green2); font-size:15px; }
-.modal-foot { display:flex; gap:8px; justify-content:flex-end; margin-top:18px; }
-
-/* ── TOAST ──────────────────────────────── */
-.toast {
-  position:fixed; bottom:24px; right:24px; z-index:300;
-  background:var(--text); color:#fff;
-  font-size:13px; font-weight:500; padding:11px 18px;
-  border-radius:var(--radius); display:flex; align-items:center; gap:8px;
-  box-shadow:var(--shadow-md);
-  transform:translateY(12px); opacity:0; transition:all .22s;
-}
-.toast.show { transform:none; opacity:1; }
-
-/* ── SALDO CARDS ────────────────────────── */
-.saldo-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; }
-.saldo-card { background:var(--white); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow); }
-.saldo-head { padding:12px 16px; background:var(--bg); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; font-weight:600; font-size:13px; }
-.saldo-row  { display:flex; justify-content:space-between; padding:9px 16px; border-bottom:1px solid var(--border2); font-size:13px; transition:background .1s; }
-.saldo-row:hover { background:var(--bg); }
-.saldo-lbl  { color:var(--text3); font-size:12px; }
-.saldo-nums { display:flex; gap:16px; }
-.saldo-fl   { min-width:34px; text-align:right; color:var(--text2); }
-.saldo-eu   { min-width:80px; text-align:right; }
-.saldo-foot { padding:12px 16px; background:var(--sidebar-bg); display:flex; justify-content:space-between; align-items:center; }
-.saldo-foot-lbl { font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:rgba(255,255,255,.5); }
-.saldo-foot-val { font-size:17px; font-weight:700; color:#fff; }
-.saldo-foot-val.pos { color:#86efac; }
-.saldo-foot-val.neg { color:#fca5a5; }
-
-/* ── MISC ───────────────────────────────── */
-.val-pos { color:var(--green); font-weight:600; }
-.val-neg { color:var(--red); }
-.val-dim { color:var(--text3); }
-.section-label {
-  font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
-  color:var(--text3); margin-bottom:12px; display:flex; align-items:center; gap:10px;
-}
-.section-label::after { content:''; flex:1; height:1px; background:var(--border); }
-.tip { font-size:11px; color:var(--text3); font-style:italic; margin-bottom:10px; }
-
-/* ── MOBILE ─────────────────────────────── */
-@media(max-width:700px) {
-  .sidebar { display:none; }
-  .main { padding:16px; }
-  .mobile-nav { display:flex!important; }
-}
-.mobile-nav {
-  display:none; position:fixed; bottom:0; left:0; right:0;
-  background:var(--sidebar-bg); border-top:1px solid rgba(255,255,255,.1);
-  z-index:50; padding:6px 0 10px;
-}
-.mn-item { flex:1; display:flex; flex-direction:column; align-items:center; gap:2px;
-  cursor:pointer; font-size:9px; font-weight:600; letter-spacing:.06em;
-  text-transform:uppercase; color:rgba(255,255,255,.4); padding:4px; }
-.mn-item.active { color:#fff; }
-.mn-icon { font-size:18px; }
+/* ── MOBILE ── */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--sb);border-top:1px solid rgba(255,255,255,.1);z-index:50;padding:5px 0 9px}
+.mn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.4);padding:4px}
+.mn.on{color:#fff}
+.mn-ico{font-size:18px}
 </style>
 </head>
 <body>
 <div class="app">
 
-  <!-- ── SIDEBAR ────────────────────────── -->
-  <nav class="sidebar">
-    <div class="sidebar-brand">
-      <div class="brand-logo"><span>🍓</span><span class="brand-name">Avendorp</span></div>
-      <div class="brand-sub">Wijnbeheer 2024</div>
-    </div>
-
-    <div class="nav-section">
-      <div class="nav-label">Overzicht</div>
-      <div class="nav-item active" data-page="verdeling" onclick="showPage('verdeling')">
-        <span class="nav-icon">📊</span> Wijnverdeling
-      </div>
-      <div class="nav-item" data-page="wijngenoten" onclick="showPage('wijngenoten')">
-        <span class="nav-icon">👥</span> Wijngenoten
-      </div>
-    </div>
-
-    <div class="nav-section">
-      <div class="nav-label">Registratie</div>
-      <div class="nav-item" data-page="registratie" onclick="showPage('registratie')">
-        <span class="nav-icon">📋</span> Ophalen &amp; Verkoop
-      </div>
-    </div>
-  </nav>
-
-  <!-- ── CONTENT ───────────────────────── -->
-  <div class="content">
-    <header class="topbar">
-      <span class="topbar-title" id="topbarTitle">Wijnverdeling</span>
-      <div class="topbar-right">
-        <span class="live-dot"></span>
-        <span class="live-text" id="ts">—</span>
-        <button class="btn btn-primary btn-sm" onclick="saveAll()">💾 Opslaan</button>
-      </div>
-    </header>
-
-    <main class="main">
-
-      <!-- ══════════════════ VERDELING ══════════════════ -->
-      <div id="page-verdeling" class="page active">
-        <div class="page-header">
-          <div class="page-title">Wijnverdeling</div>
-          <div class="page-sub">Klik op een getal in de tabel om het direct te bewerken</div>
-        </div>
-
-        <div class="stat-strip" id="kpiGrid"></div>
-
-        <div class="card">
-          <div class="card-header">
-            <div><div class="card-title">Kostprijs per fles</div></div>
-          </div>
-          <table>
-            <thead><tr><th>Wijn</th><th>Flessen</th><th>Prijs p/fles</th><th>Accijns + Tr.</th><th>Etiket</th><th>Wax</th><th>Totaal incl. btw</th></tr></thead>
-            <tbody id="kostprijsBody"></tbody>
-          </table>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <div><div class="card-title">Verkoopverdeling</div></div>
-          </div>
-          <table>
-            <thead><tr><th>Wijn</th><th>Totaal</th><th>Geert</th><th>Wijngenoten</th><th>Voor verkoop</th><th>Verkoopprijs</th><th>Verwachte omzet</th></tr></thead>
-            <tbody id="verdelingBody"></tbody>
-            <tfoot id="verdelingFoot"></tfoot>
-          </table>
-        </div>
-
-        <div class="section-label">Saldo per wijn</div>
-        <div class="saldo-grid" id="saldoCards"></div>
-      </div>
-
-      <!-- ══════════════════ WIJNGENOTEN ══════════════════ -->
-      <div id="page-wijngenoten" class="page">
-        <div class="page-header">
-          <div class="page-title">Wijngenoten</div>
-          <div class="page-sub">Klik op een getal om het te bewerken · ↓ verplaatst naar Oud</div>
-        </div>
-
-        <div class="stat-strip" id="ledenStats"></div>
-
-        <div class="split2">
-          <div>
-            <div class="section-label">Actieve wijngenoten</div>
-            <div class="toolbar">
-              <button class="btn btn-primary btn-sm" onclick="openLedenModalType('actief')">+ Nieuw lid</button>
-            </div>
-            <div class="card">
-              <table>
-                <thead><tr><th>Naam</th><th>🔵 Joha.</th><th>🟡 Regent</th><th>🟣 Souv.</th><th>Totaal</th><th></th></tr></thead>
-                <tbody id="ledenBody"></tbody>
-                <tfoot id="ledenFoot"></tfoot>
-              </table>
-            </div>
-          </div>
-          <div>
-            <div class="section-label" style="color:var(--amber)">Oude wijngenoten</div>
-            <div class="toolbar">
-              <button class="btn btn-amber btn-sm" onclick="openLedenModalType('oud')">+ Oud lid</button>
-            </div>
-            <div class="card">
-              <table>
-                <thead><tr><th>Naam</th><th>🔵 Joha.</th><th>🟡 Regent</th><th>🟣 Souv.</th><th>Totaal</th><th></th></tr></thead>
-                <tbody id="oudLedenBody"></tbody>
-                <tfoot id="oudLedenFoot"></tfoot>
-              </table>
-            </div>
-            <p class="tip">* Ontvangt dit seizoen nog flessen maar adopteert geen nieuwe stok.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══════════════════ REGISTRATIE ══════════════════ -->
-      <div id="page-registratie" class="page">
-        <div class="page-header">
-          <div class="page-title">Ophalen &amp; Verkoop</div>
-          <div class="page-sub">Bijhouden wie heeft opgehaald en losse flessen verkoop</div>
-        </div>
-
-        <div class="stat-strip" id="regStrip"></div>
-
-        <div class="split3">
-
-          <!-- OPHALEN -->
-          <div>
-            <div class="section-label">Wijngenoten — ophaallijst</div>
-            <div class="toolbar">
-              <button class="btn btn-primary btn-sm" onclick="openOphalenModal()">+ Toevoegen</button>
-            </div>
-            <div class="card">
-              <table>
-                <thead><tr><th>Naam</th><th>Stok</th><th>Flessen</th><th>Status</th><th></th></tr></thead>
-                <tbody id="ophalenBody"></tbody>
-                <tfoot id="ophalenFoot"></tfoot>
-              </table>
-            </div>
-          </div>
-
-          <!-- VERKOOP -->
-          <div>
-            <div class="section-label">Losse verkoop</div>
-            <div class="toolbar">
-              <button class="btn btn-primary btn-sm" onclick="openVerkoopModal()">+ Verkoop</button>
-            </div>
-            <div class="card">
-              <table>
-                <thead><tr><th>Naam</th><th>E-mail</th><th>Fles</th><th>Totaal</th><th>Status</th><th></th></tr></thead>
-                <tbody id="verkoopBody"></tbody>
-                <tfoot id="verkoopFoot"></tfoot>
-              </table>
-            </div>
-          </div>
-
-          <!-- PAREL INKOOP -->
-          <div>
-            <div class="section-label" style="color:#1d4ed8">🔵 Parel — inkoop</div>
-            <div class="toolbar">
-              <button class="btn btn-sm" style="background:var(--blue-light);color:var(--blue);border:1px solid rgba(29,78,216,.2)" onclick="openInkoopModal()">+ Inkoop</button>
-            </div>
-            <div class="card">
-              <table>
-                <thead><tr><th>Omschrijving</th><th>Flessen</th><th>Prijs p/fl</th><th>Totaal</th><th></th></tr></thead>
-                <tbody id="inkoopBody"></tbody>
-                <tfoot id="inkoopFoot"></tfoot>
-              </table>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-    </main>
+<!-- ── SIDEBAR ── -->
+<nav class="sb">
+  <div class="sb-brand">
+    <div class="sb-logo"><span>🍓</span><span class="sb-name">Avendorp</span></div>
+    <div class="sb-sub">Wijnverdeling 2025/2026</div>
   </div>
+  <div class="sb-nav">
+    <div class="sb-lbl">Overzicht</div>
+    <div class="sb-item on" data-p="verdeling" onclick="showPage('verdeling')"><span class="sb-ico">📊</span>Wijnverdeling</div>
+    <div class="sb-item" data-p="wijngenoten" onclick="showPage('wijngenoten')"><span class="sb-ico">👥</span>Wijngenoten</div>
+    <div class="sb-divider"></div>
+    <div class="sb-lbl">Registratie</div>
+    <div class="sb-item" data-p="ophalen" onclick="showPage('ophalen')"><span class="sb-ico">📦</span>Ophaallijst</div>
+    <div class="sb-item" data-p="verkoop" onclick="showPage('verkoop')"><span class="sb-ico">🛒</span>Losse verkoop</div>
+    <div class="sb-item" data-p="inkoop" onclick="showPage('inkoop')"><span class="sb-ico">🔵</span>Parel inkoop</div>
+  </div>
+</nav>
+
+<!-- ── CONTENT ── -->
+<div class="cnt">
+  <header class="topbar">
+    <span class="tb-title" id="tb-title">Wijnverdeling</span>
+    <div class="tb-right">
+      <div class="live"><span class="pulse"></span><span id="ts">—</span></div>
+      <button class="btn btn-p btn-sm" onclick="saveAll()">💾 Opslaan</button>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- ══ VERDELING ══ -->
+    <div id="page-verdeling" class="page on">
+      <div class="ph">
+        <div class="ph-title">Wijnverdeling</div>
+        <div class="ph-sub">20% Geert van 725 L / 967 fl = 193 fl — klik op een getal om het te bewerken</div>
+      </div>
+
+      <div class="strip" id="kpi-strip"></div>
+
+      <div class="card">
+        <div class="card-hd"><div><div class="card-title">Kostprijs per fles</div><div class="card-note">Inclusief accijns, transport, etiket, wax en inkoop Saalhof · totaal incl. 21% btw</div></div></div>
+        <table>
+          <thead><tr><th>Wijn</th><th>Flessen</th><th>Prijs p/fles</th><th>Extra</th><th>Accijns + Tr.</th><th>Etiket</th><th>Wax</th><th>Inkoop Saalhof</th><th>Totaal incl. btw</th></tr></thead>
+          <tbody id="kp-body"></tbody>
+          <tfoot id="kp-foot"></tfoot>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-hd"><div><div class="card-title">Verkoopverdeling</div></div></div>
+        <table>
+          <thead><tr><th>Wijn</th><th>Totaal</th><th>Geert</th><th>Wijngenoten</th><th>Voor verkoop</th><th>Verkoopprijs</th><th>Verwachte omzet</th></tr></thead>
+          <tbody id="vd-body"></tbody>
+          <tfoot id="vd-foot"></tfoot>
+        </table>
+      </div>
+
+      <div class="slbl">Saldo per wijn</div>
+      <div class="sc-grid" id="saldo-grid"></div>
+    </div>
+
+    <!-- ══ WIJNGENOTEN ══ -->
+    <div id="page-wijngenoten" class="page">
+      <div class="ph">
+        <div class="ph-title">Wijngenoten</div>
+        <div class="ph-sub">Klik op een getal om het te bewerken · ↓ = naar Oud</div>
+      </div>
+
+      <div class="ras-grid" id="ras-grid"></div>
+
+      <div class="g2">
+        <div>
+          <div class="slbl">Actieve wijngenoten</div>
+          <div class="tbar"><button class="btn btn-p btn-sm" onclick="openLidModal('actief')">+ Nieuw lid</button></div>
+          <div class="card"><table>
+            <thead><tr><th>Naam</th><th>🔵 Parel</th><th>🟢 Joha.</th><th>🟤 Barr.</th><th>Totaal</th><th></th></tr></thead>
+            <tbody id="leden-actief"></tbody>
+            <tfoot id="leden-actief-foot"></tfoot>
+          </table></div>
+        </div>
+        <div>
+          <div class="slbl" style="color:var(--amb)">Oude wijngenoten</div>
+          <div class="tbar"><button class="btn btn-a btn-sm" onclick="openLidModal('oud')">+ Oud lid</button></div>
+          <div class="card"><table>
+            <thead><tr><th>Naam</th><th>🔵 Parel</th><th>🟢 Joha.</th><th>🟤 Barr.</th><th>Totaal</th><th></th></tr></thead>
+            <tbody id="leden-oud"></tbody>
+            <tfoot id="leden-oud-foot"></tfoot>
+          </table></div>
+          <p class="tip">* Ontvangt dit seizoen nog flessen maar adopteert geen nieuwe stok.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ OPHALEN ══ -->
+    <div id="page-ophalen" class="page">
+      <div class="ph">
+        <div class="ph-title">Ophaallijst</div>
+        <div class="ph-sub">Wie heeft zijn flessen opgehaald? Klik op de status om te wisselen.</div>
+      </div>
+      <div class="strip" id="op-strip"></div>
+      <div class="tbar"><button class="btn btn-p btn-sm" onclick="openOpModal()">+ Toevoegen</button></div>
+      <div class="card"><table>
+        <thead><tr><th>Naam</th><th>Wijnstok</th><th>Flessen</th><th>Status</th><th></th></tr></thead>
+        <tbody id="op-body"></tbody>
+        <tfoot id="op-foot"></tfoot>
+      </table></div>
+    </div>
+
+    <!-- ══ VERKOOP ══ -->
+    <div id="page-verkoop" class="page">
+      <div class="ph">
+        <div class="ph-title">Losse verkoop</div>
+        <div class="ph-sub">Individuele flesverkoop buiten de wijngenoten om</div>
+      </div>
+      <div class="strip" id="vk-strip"></div>
+      <div class="tbar"><button class="btn btn-p btn-sm" onclick="openVkModal()">+ Nieuwe verkoop</button></div>
+      <div class="card"><table>
+        <thead><tr><th>Naam</th><th>E-mail</th><th>Fles</th><th>Aantal</th><th>Totaal</th><th>Status</th><th></th></tr></thead>
+        <tbody id="vk-body"></tbody>
+        <tfoot id="vk-foot"></tfoot>
+      </table></div>
+    </div>
+
+    <!-- ══ PAREL INKOOP ══ -->
+    <div id="page-inkoop" class="page">
+      <div class="ph">
+        <div class="ph-title">Parel inkoop</div>
+        <div class="ph-sub">Inkoop Saalhof Parel — standaard €1,19 per fles</div>
+      </div>
+      <div class="strip" id="ik-strip"></div>
+      <div class="tbar"><button class="btn btn-b btn-sm" onclick="openIkModal()">+ Inkoop toevoegen</button></div>
+      <div class="card"><table>
+        <thead><tr><th>Omschrijving</th><th>Flessen</th><th>Prijs p/fles</th><th>Totaal</th><th></th></tr></thead>
+        <tbody id="ik-body"></tbody>
+        <tfoot id="ik-foot"></tfoot>
+      </table></div>
+    </div>
+
+  </main>
+</div>
 </div>
 
 <!-- MOBILE NAV -->
 <nav class="mobile-nav">
-  <div class="mn-item active" onclick="showPage('verdeling')"><span class="mn-icon">📊</span>Verdeling</div>
-  <div class="mn-item" onclick="showPage('wijngenoten')"><span class="mn-icon">👥</span>Leden</div>
-  <div class="mn-item" onclick="showPage('registratie')"><span class="mn-icon">📋</span>Registratie</div>
+  <div class="mn on"  onclick="showPage('verdeling')"> <span class="mn-ico">📊</span>Verdeling</div>
+  <div class="mn"     onclick="showPage('wijngenoten')"><span class="mn-ico">👥</span>Leden</div>
+  <div class="mn"     onclick="showPage('ophalen')">    <span class="mn-ico">📦</span>Ophalen</div>
+  <div class="mn"     onclick="showPage('verkoop')">    <span class="mn-ico">🛒</span>Verkoop</div>
+  <div class="mn"     onclick="showPage('inkoop')">     <span class="mn-ico">🔵</span>Inkoop</div>
 </nav>
 
 <!-- MODAL: Lid -->
-<div class="overlay" id="ledenModal">
-  <div class="modal">
-    <div class="modal-title" id="ledenModalTitle">Lid toevoegen</div>
-    <input type="hidden" id="nieuwType" value="actief">
-    <div class="field-row">
-      <div class="field" style="flex:1">
-        <label>Naam</label>
-        <input type="text" id="nieuwNaam" placeholder="Voor- en achternaam" style="width:100%">
-      </div>
-    </div>
-    <div class="field-row">
-      <div class="field" style="flex:1">
-        <label>Rol</label>
-        <select id="nieuwRol" style="width:100%">
+<div class="ovl" id="m-lid">
+  <div class="mdl">
+    <div class="mdl-title" id="m-lid-title">Lid toevoegen</div>
+    <input type="hidden" id="lid-type" value="actief">
+    <div class="fr"><div class="fi" style="flex:1"><label>Naam</label><input id="lid-naam" placeholder="Voor- en achternaam" style="width:100%"></div></div>
+    <div class="fr">
+      <div class="fi" style="flex:1"><label>Rol</label>
+        <select id="lid-rol" style="width:100%">
           <option value="lid">Wijngenoot (lid)</option>
           <option value="geert">Geert (20% aandeel)</option>
           <option value="extern">Extern / Stiel</option>
         </select>
       </div>
     </div>
-    <div class="field-row">
-      <div class="field"><label>Johanniter</label><input type="number" id="nieuwJoha" value="0" min="0" style="width:100px"></div>
-      <div class="field"><label>Regent</label><input type="number" id="nieuwRegent" value="0" min="0" style="width:100px"></div>
-      <div class="field"><label>Souv. Gris</label><input type="number" id="nieuwSouv" value="0" min="0" style="width:100px"></div>
+    <div class="fr">
+      <div class="fi"><label>Parel</label><input type="number" id="lid-parel" value="0" min="0" style="width:80px"></div>
+      <div class="fi"><label>Johanniter</label><input type="number" id="lid-joha" value="0" min="0" style="width:80px"></div>
+      <div class="fi"><label>Barrique</label><input type="number" id="lid-barr" value="0" min="0" style="width:80px"></div>
     </div>
-    <div class="modal-foot">
-      <button class="btn btn-ghost" onclick="closeModal('ledenModal')">Annuleren</button>
-      <button class="btn btn-primary" onclick="addLid()">Toevoegen</button>
+    <div class="mft">
+      <button class="btn btn-g" onclick="closeModal('m-lid')">Annuleren</button>
+      <button class="btn btn-p" onclick="addLid()">Toevoegen</button>
     </div>
   </div>
 </div>
 
 <!-- MODAL: Ophalen -->
-<div class="overlay" id="ophalenModal">
-  <div class="modal">
-    <div class="modal-title">Wijngenoot toevoegen</div>
-    <div class="field-row">
-      <div class="field" style="flex:1">
-        <label>Naam</label>
-        <input type="text" id="opNaam" placeholder="Voor- en achternaam" style="width:100%">
-      </div>
-    </div>
-    <div class="field-row">
-      <div class="field" style="flex:1">
-        <label>Wijnstok</label>
-        <select id="opStok" style="width:100%">
+<div class="ovl" id="m-op">
+  <div class="mdl">
+    <div class="mdl-title">Wijngenoot toevoegen</div>
+    <div class="fr"><div class="fi" style="flex:1"><label>Naam</label><input id="op-naam" placeholder="Naam" style="width:100%"></div></div>
+    <div class="fr">
+      <div class="fi" style="flex:1"><label>Wijnstok</label>
+        <select id="op-stok" style="width:100%">
+          <option value="parel">Parel</option>
           <option value="johanniter">Johanniter</option>
-          <option value="regent">Regent</option>
-          <option value="souvignier">Souvignier Gris</option>
+          <option value="barrique">Barrique</option>
         </select>
       </div>
-      <div class="field">
-        <label>Flessen</label>
-        <input type="number" id="opFlessen" value="6" min="1" style="width:80px">
-      </div>
+      <div class="fi"><label>Flessen</label><input type="number" id="op-fl" value="6" min="1" style="width:75px"></div>
     </div>
-    <div class="field-row">
-      <div class="field" style="flex:1">
-        <label>Status</label>
-        <select id="opStatus" style="width:100%">
-          <option value="nee">Nog niet opgehaald</option>
-          <option value="ja">Opgehaald ✓</option>
-        </select>
-      </div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn btn-ghost" onclick="closeModal('ophalenModal')">Annuleren</button>
-      <button class="btn btn-primary" onclick="addOphalen()">Toevoegen</button>
+    <div class="fr"><div class="fi" style="flex:1"><label>Status</label>
+      <select id="op-status" style="width:100%">
+        <option value="nee">Nog niet opgehaald</option>
+        <option value="ja">Opgehaald ✓</option>
+      </select>
+    </div></div>
+    <div class="mft">
+      <button class="btn btn-g" onclick="closeModal('m-op')">Annuleren</button>
+      <button class="btn btn-p" onclick="addOphalen()">Toevoegen</button>
     </div>
   </div>
 </div>
 
 <!-- MODAL: Verkoop -->
-<div class="overlay" id="verkoopModal">
-  <div class="modal">
-    <div class="modal-title">Losse verkoop</div>
-    <div class="field-row">
-      <div class="field" style="flex:1">
-        <label>Naam koper</label>
-        <input type="text" id="vkNaam" placeholder="Voor- en achternaam" style="width:100%">
-      </div>
-    </div>
-    <div class="field-row">
-      <div class="field" style="flex:1">
-        <label>E-mailadres</label>
-        <input type="email" id="vkEmail" placeholder="naam@email.nl" style="width:100%">
-      </div>
-    </div>
-    <div class="field-row">
-      <div class="field" style="flex:1">
-        <label>Fles</label>
-        <select id="vkFles" style="width:100%" onchange="updateVkPrijs()">
+<div class="ovl" id="m-vk">
+  <div class="mdl">
+    <div class="mdl-title">Losse verkoop toevoegen</div>
+    <div class="fr"><div class="fi" style="flex:1"><label>Naam koper</label><input id="vk-naam" placeholder="Voor- en achternaam" style="width:100%"></div></div>
+    <div class="fr"><div class="fi" style="flex:1"><label>E-mailadres</label><input type="email" id="vk-email" placeholder="naam@email.nl" style="width:100%"></div></div>
+    <div class="fr">
+      <div class="fi" style="flex:1"><label>Fles</label>
+        <select id="vk-fles" style="width:100%" onchange="updVkPrijs()">
           <option value="parel">Parel — €27,50</option>
           <option value="johanniter">Johanniter — €35,00</option>
-          <option value="barrique">Johanniter Barrique — €35,00</option>
+          <option value="barrique">Barrique — €35,00</option>
         </select>
       </div>
-      <div class="field">
-        <label>Aantal</label>
-        <input type="number" id="vkAantal" value="1" min="1" style="width:70px" oninput="updateVkTotaal()">
-      </div>
+      <div class="fi"><label>Aantal</label><input type="number" id="vk-antal" value="1" min="1" style="width:65px" oninput="updVkTot()"></div>
     </div>
-    <div class="field-row">
-      <div class="field">
-        <label>Prijs p/fles (€)</label>
-        <input type="number" id="vkPrijs" value="27.50" step="0.01" style="width:120px" oninput="updateVkTotaal()">
-      </div>
-      <div class="field">
-        <label>Status</label>
-        <select id="vkStatus">
-          <option value="gereserveerd">Gereserveerd</option>
+    <div class="fr">
+      <div class="fi"><label>Prijs p/fles (€)</label><input type="number" id="vk-prijs" value="27.50" step="0.01" style="width:110px" oninput="updVkTot()"></div>
+      <div class="fi"><label>Status</label>
+        <select id="vk-status">
+          <option value="geres">Gereserveerd</option>
           <option value="betaald">Betaald</option>
         </select>
       </div>
     </div>
-    <div class="preview-box">Totaal: <strong id="vkTotaalPreview">—</strong></div>
-    <div class="modal-foot">
-      <button class="btn btn-ghost" onclick="closeModal('verkoopModal')">Annuleren</button>
-      <button class="btn btn-primary" onclick="addVerkoop()">Toevoegen</button>
+    <div class="prev">Totaal: <strong id="vk-prev">—</strong></div>
+    <div class="mft">
+      <button class="btn btn-g" onclick="closeModal('m-vk')">Annuleren</button>
+      <button class="btn btn-p" onclick="addVerkoop()">Toevoegen</button>
     </div>
   </div>
 </div>
 
 <!-- MODAL: Inkoop -->
-<div class="overlay" id="inkoopModal">
-  <div class="modal">
-    <div class="modal-title">Parel inkoop</div>
-    <div class="field-row">
-      <div class="field" style="flex:1">
-        <label>Omschrijving</label>
-        <input type="text" id="ikOmschr" placeholder="bijv. Batch 1 — dec 2024" style="width:100%">
-      </div>
+<div class="ovl" id="m-ik">
+  <div class="mdl">
+    <div class="mdl-title">Parel inkoop toevoegen</div>
+    <div class="fr"><div class="fi" style="flex:1"><label>Omschrijving</label><input id="ik-omschr" placeholder="bijv. Batch 1 — dec 2024" style="width:100%"></div></div>
+    <div class="fr">
+      <div class="fi"><label>Flessen</label><input type="number" id="ik-fl" value="100" min="1" style="width:90px" oninput="updIkTot()"></div>
+      <div class="fi"><label>Prijs p/fles (€)</label><input type="number" id="ik-prijs" value="1.19" step="0.01" style="width:110px" oninput="updIkTot()"></div>
     </div>
-    <div class="field-row">
-      <div class="field">
-        <label>Flessen</label>
-        <input type="number" id="ikFlessen" value="100" min="1" style="width:100px" oninput="updateIkTotaal()">
-      </div>
-      <div class="field">
-        <label>Prijs p/fles (€)</label>
-        <input type="number" id="ikPrijs" value="1.19" step="0.01" style="width:110px" oninput="updateIkTotaal()">
-      </div>
-    </div>
-    <div class="preview-box">Totaal: <strong id="ikTotaalPreview">—</strong></div>
-    <div class="modal-foot">
-      <button class="btn btn-ghost" onclick="closeModal('inkoopModal')">Annuleren</button>
-      <button class="btn btn-primary" onclick="addInkoop()">Toevoegen</button>
+    <div class="prev">Totaal: <strong id="ik-prev">—</strong></div>
+    <div class="mft">
+      <button class="btn btn-g" onclick="closeModal('m-ik')">Annuleren</button>
+      <button class="btn btn-p" onclick="addInkoop()">Toevoegen</button>
     </div>
   </div>
 </div>
@@ -677,425 +465,441 @@ td.editing .einp { display:inline-block; }
 <div class="toast" id="toast"></div>
 
 <script>
-// ════════════════════════════════════════════════════════
-// DATA
-// ════════════════════════════════════════════════════════
-const WDOTS = { johanniter:'#86efac', regent:'#fcd34d', souvignier:'#c4b5fd', parel:'#93c5fd', barrique:'#fdba74' };
-const STOK_LABELS = { johanniter:'Johanniter', regent:'Regent', souvignier:'Souvignier Gris' };
-const FLES_LABELS = { parel:'Parel', johanniter:'Johanniter', barrique:'Barrique' };
-const FLES_PRIJZEN = { parel:27.5, johanniter:35, barrique:35 };
+// ══════════════════════════════════════════════
+// DATA — rechtstreeks uit Wijnverdeling.xlsx
+// ══════════════════════════════════════════════
+const DOTS = {parel:'#93c5fd', johanniter:'#86efac', barrique:'#fdba74'};
+const FLES_PRIJZEN = {parel:27.5, johanniter:35, barrique:35};
 const BTW = 1.21;
 
-const DEFAULT = {
+const DEF = {
   wines: [
-    { id:'johanniter', name:'Johanniter',     flessen:399, prijs:4.13, accijns:0,     etiket:0,     wax:0,   geert:112, verkoopprijs:35   },
-    { id:'regent',     name:'Regent',          flessen:121, prijs:4.64, accijns:0.819, etiket:1.382, wax:0.5, geert:30,  verkoopprijs:27.5 },
-    { id:'souvignier', name:'Souvignier Gris', flessen:36,  prijs:6.03, accijns:0,     etiket:0,     wax:0,   geert:10,  verkoopprijs:35   },
-    { id:'parel',      name:'Parel (inkoop)',  flessen:800, prijs:1.19, accijns:0,     etiket:0,     wax:0,   geert:30,  verkoopprijs:27.5 },
+    {id:'parel',      name:'Parel',      flessen:1330, prijs:4.64, extra:0,    accijns:0.819, etiket:1.382, wax:0.5,  inkoop:1.19, geert:30,  wg:267, verkoopprijs:27.5},
+    {id:'johanniter', name:'Johanniter', flessen:660,  prijs:4.13, extra:0,    accijns:0,     etiket:0,     wax:0,    inkoop:0,    geert:112, wg:337, verkoopprijs:35  },
+    {id:'barrique',   name:'Barrique',   flessen:300,  prijs:6.03, extra:0,    accijns:0,     etiket:0,     wax:0,    inkoop:0,    geert:51,  wg:0,   verkoopprijs:35  },
   ],
   leden: [
-    { id:1, naam:'Geert van Zonneveld', rol:'geert',  oud:false, johanniter:112, regent:30,  souvignier:10 },
-    { id:2, naam:'Jan de Vries',        rol:'lid',    oud:false, johanniter:18,  regent:24,  souvignier:0  },
-    { id:3, naam:'Marie Janssen',       rol:'lid',    oud:false, johanniter:12,  regent:18,  souvignier:6  },
-    { id:4, naam:'Piet Smit',           rol:'lid',    oud:true,  johanniter:6,   regent:12,  souvignier:0  },
-    { id:5, naam:'Karin Bakker',        rol:'lid',    oud:false, johanniter:12,  regent:18,  souvignier:6  },
-    { id:6, naam:'Tom van der Berg',    rol:'lid',    oud:true,  johanniter:9,   regent:12,  souvignier:0  },
-    { id:7, naam:'STIEL gasten',        rol:'extern', oud:false, johanniter:0,   regent:110, souvignier:0  },
-    { id:8, naam:'Sponsoring Fels',     rol:'extern', oud:false, johanniter:0,   regent:24,  souvignier:0  },
+    {id:1, naam:'Geert van Zonneveld', rol:'geert',  oud:false, parel:30,  johanniter:112, barrique:51},
+    {id:2, naam:'Jan de Vries',        rol:'lid',    oud:false, parel:24,  johanniter:18,  barrique:0 },
+    {id:3, naam:'Marie Janssen',       rol:'lid',    oud:false, parel:18,  johanniter:12,  barrique:6 },
+    {id:4, naam:'Piet Smit',           rol:'lid',    oud:true,  parel:12,  johanniter:6,   barrique:0 },
+    {id:5, naam:'Karin Bakker',        rol:'lid',    oud:false, parel:18,  johanniter:12,  barrique:6 },
+    {id:6, naam:'Tom van der Berg',    rol:'lid',    oud:true,  parel:12,  johanniter:9,   barrique:0 },
+    {id:7, naam:'STIEL gasten',        rol:'extern', oud:false, parel:110, johanniter:0,   barrique:0 },
+    {id:8, naam:'Sponsoring Fels',     rol:'extern', oud:false, parel:24,  johanniter:0,   barrique:0 },
   ],
   ophalen: [
-    { id:1, naam:'Geert van Zonneveld', stok:'regent',     flessen:30, opgehaald:true  },
-    { id:2, naam:'Jan de Vries',        stok:'johanniter', flessen:18, opgehaald:false },
-    { id:3, naam:'Marie Janssen',       stok:'johanniter', flessen:12, opgehaald:false },
-    { id:4, naam:'Karin Bakker',        stok:'souvignier', flessen:6,  opgehaald:true  },
+    {id:1, naam:'Geert van Zonneveld', stok:'parel',      fl:30,  status:'ja' },
+    {id:2, naam:'Jan de Vries',        stok:'johanniter', fl:18,  status:'nee'},
+    {id:3, naam:'Marie Janssen',       stok:'johanniter', fl:12,  status:'nee'},
+    {id:4, naam:'Karin Bakker',        stok:'barrique',   fl:6,   status:'ja' },
+    {id:5, naam:'STIEL gasten',        stok:'parel',      fl:110, status:'nee'},
   ],
   verkopen: [
-    { id:1, naam:'Lucia Fontaine', email:'lucia@mail.nl', fles:'parel',      aantal:3, prijs:27.5, status:'betaald'      },
-    { id:2, naam:'Bas Hoekstra',   email:'bas@mail.nl',   fles:'johanniter', aantal:6, prijs:35,   status:'gereserveerd' },
-    { id:3, naam:'Anke Willems',   email:'anke@mail.nl',  fles:'barrique',   aantal:2, prijs:35,   status:'betaald'      },
+    {id:1, naam:'Lucia Fontaine', email:'lucia@mail.nl', fles:'parel',      antal:3, prijs:27.5, status:'betaald'},
+    {id:2, naam:'Bas Hoekstra',   email:'bas@mail.nl',   fles:'johanniter', antal:6, prijs:35,   status:'geres'  },
+    {id:3, naam:'Anke Willems',   email:'anke@mail.nl',  fles:'barrique',   antal:2, prijs:35,   status:'betaald'},
   ],
   inkoop: [
-    { id:1, omschr:'Batch 1 — dec 2024', flessen:500, prijs:1.19 },
-    { id:2, omschr:'Batch 2 — jan 2025', flessen:300, prijs:1.19 },
+    {id:1, omschr:'Batch 1 — dec 2024', fl:500, prijs:1.19},
+    {id:2, omschr:'Batch 2 — jan 2025', fl:300, prijs:1.19},
   ],
-  kpi: {},
-  nextId:9, nextOpId:5, nextVkId:4, nextIkId:3,
+  kpi:{},
+  nid:9, nop:6, nvk:4, nik:3,
 };
 
-let D = JSON.parse(localStorage.getItem('avendorp_v6') || 'null') || DEFAULT;
+let D = JSON.parse(localStorage.getItem('av7') || 'null') || DEF;
 
-// ════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
 // UTILS
-// ════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
 const eur = n => new Intl.NumberFormat('nl-NL',{style:'currency',currency:'EUR'}).format(n||0);
 const num = n => new Intl.NumberFormat('nl-NL').format(n||0);
-const calcTP = w => (w.prijs+(w.accijns||0)+(w.etiket||0)+(w.wax||0))*BTW;
+const calcTP = w => (w.prijs+(w.extra||0)+(w.accijns||0)+(w.etiket||0)+(w.wax||0)+(w.inkoop||0))*BTW;
 const wgFl = wid => D.leden.filter(l=>l.rol==='lid').reduce((s,l)=>s+(l[wid]||0),0);
-const calcVVK = w => Math.max(0, w.flessen - w.geert - wgFl(w.id));
+const calcVVK = w => Math.max(0, w.flessen - w.geert - (w.wg||0));
 
-function saveAll(){ localStorage.setItem('avendorp_v6', JSON.stringify(D)); toast('Opgeslagen ✓'); }
-function toast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2500);
-}
+function saveAll(){ localStorage.setItem('av7', JSON.stringify(D)); toast('Opgeslagen ✓'); }
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('on'); setTimeout(()=>t.classList.remove('on'),2400); }
 
-const PAGE_TITLES = { verdeling:'Wijnverdeling', wijngenoten:'Wijngenoten', registratie:'Ophalen & Verkoop' };
+const PT = {verdeling:'Wijnverdeling',wijngenoten:'Wijngenoten',ophalen:'Ophaallijst',verkoop:'Losse verkoop',inkoop:'Parel inkoop'};
 function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.querySelectorAll('.mn-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  document.querySelector(`.nav-item[data-page="${id}"]`)?.classList.add('active');
-  document.getElementById('topbarTitle').textContent = PAGE_TITLES[id]||'';
-  const idx={verdeling:0,wijngenoten:1,registratie:2}[id]||0;
-  document.querySelectorAll('.mn-item')[idx]?.classList.add('active');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.sb-item').forEach(n=>n.classList.remove('on'));
+  document.querySelectorAll('.mn').forEach(n=>n.classList.remove('on'));
+  document.getElementById('page-'+id).classList.add('on');
+  document.querySelector(`.sb-item[data-p="${id}"]`)?.classList.add('on');
+  document.getElementById('tb-title').textContent = PT[id]||'';
+  const idx={verdeling:0,wijngenoten:1,ophalen:2,verkoop:3,inkoop:4}[id]||0;
+  document.querySelectorAll('.mn')[idx]?.classList.add('on');
   renderAll();
 }
-function closeModal(id){ document.getElementById(id).classList.remove('open'); }
-function openModal(id){ document.getElementById(id).classList.add('open'); }
-document.querySelectorAll('.overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+function closeModal(id){ document.getElementById(id).classList.remove('on'); }
+function openModal(id){ document.getElementById(id).classList.add('on'); }
+document.querySelectorAll('.ovl').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('on');}));
 
-// ════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
 // INLINE CELL EDIT
-// ════════════════════════════════════════════════════════
-function eCell(val, fn){ return `<span class="ecell">${fn(val)}</span><input class="einp" value="${val}">`; }
+// ══════════════════════════════════════════════
+function ec(val, fn){ return `<span class="ec">${fn(val)}</span><input class="ei" value="${val}">`; }
 
-function attachEdit(tbody, getData, onSave){
+function attachEdits(tbody, getVal, setVal){
   tbody.querySelectorAll('td[data-key]').forEach(td=>{
     td.style.cursor='pointer';
-    td.querySelector('.ecell')?.addEventListener('click',()=>{
+    td.querySelector('.ec')?.addEventListener('click',()=>{
       if(td.dataset.editing) return;
-      td.dataset.editing='1'; td.classList.add('editing');
-      const inp=td.querySelector('.einp');
-      const isEur=td.dataset.eur==='1';
-      inp.value=getData(td);
-      inp.focus(); inp.select();
-      const commit=()=>{
-        const v=parseFloat(inp.value);
-        if(!isNaN(v)) onSave(td, isEur?v:Math.round(v));
-        td.classList.remove('editing'); delete td.dataset.editing;
-        renderAll();
-      };
-      inp.onblur=commit;
-      inp.onkeydown=e=>{ if(e.key==='Enter') inp.blur(); if(e.key==='Escape'){td.classList.remove('editing');delete td.dataset.editing;} };
+      td.dataset.editing='1'; td.classList.add('ed');
+      const inp=td.querySelector('.ei'), isEur=td.dataset.eur==='1';
+      inp.value=getVal(td); inp.focus(); inp.select();
+      const done=()=>{ const v=parseFloat(inp.value); if(!isNaN(v)) setVal(td, isEur?v:Math.round(v)); td.classList.remove('ed'); delete td.dataset.editing; renderAll(); };
+      inp.onblur=done;
+      inp.onkeydown=e=>{ if(e.key==='Enter') inp.blur(); if(e.key==='Escape'){td.classList.remove('ed');delete td.dataset.editing;} };
     });
   });
 }
 
-// ════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
 // VERDELING
-// ════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
 function renderVerdeling(){
-  // KPIs
+  if(!D.kpi) D.kpi={};
   const tF=D.wines.reduce((s,w)=>s+w.flessen,0);
   const tG=D.wines.reduce((s,w)=>s+w.geert,0);
-  const tWg=D.wines.reduce((s,w)=>s+wgFl(w.id),0);
+  const tWg=D.wines.reduce((s,w)=>s+(w.wg||0),0);
   const tV=D.wines.reduce((s,w)=>s+calcVVK(w),0);
   const tO=D.wines.reduce((s,w)=>s+calcVVK(w)*(w.verkoopprijs||0),0);
-  const vkBetaald=D.verkopen.filter(r=>r.status==='betaald').reduce((s,r)=>s+r.aantal*r.prijs,0);
-  if(!D.kpi) D.kpi={};
+  const betaald=D.verkopen.filter(r=>r.status==='betaald').reduce((s,r)=>s+r.antal*r.prijs,0);
 
   const kpis=[
-    {k:'flessen',  l:'Totaal flessen',  v:tF,                                           fmt:num,  cls:'',      edit:false},
-    {k:'geert',    l:'Geert 20%',       v:tG,                                           fmt:num,  cls:'green', edit:false},
-    {k:'wijngen',  l:'Wijngenoten',     v:tWg,                                          fmt:num,  cls:'',      edit:false},
-    {k:'verkoop',  l:'Voor verkoop',    v:tV,                                           fmt:num,  cls:'',      edit:false},
-    {k:'omzet',    l:'Verwachte omzet', v:D.kpi.omzet!=null?D.kpi.omzet:tO,            fmt:eur,  cls:'green', edit:true },
-    {k:'ontvangen',l:'Ontvangen',       v:D.kpi.ontvangen!=null?D.kpi.ontvangen:vkBetaald, fmt:eur, cls:'',   edit:true },
+    {k:'flessen',  l:'Totaal flessen',  v:tF,   fmt:num, cls:'',  e:false},
+    {k:'geert',    l:'Geert 20%',       v:tG,   fmt:num, cls:'g', e:false},
+    {k:'wijngen',  l:'Wijngenoten',     v:tWg,  fmt:num, cls:'',  e:false},
+    {k:'verkoop',  l:'Voor verkoop',    v:tV,   fmt:num, cls:'',  e:false},
+    {k:'omzet',    l:'Verwachte omzet', v:D.kpi.omzet!=null?D.kpi.omzet:tO,         fmt:eur, cls:'g', e:true},
+    {k:'ontvangen',l:'Ontvangen',       v:D.kpi.ontvangen!=null?D.kpi.ontvangen:betaald, fmt:eur, cls:'', e:true},
   ];
 
-  document.getElementById('kpiGrid').innerHTML=kpis.map(k=>`
-    <div class="stat${k.edit?' clickable':''}" data-kpikey="${k.k}">
-      <div class="stat-label">${k.l}</div>
-      <div class="stat-value ${k.cls}">${k.fmt(k.v)}</div>
-      <div class="stat-sub">${k.edit?'klik om te bewerken':''}</div>
+  document.getElementById('kpi-strip').innerHTML=kpis.map(k=>`
+    <div class="stat${k.e?' click':''}" data-kk="${k.k}">
+      <div class="stat-lbl">${k.l}</div>
+      <div class="stat-val ${k.cls}">${k.fmt(k.v)}</div>
+      <div class="stat-sub">${k.e?'klik om te bewerken':''}</div>
     </div>`).join('');
 
-  document.querySelectorAll('.stat.clickable').forEach(card=>{
+  document.querySelectorAll('.stat.click').forEach(card=>{
     card.addEventListener('click',()=>{
       if(card.dataset.editing) return;
-      const key=card.dataset.kpikey;
-      const def=kpis.find(k=>k.k===key); if(!def||!def.edit) return;
-      card.dataset.editing='1'; card.classList.add('stat-editing');
-      const valEl=card.querySelector('.stat-value');
-      const orig=valEl.textContent;
-      valEl.innerHTML=`<input value="${def.v}" type="number" step="0.01">`;
-      const inp=card.querySelector('input'); inp.focus(); inp.select();
-      const commit=()=>{
-        const v=parseFloat(inp.value);
-        if(!isNaN(v)) D.kpi[key]=v;
-        delete card.dataset.editing; card.classList.remove('stat-editing');
-        renderVerdeling();
-      };
-      inp.onblur=commit;
-      inp.onkeydown=e=>{ if(e.key==='Enter') inp.blur(); if(e.key==='Escape'){valEl.textContent=orig;delete card.dataset.editing;card.classList.remove('stat-editing');} };
+      const def=kpis.find(k=>k.k===card.dataset.kk); if(!def||!def.e) return;
+      card.dataset.editing='1';
+      const el=card.querySelector('.stat-val');
+      el.innerHTML=`<input class="stat-inp" type="number" step="0.01" value="${def.v}">`;
+      const inp=el.querySelector('input'); inp.focus(); inp.select();
+      const done=()=>{ const v=parseFloat(inp.value); if(!isNaN(v)) D.kpi[def.k]=v; delete card.dataset.editing; renderVerdeling(); };
+      inp.onblur=done;
+      inp.onkeydown=e=>{ if(e.key==='Enter') inp.blur(); if(e.key==='Escape'){delete card.dataset.editing;renderVerdeling();} };
     });
   });
 
   // Kostprijs tabel
-  const kb=document.getElementById('kostprijsBody');
+  const kb=document.getElementById('kp-body');
   kb.innerHTML=D.wines.map((w,wi)=>`<tr>
-    <td><span class="name-cell"><span class="wdot" style="background:${WDOTS[w.id]||'#ccc'}"></span>${w.name}</span></td>
-    <td data-wi="${wi}" data-key="flessen" data-eur="0">${eCell(w.flessen,num)}</td>
-    <td data-wi="${wi}" data-key="prijs"   data-eur="1">${eCell(w.prijs,eur)}</td>
-    <td data-wi="${wi}" data-key="accijns" data-eur="1">${eCell(w.accijns||0,eur)}</td>
-    <td data-wi="${wi}" data-key="etiket"  data-eur="1">${eCell(w.etiket||0,eur)}</td>
-    <td data-wi="${wi}" data-key="wax"     data-eur="1">${eCell(w.wax||0,eur)}</td>
-    <td class="val-pos">${eur(calcTP(w))}</td>
+    <td><span class="nc"><span class="wd" style="background:${DOTS[w.id]||'#ccc'}"></span>${w.name}</span></td>
+    <td data-wi="${wi}" data-key="flessen" data-eur="0">${ec(w.flessen,num)}</td>
+    <td data-wi="${wi}" data-key="prijs"   data-eur="1">${ec(w.prijs,eur)}</td>
+    <td data-wi="${wi}" data-key="extra"   data-eur="1">${ec(w.extra||0,eur)}</td>
+    <td data-wi="${wi}" data-key="accijns" data-eur="1">${ec(w.accijns||0,eur)}</td>
+    <td data-wi="${wi}" data-key="etiket"  data-eur="1">${ec(w.etiket||0,eur)}</td>
+    <td data-wi="${wi}" data-key="wax"     data-eur="1">${ec(w.wax||0,eur)}</td>
+    <td data-wi="${wi}" data-key="inkoop"  data-eur="1" style="color:var(--blu)">${ec(w.inkoop||0,eur)}</td>
+    <td class="val-p">${eur(calcTP(w))}</td>
   </tr>`).join('');
-  attachEdit(kb, td=>D.wines[+td.dataset.wi][td.dataset.key], (td,v)=>D.wines[+td.dataset.wi][td.dataset.key]=v);
-
-  // Verdeling tabel
-  const vb=document.getElementById('verdelingBody');
-  vb.innerHTML=D.wines.map((w,wi)=>`<tr>
-    <td><span class="name-cell"><span class="wdot" style="background:${WDOTS[w.id]||'#ccc'}"></span>${w.name}</span></td>
-    <td>${num(w.flessen)}</td>
-    <td data-wi="${wi}" data-key="geert"        data-eur="0">${eCell(w.geert,num)}</td>
-    <td>${num(wgFl(w.id))}</td>
-    <td class="val-pos">${num(calcVVK(w))}</td>
-    <td data-wi="${wi}" data-key="verkoopprijs" data-eur="1">${eCell(w.verkoopprijs||0,eur)}</td>
-    <td class="val-pos">${eur(calcVVK(w)*(w.verkoopprijs||0))}</td>
-  </tr>`).join('');
-  attachEdit(vb, td=>D.wines[+td.dataset.wi][td.dataset.key], (td,v)=>D.wines[+td.dataset.wi][td.dataset.key]=v);
-
-  document.getElementById('verdelingFoot').innerHTML=`<tr>
-    <td>Totaal</td>
-    <td>${num(D.wines.reduce((s,w)=>s+w.flessen,0))}</td>
-    <td>${num(D.wines.reduce((s,w)=>s+w.geert,0))}</td>
-    <td>${num(D.wines.reduce((s,w)=>s+wgFl(w.id),0))}</td>
-    <td>${num(D.wines.reduce((s,w)=>s+calcVVK(w),0))}</td>
-    <td>—</td>
-    <td>${eur(D.wines.reduce((s,w)=>s+calcVVK(w)*(w.verkoopprijs||0),0))}</td>
+  attachEdits(kb, td=>D.wines[+td.dataset.wi][td.dataset.key], (td,v)=>D.wines[+td.dataset.wi][td.dataset.key]=v);
+  document.getElementById('kp-foot').innerHTML=`<tr>
+    <td>Totaal</td><td>${num(tF)}</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
   </tr>`;
 
-  // Saldo cards
-  document.getElementById('saldoCards').innerHTML=D.wines.map(w=>{
+  // Verdeling tabel
+  const vb=document.getElementById('vd-body');
+  vb.innerHTML=D.wines.map((w,wi)=>`<tr>
+    <td><span class="nc"><span class="wd" style="background:${DOTS[w.id]||'#ccc'}"></span>${w.name}</span></td>
+    <td>${num(w.flessen)}</td>
+    <td data-wi="${wi}" data-key="geert" data-eur="0">${ec(w.geert,num)}</td>
+    <td data-wi="${wi}" data-key="wg"    data-eur="0">${ec(w.wg||0,num)}</td>
+    <td class="val-p">${num(calcVVK(w))}</td>
+    <td data-wi="${wi}" data-key="verkoopprijs" data-eur="1">${ec(w.verkoopprijs||0,eur)}</td>
+    <td class="val-p">${eur(calcVVK(w)*(w.verkoopprijs||0))}</td>
+  </tr>`).join('');
+  attachEdits(vb, td=>D.wines[+td.dataset.wi][td.dataset.key], (td,v)=>D.wines[+td.dataset.wi][td.dataset.key]=v);
+  document.getElementById('vd-foot').innerHTML=`<tr>
+    <td>Totaal</td><td>${num(tF)}</td><td>${num(tG)}</td><td>${num(tWg)}</td>
+    <td>${num(tV)}</td><td>—</td><td>${eur(tO)}</td>
+  </tr>`;
+
+  // Saldo cards — per wijn met detailregels uit het Excel
+  const verkoopDetails = {
+    parel:[
+      {lbl:'Totaal flessen',     fl:null, eu:null, isTotal:true},
+      {lbl:'Geert',              cat:'geert'},
+      {lbl:'Wijngenoten (R+SG)', cat:'wg'},
+      {lbl:'STIEL gasten',       fl:110,  prijs_override:null},
+      {lbl:'STIEL verkoop',      fl:308,  prijs_override:27.5},
+      {lbl:'Sponsoring Fels',    fl:24,   prijs_override:null},
+    ],
+    johanniter:[
+      {lbl:'Totaal flessen', fl:null, eu:null, isTotal:true},
+      {lbl:'Geert',          cat:'geert'},
+      {lbl:'Wijngenoten',    cat:'wg'},
+      {lbl:'STIEL verkoop',  fl:0, prijs_override:27.5},
+    ],
+    barrique:[
+      {lbl:'Totaal flessen', fl:null, eu:null, isTotal:true},
+      {lbl:'Geert',          cat:'geert'},
+      {lbl:'Wijngenoten',    cat:'wg'},
+    ],
+  };
+
+  document.getElementById('saldo-grid').innerHTML=D.wines.map(w=>{
     const tp=calcTP(w);
-    const rows=[
-      {lbl:'Inkoopkosten', fl:w.flessen, eu:-w.flessen*tp},
-      {lbl:'Geert',        fl:w.geert,   eu:0},
-      {lbl:'Wijngenoten',  fl:wgFl(w.id),eu:0},
-      {lbl:'Voor verkoop', fl:calcVVK(w),eu:calcVVK(w)*(w.verkoopprijs||0)},
-    ];
-    const saldo=rows.reduce((s,r)=>s+r.eu,0);
-    return `<div class="saldo-card">
-      <div class="saldo-head"><span class="wdot" style="background:${WDOTS[w.id]||'#ccc'}"></span>${w.name}</div>
-      ${rows.map(r=>`<div class="saldo-row">
-        <span class="saldo-lbl">${r.lbl}</span>
-        <div class="saldo-nums">
-          <span class="saldo-fl">${num(r.fl)}</span>
-          <span class="saldo-eu ${r.eu<0?'val-neg':r.eu>0?'val-pos':'val-dim'}">${eur(r.eu)}</span>
+    const rows=(verkoopDetails[w.id]||[]).map(r=>{
+      let fl, eu;
+      if(r.isTotal){ fl=w.flessen; eu=-w.flessen*tp; }
+      else if(r.cat==='geert'){ fl=w.geert; eu=0; }
+      else if(r.cat==='wg'){ fl=w.wg||0; eu=0; }
+      else { fl=r.fl||0; eu=fl*(r.prijs_override!=null?r.prijs_override:tp); }
+      return {lbl:r.lbl, fl, eu};
+    });
+    const saldo=rows.reduce((s,r)=>s+(r.eu||0),0);
+    return `<div class="sc">
+      <div class="sc-hd"><span class="wd" style="background:${DOTS[w.id]||'#ccc'}"></span>${w.name}</div>
+      ${rows.map(r=>`<div class="sc-row">
+        <span class="sc-lbl">${r.lbl}</span>
+        <div class="sc-nums">
+          <span class="sc-fl">${num(r.fl)}</span>
+          <span class="sc-eu ${r.eu<0?'val-n':r.eu>0?'val-p':'val-d'}">${eur(r.eu)}</span>
         </div>
       </div>`).join('')}
-      <div class="saldo-foot">
-        <span class="saldo-foot-lbl">Saldo</span>
-        <span class="saldo-foot-val ${saldo>=0?'pos':'neg'}">${eur(saldo)}</span>
+      <div class="sc-ft">
+        <span class="sc-ft-lbl">Saldo</span>
+        <span class="sc-ft-val ${saldo>=0?'pos':'neg'}">${eur(saldo)}</span>
       </div>
     </div>`;
   }).join('');
 }
 
-// ════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
 // WIJNGENOTEN
-// ════════════════════════════════════════════════════════
-function openLedenModal(){ openLedenModalType('actief'); }
-function openLedenModalType(type){
-  document.getElementById('nieuwType').value=type;
-  document.getElementById('ledenModalTitle').textContent=type==='oud'?'Oud lid toevoegen':'Lid toevoegen';
-  document.getElementById('nieuwNaam').value='';
-  ['nieuwJoha','nieuwRegent','nieuwSouv'].forEach(id=>document.getElementById(id).value=0);
-  openModal('ledenModal');
+// ══════════════════════════════════════════════
+function openLidModal(type){
+  document.getElementById('lid-type').value=type;
+  document.getElementById('m-lid-title').textContent=type==='oud'?'Oud lid toevoegen':'Lid toevoegen';
+  document.getElementById('lid-naam').value='';
+  ['lid-parel','lid-joha','lid-barr'].forEach(i=>document.getElementById(i).value=0);
+  openModal('m-lid');
 }
 function addLid(){
-  const naam=document.getElementById('nieuwNaam').value.trim();
-  if(!naam){ alert('Voer een naam in'); return; }
-  D.leden.push({
-    id:D.nextId++, naam,
-    rol:document.getElementById('nieuwRol').value,
-    oud:document.getElementById('nieuwType').value==='oud',
-    johanniter:+document.getElementById('nieuwJoha').value||0,
-    regent:     +document.getElementById('nieuwRegent').value||0,
-    souvignier: +document.getElementById('nieuwSouv').value||0,
-  });
-  closeModal('ledenModal'); saveAll(); renderLeden();
+  const naam=document.getElementById('lid-naam').value.trim();
+  if(!naam){alert('Naam invullen');return}
+  D.leden.push({id:D.nid++,naam,rol:document.getElementById('lid-rol').value,oud:document.getElementById('lid-type').value==='oud',
+    parel:+document.getElementById('lid-parel').value||0,johanniter:+document.getElementById('lid-joha').value||0,barrique:+document.getElementById('lid-barr').value||0});
+  closeModal('m-lid');saveAll();renderWijngenoten();
 }
-function deleteLid(id){ if(!confirm('Lid verwijderen?'))return; D.leden=D.leden.filter(l=>l.id!==id); saveAll(); renderLeden(); }
-function moveToOud(id){ const l=D.leden.find(x=>x.id===id); if(l){l.oud=true;saveAll();renderLeden();toast('Verplaatst naar Oud');} }
-function moveToActief(id){ const l=D.leden.find(x=>x.id===id); if(l){l.oud=false;saveAll();renderLeden();toast('Verplaatst naar Actief');} }
+function delLid(id){if(!confirm('Verwijderen?'))return;D.leden=D.leden.filter(l=>l.id!==id);saveAll();renderWijngenoten();}
+function toOud(id){const l=D.leden.find(x=>x.id===id);if(l){l.oud=true;saveAll();renderWijngenoten();toast('Naar Oud');}}
+function toActief(id){const l=D.leden.find(x=>x.id===id);if(l){l.oud=false;saveAll();renderWijngenoten();toast('Naar Actief');}}
 
-function renderLedenTable(leden, tbodyId, tfootId, isOud){
-  const tb=document.getElementById(tbodyId);
+function renderLedenTable(leden,tbid,ftid,isOud){
+  const tb=document.getElementById(tbid);
   tb.innerHTML=leden.map(l=>{
-    const tot=(l.johanniter||0)+(l.regent||0)+(l.souvignier||0);
-    const mv=isOud
-      ?`<button class="btn btn-ghost btn-sm" onclick="moveToActief(${l.id})" title="Naar actief">↑</button>`
-      :`<button class="btn btn-ghost btn-sm" onclick="moveToOud(${l.id})"    title="Naar oud">↓</button>`;
+    const tot=(l.parel||0)+(l.johanniter||0)+(l.barrique||0);
+    const mv=isOud?`<button class="btn btn-g btn-sm" onclick="toActief(${l.id})" title="Naar actief">↑</button>`
+                  :`<button class="btn btn-g btn-sm" onclick="toOud(${l.id})"    title="Naar oud">↓</button>`;
     return `<tr>
       <td>${l.naam}</td>
-      <td class="lled" data-lid="${l.id}" data-key="johanniter" data-eur="0" style="cursor:pointer;color:#16a34a">${eCell(l.johanniter||0,n=>n)}</td>
-      <td class="lled" data-lid="${l.id}" data-key="regent"     data-eur="0" style="cursor:pointer;color:#b45309">${eCell(l.regent||0,n=>n)}</td>
-      <td class="lled" data-lid="${l.id}" data-key="souvignier" data-eur="0" style="cursor:pointer;color:#7c3aed">${eCell(l.souvignier||0,n=>n)}</td>
-      <td class="val-pos" style="font-weight:700">${tot}</td>
-      <td style="display:flex;gap:4px;justify-content:flex-end">${mv}<button class="btn btn-danger btn-sm" onclick="deleteLid(${l.id})">✕</button></td>
+      <td class="led" data-lid="${l.id}" data-key="parel"      data-eur="0" style="cursor:pointer;color:#3b82f6">${ec(l.parel||0,n=>n)}</td>
+      <td class="led" data-lid="${l.id}" data-key="johanniter" data-eur="0" style="cursor:pointer;color:#16a34a">${ec(l.johanniter||0,n=>n)}</td>
+      <td class="led" data-lid="${l.id}" data-key="barrique"   data-eur="0" style="cursor:pointer;color:#b45309">${ec(l.barrique||0,n=>n)}</td>
+      <td class="val-p" style="font-weight:700">${tot}</td>
+      <td style="display:flex;gap:4px;justify-content:flex-end">${mv}<button class="btn btn-d btn-sm" onclick="delLid(${l.id})">✕</button></td>
     </tr>`;
-  }).join('')||`<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:20px;font-style:italic">Geen leden</td></tr>`;
-
-  attachEdit(tb,
+  }).join('')||`<tr><td colspan="6" style="text-align:center;color:var(--tx3);padding:18px;font-style:italic">Geen leden</td></tr>`;
+  attachEdits(tb,
     td=>D.leden.find(l=>l.id===+td.dataset.lid)?.[td.dataset.key]||0,
-    (td,v)=>{ const l=D.leden.find(x=>x.id===+td.dataset.lid); if(l) l[td.dataset.key]=v; }
+    (td,v)=>{const l=D.leden.find(x=>x.id===+td.dataset.lid);if(l)l[td.dataset.key]=v;}
   );
-
-  const tJ=leden.reduce((s,l)=>s+(l.johanniter||0),0);
-  const tR=leden.reduce((s,l)=>s+(l.regent||0),0);
-  const tS=leden.reduce((s,l)=>s+(l.souvignier||0),0);
-  document.getElementById(tfootId).innerHTML=`<tr>
+  const tP=leden.reduce((s,l)=>s+(l.parel||0),0), tJ=leden.reduce((s,l)=>s+(l.johanniter||0),0), tB=leden.reduce((s,l)=>s+(l.barrique||0),0);
+  document.getElementById(ftid).innerHTML=`<tr>
     <td>Totaal (${leden.length})</td>
-    <td style="color:#16a34a">${tJ}</td>
-    <td style="color:#b45309">${tR}</td>
-    <td style="color:#7c3aed">${tS}</td>
-    <td>${tJ+tR+tS}</td><td></td>
+    <td style="color:#3b82f6">${tP}</td><td style="color:#16a34a">${tJ}</td><td style="color:#b45309">${tB}</td>
+    <td>${tP+tJ+tB}</td><td></td>
   </tr>`;
 }
 
-function renderLeden(){
-  const actief=D.leden.filter(l=>!l.oud);
-  const oud=D.leden.filter(l=>l.oud);
-  const tJ=D.leden.reduce((s,l)=>s+(l.johanniter||0),0);
-  const tR=D.leden.reduce((s,l)=>s+(l.regent||0),0);
-  const tS=D.leden.reduce((s,l)=>s+(l.souvignier||0),0);
+function renderWijngenoten(){
+  // Ras kopjes
+  const ras=[
+    {id:'parel',      name:'Parel',      dot:DOTS.parel,      color:'#3b82f6',
+     leden:D.leden.filter(l=>l.rol==='lid'&&(l.parel||0)>0).length,
+     verdeel:D.leden.reduce((s,l)=>s+(l.parel||0),0),
+     totaal:D.wines.find(w=>w.id==='parel')?.flessen||0},
+    {id:'johanniter', name:'Johanniter', dot:DOTS.johanniter, color:'#16a34a',
+     leden:D.leden.filter(l=>l.rol==='lid'&&(l.johanniter||0)>0).length,
+     verdeel:D.leden.reduce((s,l)=>s+(l.johanniter||0),0),
+     totaal:D.wines.find(w=>w.id==='johanniter')?.flessen||0},
+    {id:'barrique',   name:'Barrique',   dot:DOTS.barrique,   color:'#b45309',
+     leden:D.leden.filter(l=>l.rol==='lid'&&(l.barrique||0)>0).length,
+     verdeel:D.leden.reduce((s,l)=>s+(l.barrique||0),0),
+     totaal:D.wines.find(w=>w.id==='barrique')?.flessen||0},
+  ];
+  document.getElementById('ras-grid').innerHTML=ras.map(r=>{
+    const pct=r.totaal?Math.min(100,Math.round(r.verdeel/r.totaal*100)):0;
+    return `<div class="ras-card">
+      <div class="ras-hd"><span class="ras-dot" style="background:${r.dot}"></span><span class="ras-name">${r.name}</span></div>
+      <div class="ras-nums">
+        <div><div class="ras-big" style="color:${r.color}">${r.leden}</div><div class="ras-small">leden</div></div>
+        <div style="color:var(--bdr);font-size:18px;align-self:center">·</div>
+        <div><div class="ras-big">${num(r.verdeel)}</div><div class="ras-small">van ${num(r.totaal)} fl.</div></div>
+      </div>
+      <div class="prog"><div class="prog-fill" style="background:${r.dot};width:${pct}%"></div></div>
+    </div>`;
+  }).join('');
 
-  document.getElementById('ledenStats').innerHTML=[
-    {l:'Actieve leden', v:actief.filter(l=>l.rol==='lid').length, s:'wijngenoten',    c:'green'},
-    {l:'Oude leden',    v:oud.length,                             s:'geen nieuwe stok',c:'amber'},
-    {l:'Johanniter',    v:num(tJ), s:`van ${num(D.wines.find(w=>w.id==='johanniter')?.flessen||0)}`, c:''},
-    {l:'Regent',        v:num(tR), s:`van ${num(D.wines.find(w=>w.id==='regent')?.flessen||0)}`,     c:''},
-    {l:'Souv. Gris',    v:num(tS), s:`van ${num(D.wines.find(w=>w.id==='souvignier')?.flessen||0)}`, c:''},
-  ].map(k=>`<div class="stat"><div class="stat-label">${k.l}</div><div class="stat-value ${k.c}">${k.v}</div><div class="stat-sub">${k.s}</div></div>`).join('');
+  const actief=D.leden.filter(l=>!l.oud), oud=D.leden.filter(l=>l.oud);
+  const tP=D.leden.reduce((s,l)=>s+(l.parel||0),0), tJ=D.leden.reduce((s,l)=>s+(l.johanniter||0),0), tB=D.leden.reduce((s,l)=>s+(l.barrique||0),0);
+  document.getElementById('ras-grid').parentElement.querySelector('#ras-grid')&&true; // force
+  document.getElementById('ledenStats')?.remove();
+  // Stats strip inline
+  const strip=`<div class="strip" style="margin-bottom:18px">
+    <div class="stat"><div class="stat-lbl">Actieve leden</div><div class="stat-val g">${actief.filter(l=>l.rol==='lid').length}</div><div class="stat-sub">wijngenoten</div></div>
+    <div class="stat"><div class="stat-lbl">Oude leden</div><div class="stat-val a">${oud.length}</div><div class="stat-sub">geen nieuwe stok</div></div>
+    <div class="stat"><div class="stat-lbl">Parel totaal</div><div class="stat-val">${num(tP)}</div><div class="stat-sub">fl. verdeeld</div></div>
+    <div class="stat"><div class="stat-lbl">Johanniter totaal</div><div class="stat-val">${num(tJ)}</div><div class="stat-sub">fl. verdeeld</div></div>
+    <div class="stat"><div class="stat-lbl">Barrique totaal</div><div class="stat-val">${num(tB)}</div><div class="stat-sub">fl. verdeeld</div></div>
+  </div>`;
+  const pg=document.getElementById('page-wijngenoten');
+  const existing=pg.querySelector('.wg-strip');
+  if(existing) existing.remove();
+  const div=document.createElement('div');div.className='wg-strip';div.innerHTML=strip;
+  pg.querySelector('.ras-grid').after(div);
 
-  renderLedenTable(actief,'ledenBody','ledenFoot',false);
-  renderLedenTable(oud,'oudLedenBody','oudLedenFoot',true);
+  renderLedenTable(actief,'leden-actief','leden-actief-foot',false);
+  renderLedenTable(oud,'leden-oud','leden-oud-foot',true);
 }
 
-// ════════════════════════════════════════════════════════
-// REGISTRATIE
-// ════════════════════════════════════════════════════════
-function openOphalenModal(){
-  document.getElementById('opNaam').value='';
-  document.getElementById('opFlessen').value=6;
-  openModal('ophalenModal');
-}
+// ══════════════════════════════════════════════
+// OPHALEN
+// ══════════════════════════════════════════════
+function openOpModal(){document.getElementById('op-naam').value='';openModal('m-op');}
 function addOphalen(){
-  const naam=document.getElementById('opNaam').value.trim();
-  if(!naam){ alert('Naam invullen'); return; }
-  D.ophalen.push({ id:D.nextOpId++, naam, stok:document.getElementById('opStok').value,
-    flessen:+document.getElementById('opFlessen').value||1,
-    opgehaald:document.getElementById('opStatus').value==='ja' });
-  closeModal('ophalenModal'); saveAll(); renderRegistratie();
+  const naam=document.getElementById('op-naam').value.trim();
+  if(!naam){alert('Naam invullen');return}
+  D.ophalen.push({id:D.nop++,naam,stok:document.getElementById('op-stok').value,fl:+document.getElementById('op-fl').value||1,status:document.getElementById('op-status').value});
+  closeModal('m-op');saveAll();renderOphalen();
 }
-function toggleOphalen(id){ const r=D.ophalen.find(x=>x.id===id); if(r){r.opgehaald=!r.opgehaald;saveAll();renderRegistratie();} }
-function deleteOphalen(id){ if(!confirm('Verwijderen?'))return; D.ophalen=D.ophalen.filter(r=>r.id!==id); saveAll(); renderRegistratie(); }
+function toggleOp(id){const r=D.ophalen.find(x=>x.id===id);if(r){r.status=r.status==='ja'?'nee':'ja';saveAll();renderOphalen();}}
+function delOp(id){if(!confirm('Verwijderen?'))return;D.ophalen=D.ophalen.filter(r=>r.id!==id);saveAll();renderOphalen();}
 
-function openVerkoopModal(){
-  document.getElementById('vkNaam').value=''; document.getElementById('vkEmail').value='';
-  document.getElementById('vkAantal').value=1; updateVkPrijs(); openModal('verkoopModal');
+function renderOphalen(){
+  const totFl=D.ophalen.reduce((s,r)=>s+r.fl,0);
+  const opFl=D.ophalen.filter(r=>r.status==='ja').reduce((s,r)=>s+r.fl,0);
+  document.getElementById('op-strip').innerHTML=[
+    {l:'Totaal personen',v:D.ophalen.length,   s:`${totFl} flessen`,   c:''},
+    {l:'Opgehaald',      v:num(opFl),           s:'flessen',            c:'g'},
+    {l:'Nog ophalen',    v:num(totFl-opFl),     s:'flessen',            c:'a'},
+  ].map(k=>`<div class="stat"><div class="stat-lbl">${k.l}</div><div class="stat-val ${k.c}">${k.v}</div><div class="stat-sub">${k.s}</div></div>`).join('');
+
+  const ob=document.getElementById('op-body');
+  ob.innerHTML=[...D.ophalen].sort((a,b)=>a.status.localeCompare(b.status)).map(r=>`<tr style="opacity:${r.status==='ja'?.55:1}">
+    <td style="font-weight:600">${r.naam}</td>
+    <td><span class="nc"><span class="wd" style="background:${DOTS[r.stok]||'#ccc'}"></span>${r.stok.charAt(0).toUpperCase()+r.stok.slice(1)}</span></td>
+    <td>${r.fl}</td>
+    <td><span class="bdg bdg-${r.status}" onclick="toggleOp(${r.id})" title="Klik om te wisselen">${r.status==='ja'?'✓ Opgehaald':'— Nog niet'}</span></td>
+    <td><button class="btn btn-d btn-sm" onclick="delOp(${r.id})">✕</button></td>
+  </tr>`).join('');
+  document.getElementById('op-foot').innerHTML=`<tr><td>Totaal (${D.ophalen.length})</td><td>—</td><td>${totFl}</td><td>${opFl} opgehaald</td><td></td></tr>`;
 }
-function updateVkPrijs(){ document.getElementById('vkPrijs').value=(FLES_PRIJZEN[document.getElementById('vkFles').value]||0).toFixed(2); updateVkTotaal(); }
-function updateVkTotaal(){ document.getElementById('vkTotaalPreview').textContent=eur((+document.getElementById('vkAantal').value||0)*(+document.getElementById('vkPrijs').value||0)); }
+
+// ══════════════════════════════════════════════
+// VERKOOP
+// ══════════════════════════════════════════════
+function openVkModal(){document.getElementById('vk-naam').value='';document.getElementById('vk-email').value='';document.getElementById('vk-antal').value=1;updVkPrijs();openModal('m-vk');}
+function updVkPrijs(){document.getElementById('vk-prijs').value=(FLES_PRIJZEN[document.getElementById('vk-fles').value]||0).toFixed(2);updVkTot();}
+function updVkTot(){document.getElementById('vk-prev').textContent=eur((+document.getElementById('vk-antal').value||0)*(+document.getElementById('vk-prijs').value||0));}
 function addVerkoop(){
-  const naam=document.getElementById('vkNaam').value.trim();
-  if(!naam){ alert('Naam invullen'); return; }
-  D.verkopen.push({ id:D.nextVkId++, naam, email:document.getElementById('vkEmail').value.trim(),
-    fles:document.getElementById('vkFles').value, aantal:+document.getElementById('vkAantal').value||1,
-    prijs:+document.getElementById('vkPrijs').value||0, status:document.getElementById('vkStatus').value });
-  closeModal('verkoopModal'); saveAll(); renderRegistratie();
+  const naam=document.getElementById('vk-naam').value.trim();if(!naam){alert('Naam invullen');return}
+  D.verkopen.push({id:D.nvk++,naam,email:document.getElementById('vk-email').value.trim(),fles:document.getElementById('vk-fles').value,antal:+document.getElementById('vk-antal').value||1,prijs:+document.getElementById('vk-prijs').value||0,status:document.getElementById('vk-status').value});
+  closeModal('m-vk');saveAll();renderVerkoop();
 }
-function toggleVerkoop(id){ const r=D.verkopen.find(x=>x.id===id); if(r){r.status=r.status==='betaald'?'gereserveerd':'betaald';saveAll();renderRegistratie();} }
-function deleteVerkoop(id){ if(!confirm('Verwijderen?'))return; D.verkopen=D.verkopen.filter(r=>r.id!==id); saveAll(); renderRegistratie(); }
+function toggleVk(id){const r=D.verkopen.find(x=>x.id===id);if(r){r.status=r.status==='betaald'?'geres':'betaald';saveAll();renderVerkoop();}}
+function delVk(id){if(!confirm('Verwijderen?'))return;D.verkopen=D.verkopen.filter(r=>r.id!==id);saveAll();renderVerkoop();}
 
-function openInkoopModal(){ document.getElementById('ikOmschr').value=''; document.getElementById('ikFlessen').value=100; document.getElementById('ikPrijs').value='1.19'; updateIkTotaal(); openModal('inkoopModal'); }
-function updateIkTotaal(){ document.getElementById('ikTotaalPreview').textContent=eur((+document.getElementById('ikFlessen').value||0)*(+document.getElementById('ikPrijs').value||0)); }
+function renderVerkoop(){
+  const tA=D.verkopen.reduce((s,r)=>s+r.antal,0), tE=D.verkopen.reduce((s,r)=>s+r.antal*r.prijs,0);
+  const tB=D.verkopen.filter(r=>r.status==='betaald').reduce((s,r)=>s+r.antal*r.prijs,0);
+  document.getElementById('vk-strip').innerHTML=[
+    {l:'Verkopen',   v:D.verkopen.length, s:`${tA} flessen`,  c:''},
+    {l:'Omzet',      v:eur(tE),           s:'verwacht',       c:'g'},
+    {l:'Ontvangen',  v:eur(tB),           s:'betaald',        c:''},
+    {l:'Openstaand', v:eur(tE-tB),        s:'gereserveerd',   c:'a'},
+  ].map(k=>`<div class="stat"><div class="stat-lbl">${k.l}</div><div class="stat-val ${k.c}">${k.v}</div><div class="stat-sub">${k.s}</div></div>`).join('');
+
+  document.getElementById('vk-body').innerHTML=D.verkopen.map(r=>`<tr>
+    <td style="font-weight:600">${r.naam}</td>
+    <td style="font-size:12px;color:var(--tx3)">${r.email||'—'}</td>
+    <td><span class="nc"><span class="wd" style="background:${DOTS[r.fles]||'#ccc'}"></span>${r.fles.charAt(0).toUpperCase()+r.fles.slice(1)}</span></td>
+    <td>${r.antal}</td>
+    <td class="val-p">${eur(r.antal*r.prijs)}</td>
+    <td><span class="bdg bdg-${r.status}" onclick="toggleVk(${r.id})" title="Klik om te wisselen">${r.status==='betaald'?'✓ Betaald':'◇ Gereserveerd'}</span></td>
+    <td><button class="btn btn-d btn-sm" onclick="delVk(${r.id})">✕</button></td>
+  </tr>`).join('');
+  document.getElementById('vk-foot').innerHTML=`<tr><td>Totaal (${D.verkopen.length})</td><td>—</td><td>—</td><td>${tA}</td><td>${eur(tE)}</td><td>—</td><td></td></tr>`;
+}
+
+// ══════════════════════════════════════════════
+// INKOOP
+// ══════════════════════════════════════════════
+function openIkModal(){document.getElementById('ik-omschr').value='';document.getElementById('ik-fl').value=100;document.getElementById('ik-prijs').value='1.19';updIkTot();openModal('m-ik');}
+function updIkTot(){document.getElementById('ik-prev').textContent=eur((+document.getElementById('ik-fl').value||0)*(+document.getElementById('ik-prijs').value||0));}
 function addInkoop(){
-  D.inkoop.push({ id:D.nextIkId++, omschr:document.getElementById('ikOmschr').value.trim()||'Inkoop',
-    flessen:+document.getElementById('ikFlessen').value||0, prijs:+document.getElementById('ikPrijs').value||1.19 });
-  closeModal('inkoopModal'); saveAll(); renderRegistratie();
+  D.inkoop.push({id:D.nik++,omschr:document.getElementById('ik-omschr').value.trim()||'Inkoop',fl:+document.getElementById('ik-fl').value||0,prijs:+document.getElementById('ik-prijs').value||1.19});
+  closeModal('m-ik');saveAll();renderInkoop();
 }
-function deleteInkoop(id){ if(!confirm('Verwijderen?'))return; D.inkoop=D.inkoop.filter(r=>r.id!==id); saveAll(); renderRegistratie(); }
+function delInkoop(id){if(!confirm('Verwijderen?'))return;D.inkoop=D.inkoop.filter(r=>r.id!==id);saveAll();renderInkoop();}
 
-function renderRegistratie(){
-  // Strip
-  const totFl=D.ophalen.reduce((s,r)=>s+r.flessen,0);
-  const opgehaald=D.ophalen.filter(r=>r.opgehaald).reduce((s,r)=>s+r.flessen,0);
-  const vkAant=D.verkopen.reduce((s,r)=>s+r.aantal,0);
-  const vkOmzet=D.verkopen.reduce((s,r)=>s+r.aantal*r.prijs,0);
-  const vkBet=D.verkopen.filter(r=>r.status==='betaald').reduce((s,r)=>s+r.aantal*r.prijs,0);
-  const ikTotFl=D.inkoop.reduce((s,r)=>s+r.flessen,0);
-  const ikTotEur=D.inkoop.reduce((s,r)=>s+r.flessen*r.prijs,0);
-  const parelW=D.wines.find(w=>w.id==='parel');
-  const totRest=Math.max(0,(parelW?calcVVK(parelW):0)-vkAant);
+function renderInkoop(){
+  const tF=D.inkoop.reduce((s,r)=>s+r.fl,0), tE=D.inkoop.reduce((s,r)=>s+r.fl*r.prijs,0);
+  document.getElementById('ik-strip').innerHTML=[
+    {l:'Batches',      v:D.inkoop.length, s:'ingekocht',   c:''},
+    {l:'Totaal flessen',v:num(tF),        s:'parel',       c:'b'},
+    {l:'Inkoopkosten', v:eur(tE),         s:'totaal',      c:''},
+  ].map(k=>`<div class="stat"><div class="stat-lbl">${k.l}</div><div class="stat-val ${k.c}">${k.v}</div><div class="stat-sub">${k.s}</div></div>`).join('');
 
-  document.getElementById('regStrip').innerHTML=[
-    {l:'Wijngenoten',   v:D.ophalen.length, s:`${totFl} flessen`,       c:''},
-    {l:'Opgehaald',     v:num(opgehaald),   s:'flessen',                c:'green'},
-    {l:'Nog ophalen',   v:num(totFl-opgehaald), s:'flessen',            c:'amber'},
-    {l:'Verkoop stuks', v:num(vkAant),      s:eur(vkOmzet),             c:''},
-    {l:'Ontvangen',     v:eur(vkBet),       s:'betaald',                c:'green'},
-    {l:'Parel nog te koop', v:num(totRest), s:'flessen',                c:''},
-    {l:'Parel inkoop',  v:num(ikTotFl),     s:eur(ikTotEur)+' totaal',  c:''},
-  ].map(k=>`<div class="stat"><div class="stat-label">${k.l}</div><div class="stat-value ${k.c}">${k.v}</div><div class="stat-sub">${k.s}</div></div>`).join('');
-
-  // Ophalen
-  const ob=document.getElementById('ophalenBody');
-  ob.innerHTML=[...D.ophalen].sort((a,b)=>a.opgehaald-b.opgehaald).map(r=>`<tr style="opacity:${r.opgehaald?.55:1}">
-    <td style="font-weight:600">${r.naam}</td>
-    <td><span class="name-cell"><span class="wdot" style="background:${WDOTS[r.stok]||'#ccc'}"></span>${STOK_LABELS[r.stok]||r.stok}</span></td>
-    <td>${r.flessen}</td>
-    <td><span class="badge badge-${r.opgehaald?'ja':'nee'}" onclick="toggleOphalen(${r.id})" title="Klik om te wisselen">${r.opgehaald?'✓ Opgehaald':'— Nog niet'}</span></td>
-    <td><button class="btn btn-danger btn-sm" onclick="deleteOphalen(${r.id})">✕</button></td>
-  </tr>`).join('');
-  const totOp=D.ophalen.reduce((s,r)=>s+r.flessen,0);
-  const totOpH=D.ophalen.filter(r=>r.opgehaald).reduce((s,r)=>s+r.flessen,0);
-  document.getElementById('ophalenFoot').innerHTML=`<tr><td>Totaal (${D.ophalen.length})</td><td>—</td><td>${totOp}</td><td>${totOpH} opgehaald</td><td></td></tr>`;
-
-  // Verkoop
-  const vb=document.getElementById('verkoopBody');
-  vb.innerHTML=D.verkopen.map(r=>`<tr>
-    <td style="font-weight:600">${r.naam}</td>
-    <td style="font-size:12px;color:var(--text3)">${r.email||'—'}</td>
-    <td><span class="name-cell"><span class="wdot" style="background:${WDOTS[r.fles]||'#ccc'}"></span>${FLES_LABELS[r.fles]||r.fles} ×${r.aantal}</span></td>
-    <td class="val-pos">${eur(r.aantal*r.prijs)}</td>
-    <td><span class="badge badge-${r.status}" onclick="toggleVerkoop(${r.id})" title="Klik om te wisselen">${r.status==='betaald'?'✓ Betaald':'◇ Gereserveerd'}</span></td>
-    <td><button class="btn btn-danger btn-sm" onclick="deleteVerkoop(${r.id})">✕</button></td>
-  </tr>`).join('');
-  const tvk=D.verkopen.reduce((s,r)=>s+r.aantal,0);
-  const tve=D.verkopen.reduce((s,r)=>s+r.aantal*r.prijs,0);
-  document.getElementById('verkoopFoot').innerHTML=`<tr><td>Totaal (${D.verkopen.length})</td><td>—</td><td>${tvk} fl.</td><td>${eur(tve)}</td><td>—</td><td></td></tr>`;
-
-  // Inkoop
-  const ib=document.getElementById('inkoopBody');
+  const ib=document.getElementById('ik-body');
   ib.innerHTML=D.inkoop.map(r=>`<tr>
     <td style="font-weight:600">${r.omschr}</td>
-    <td class="iked" data-iid="${r.id}" data-key="flessen" data-eur="0" style="cursor:pointer">${eCell(r.flessen,num)}</td>
-    <td class="iked" data-iid="${r.id}" data-key="prijs"   data-eur="1" style="cursor:pointer">${eCell(r.prijs,eur)}</td>
-    <td class="val-neg">${eur(r.flessen*r.prijs)}</td>
-    <td><button class="btn btn-danger btn-sm" onclick="deleteInkoop(${r.id})">✕</button></td>
-  </tr>`).join('')||`<tr><td colspan="5" style="text-align:center;color:var(--text3);padding:18px;font-style:italic">Geen inkopen</td></tr>`;
-  attachEdit(ib, td=>D.inkoop.find(x=>x.id===+td.dataset.iid)?.[td.dataset.key]||0, (td,v)=>{ const r=D.inkoop.find(x=>x.id===+td.dataset.iid); if(r) r[td.dataset.key]=v; });
-  const tikF=D.inkoop.reduce((s,r)=>s+r.flessen,0);
-  const tikE=D.inkoop.reduce((s,r)=>s+r.flessen*r.prijs,0);
-  document.getElementById('inkoopFoot').innerHTML=`<tr><td>Totaal</td><td>${num(tikF)}</td><td>—</td><td class="val-neg">${eur(tikE)}</td><td></td></tr>`;
+    <td class="ied" data-iid="${r.id}" data-key="fl"    data-eur="0" style="cursor:pointer">${ec(r.fl,num)}</td>
+    <td class="ied" data-iid="${r.id}" data-key="prijs" data-eur="1" style="cursor:pointer">${ec(r.prijs,eur)}</td>
+    <td class="val-n">${eur(r.fl*r.prijs)}</td>
+    <td><button class="btn btn-d btn-sm" onclick="delInkoop(${r.id})">✕</button></td>
+  </tr>`).join('')||`<tr><td colspan="5" style="text-align:center;color:var(--tx3);padding:16px;font-style:italic">Geen inkopen</td></tr>`;
+  attachEdits(ib, td=>D.inkoop.find(x=>x.id===+td.dataset.iid)?.[td.dataset.key]||0, (td,v)=>{const r=D.inkoop.find(x=>x.id===+td.dataset.iid);if(r)r[td.dataset.key]=v;});
+  document.getElementById('ik-foot').innerHTML=`<tr><td>Totaal</td><td>${num(tF)}</td><td>—</td><td class="val-n">${eur(tE)}</td><td></td></tr>`;
 }
 
-// ════════════════════════════════════════════════════════
-// INIT
-// ════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════
+// RENDER ALL + INIT
+// ══════════════════════════════════════════════
 function renderAll(){
   const now=new Date().toLocaleString('nl-NL',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
   document.getElementById('ts').textContent=now;
-  renderVerdeling(); renderLeden(); renderRegistratie();
+  renderVerdeling();
+  renderWijngenoten();
+  renderOphalen();
+  renderVerkoop();
+  renderInkoop();
 }
+
 renderAll();
-setInterval(()=>document.getElementById('ts').textContent=new Date().toLocaleString('nl-NL',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}), 60000);
+setInterval(()=>document.getElementById('ts').textContent=new Date().toLocaleString('nl-NL',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}),60000);
 </script>
 </body>
 </html>
