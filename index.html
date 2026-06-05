@@ -1,94 +1,716 @@
-#!/usr/bin/env bash
-# deploy.sh — Wijnverdeling website naar GitHub Pages
-# Gebruik: bash deploy.sh [repo-naam]
-# Vereist: git, gh CLI (optioneel voor auto-repo aanmaken)
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wijnverdeling 2025/2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-set -e
+  :root {
+    --wine: #8B1A2A;
+    --wine-dark: #5C0F1A;
+    --wine-light: #C4415A;
+    --gold: #C8A96E;
+    --gold-light: #E8D5A8;
+    --cream: #FAF7F2;
+    --parchment: #F0EAD8;
+    --ink: #1A1208;
+    --ink-mid: #3D2B1F;
+    --ink-light: #7A6150;
+    --surface: #FFFCF7;
+    --border: rgba(139,26,42,0.12);
+    --border-gold: rgba(200,169,110,0.3);
+    --shadow: rgba(26,18,8,0.08);
+  }
 
-REPO_NAME="${1:-wijnverdeling}"
-FILE="wijnverdeling.html"
-BRANCH="gh-pages"
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+  }
 
-echo "🍷  Wijnverdeling — GitHub Pages Deploy"
-echo "========================================"
+  /* HEADER */
+  header {
+    background: var(--wine-dark);
+    color: var(--gold-light);
+    padding: 2rem 2.5rem 1.5rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg, transparent, transparent 40px,
+      rgba(200,169,110,0.04) 40px, rgba(200,169,110,0.04) 41px
+    );
+  }
+  .header-brand { position: relative; }
+  .header-brand h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--gold-light);
+    line-height: 1;
+  }
+  .header-brand p {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 0.4rem;
+    font-weight: 300;
+  }
+  .header-meta {
+    position: relative;
+    text-align: right;
+    font-size: 0.8rem;
+    color: rgba(232,213,168,0.6);
+    font-weight: 300;
+  }
+  .header-meta strong {
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--gold-light);
+    font-family: 'Playfair Display', serif;
+  }
 
-# 1. Controleer of het bestand bestaat
-if [ ! -f "$FILE" ]; then
-  echo "❌  $FILE niet gevonden. Zet dit script naast het HTML-bestand."
-  exit 1
-fi
+  /* LAYOUT */
+  .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
 
-# 2. Controleer git
-if ! command -v git &> /dev/null; then
-  echo "❌  git is niet geïnstalleerd."
-  exit 1
-fi
+  /* SECTION TITLES */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--wine);
+    font-weight: 400;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-gold);
+  }
 
-# 3. Init git repo als nog niet gedaan
-if [ ! -d ".git" ]; then
-  echo "→  git init..."
-  git init
-  git branch -M main
-fi
+  /* SUMMARY CARDS */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border-gold);
+    border-radius: 6px;
+    padding: 1.1rem 1.25rem;
+  }
+  .stat-card .label {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+  }
+  .stat-card .value {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--wine-dark);
+    line-height: 1;
+  }
+  .stat-card .sub {
+    font-size: 0.72rem;
+    color: var(--ink-light);
+    margin-top: 0.3rem;
+  }
 
-# 4. Kopieer HTML naar index.html (GitHub Pages serveert index.html als root)
-cp "$FILE" index.html
-echo "→  Gekopieerd naar index.html"
+  /* TABLE STYLES */
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border-gold);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 2.5rem;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    background: var(--parchment);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-mid);
+    font-weight: 500;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-gold);
+  }
+  th:not(:first-child) { text-align: right; }
+  td {
+    padding: 0.65rem 1rem;
+    font-size: 0.88rem;
+    border-bottom: 1px solid rgba(200,169,110,0.1);
+    vertical-align: middle;
+  }
+  td:not(:first-child) { text-align: right; }
+  tr:last-child td { border-bottom: none; }
+  tr.totaal-row td {
+    background: var(--parchment);
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    color: var(--wine-dark);
+  }
+  td.wijn-name { font-weight: 500; color: var(--ink-mid); }
 
-# 5. Voeg remote toe (als nog niet bestaat)
-if ! git remote | grep -q origin; then
-  echo ""
-  echo "Voer je GitHub-gebruikersnaam in:"
-  read -r GH_USER
-  REMOTE_URL="https://github.com/${GH_USER}/${REPO_NAME}.git"
+  /* EDITABLE CELLS */
+  td[contenteditable="true"] {
+    cursor: text;
+    outline: none;
+    transition: background 0.15s;
+    min-width: 60px;
+  }
+  td[contenteditable="true"]:hover { background: rgba(200,169,110,0.08); }
+  td[contenteditable="true"]:focus {
+    background: rgba(139,26,42,0.06);
+    box-shadow: inset 0 0 0 1.5px var(--wine-light);
+    border-radius: 3px;
+  }
+  td[contenteditable="true"]::after {
+    content: '';
+    display: inline-block;
+    width: 0;
+  }
 
-  # Probeer repo aan te maken via gh CLI
-  if command -v gh &> /dev/null; then
-    echo "→  Aanmaken GitHub repository '$REPO_NAME'..."
-    gh repo create "$REPO_NAME" --public --confirm 2>/dev/null || echo "  (repo bestaat al, doorgaan...)"
-  else
-    echo ""
-    echo "⚠️   gh CLI niet gevonden. Maak handmatig een repository aan:"
-    echo "    https://github.com/new  →  naam: $REPO_NAME  →  Public"
-    echo ""
-    echo "Druk op Enter als de repo aangemaakt is..."
-    read -r
-  fi
+  /* CALCULATED / READ-ONLY */
+  td.calc {
+    color: var(--wine);
+    font-weight: 500;
+  }
+  td.negative { color: #8B1A2A; }
+  td.positive { color: #2D6A4F; }
 
-  git remote add origin "$REMOTE_URL"
-  echo "→  Remote ingesteld: $REMOTE_URL"
-fi
+  /* EDIT INDICATOR */
+  .edit-hint {
+    font-size: 0.7rem;
+    color: var(--ink-light);
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .edit-hint svg { opacity: 0.5; }
 
-# 6. Commit & push naar main
-git add index.html "$FILE" 2>/dev/null || git add index.html
-git commit -m "🍷 Wijnverdeling update $(date '+%Y-%m-%d %H:%M')" || echo "  (niets te committen)"
-git push -u origin main 2>/dev/null || git push origin main
+  /* TWO-COL GRID */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
 
-# 7. Activeer GitHub Pages op main branch
-if command -v gh &> /dev/null; then
-  echo "→  GitHub Pages activeren..."
-  gh api repos/:owner/"$REPO_NAME"/pages \
-    --method POST \
-    --field source='{"branch":"main","path":"/"}' \
-    2>/dev/null || \
-  gh api repos/:owner/"$REPO_NAME"/pages \
-    --method PUT \
-    --field source='{"branch":"main","path":"/"}' \
-    2>/dev/null || \
-  echo "  (Pages al actief of handmatig activeren in repo Settings > Pages)"
-fi
+  /* TOAST */
+  #toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--wine-dark);
+    color: var(--gold-light);
+    padding: 0.6rem 1.2rem;
+    border-radius: 5px;
+    font-size: 0.82rem;
+    opacity: 0;
+    transition: opacity 0.25s;
+    pointer-events: none;
+    z-index: 999;
+  }
+  #toast.show { opacity: 1; }
 
-echo ""
-echo "✅  Klaar!"
-echo ""
-REMOTE=$(git remote get-url origin)
-OWNER=$(echo "$REMOTE" | sed 's/.*github.com[:/]\(.*\)\/.*/\1/')
-echo "🌐  Website URL (even wachten op deploy ~1-2 min):"
-echo "    https://${OWNER}.github.io/${REPO_NAME}/"
-echo ""
-echo "📋  Handmatig Pages activeren (als automatisch mislukt):"
-echo "    Ga naar: $REMOTE → Settings → Pages"
-echo "    Source: Deploy from branch → Branch: main → / (root)"
-echo ""
-echo "🔄  Toekomstige updates:"
-echo "    bash deploy.sh"
+  /* SAVE BAR */
+  .save-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--wine-dark);
+    color: var(--gold-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 2rem;
+    font-size: 0.82rem;
+    transform: translateY(100%);
+    transition: transform 0.25s;
+    z-index: 100;
+  }
+  .save-bar.visible { transform: translateY(0); }
+  .save-bar button {
+    background: var(--gold);
+    color: var(--wine-dark);
+    border: none;
+    padding: 0.4rem 1.25rem;
+    border-radius: 4px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .save-bar button:hover { background: var(--gold-light); }
+
+  /* PROGRESS BAR */
+  .prog-wrap { margin-top: 0.6rem; }
+  .prog-label { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--ink-light); margin-bottom: 0.3rem; }
+  .prog-track { height: 6px; background: var(--parchment); border-radius: 3px; overflow: hidden; }
+  .prog-fill { height: 100%; border-radius: 3px; transition: width 0.4s; }
+  .prog-fill.geert { background: var(--wine); }
+  .prog-fill.wijngenoten { background: var(--gold); }
+  .prog-fill.verkoop { background: #4A7C59; }
+
+  /* VERDELING VISUAL */
+  .verdeling-bars { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.2rem; }
+  .vbar-row { display: flex; align-items: center; gap: 1rem; }
+  .vbar-label { width: 90px; font-size: 0.8rem; color: var(--ink-mid); text-align: right; flex-shrink: 0; }
+  .vbar-track { flex: 1; height: 22px; background: var(--parchment); border-radius: 4px; overflow: hidden; position: relative; }
+  .vbar-fill { height: 100%; border-radius: 4px; transition: width 0.5s; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; }
+  .vbar-fill span { font-size: 0.7rem; color: white; font-weight: 500; }
+
+  .section-gap { margin-top: 2.5rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-brand">
+    <h1>Wijnverdeling</h1>
+    <p>Seizoen 2025 / 2026 — Interactief beheer</p>
+  </div>
+  <div class="header-meta">
+    <strong id="header-totaal">2.290</strong>
+    flessen totaal
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- SUMMARY STATS -->
+  <div class="summary-grid" id="summary-cards">
+    <div class="stat-card">
+      <div class="label">Totaal flessen</div>
+      <div class="value" id="s-totaal">2.290</div>
+      <div class="sub">Parel + Johanniter + Barrique</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Geert (20%)</div>
+      <div class="value" id="s-geert">193</div>
+      <div class="sub">flessen gereserveerd</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Wijngenoten</div>
+      <div class="value" id="s-wijngenoten">604</div>
+      <div class="sub">flessen</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Voor verkoop</div>
+      <div class="value" id="s-verkoop">1.493</div>
+      <div class="sub">flessen</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Verkoopwaarde</div>
+      <div class="value" id="s-waarde">€44.508</div>
+      <div class="sub">verwacht totaal</div>
+    </div>
+  </div>
+
+  <!-- KOSTPRIJS -->
+  <div class="section-title">Kostprijs per fles</div>
+  <div class="edit-hint">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+    Klik op een cel om te bewerken — berekeningen worden automatisch bijgewerkt
+  </div>
+  <div class="table-wrap">
+    <table id="kostprijs-table">
+      <thead>
+        <tr>
+          <th>Wijn</th>
+          <th>Flessen</th>
+          <th>Prijs/fles (€)</th>
+          <th>Extra (€)</th>
+          <th>Accijns + Trans. (€)</th>
+          <th>Etiket (€)</th>
+          <th>Wax (€)</th>
+          <th>Inkoop Saalhof (€)</th>
+          <th>Totaal incl. btw (€)</th>
+        </tr>
+      </thead>
+      <tbody id="kostprijs-body">
+        <!-- filled by JS -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- VERKOOPVERDELING -->
+  <div class="section-title">Verkoopverdeling</div>
+  <div class="two-col">
+    <div>
+      <div class="table-wrap">
+        <table id="verdeling-table">
+          <thead>
+            <tr>
+              <th>Wijn</th>
+              <th>Totaal</th>
+              <th>Geert</th>
+              <th>Wijngenoten</th>
+              <th>Verkoop</th>
+              <th>Prijs (€)</th>
+              <th>Omzet (€)</th>
+            </tr>
+          </thead>
+          <tbody id="verdeling-body"></tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <div class="table-wrap" style="padding: 1.25rem;">
+        <div class="section-title" style="margin-bottom: 1rem;">Verdeling visueel</div>
+        <div class="verdeling-bars" id="verdeling-bars"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERKOOP PER WIJN -->
+  <div class="section-gap"></div>
+  <div class="section-title">Verkoopdetail</div>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+
+    <div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th colspan="3" style="font-size:0.75rem; letter-spacing:0.08em;">Parel</th></tr><tr><th>Categorie</th><th>Flessen</th><th>Euro</th></tr></thead>
+          <tbody id="parel-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th colspan="3" style="font-size:0.75rem; letter-spacing:0.08em;">Johanniter</th></tr><tr><th>Categorie</th><th>Flessen</th><th>Euro</th></tr></thead>
+          <tbody id="johanniter-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th colspan="3" style="font-size:0.75rem; letter-spacing:0.08em;">Barrique</th></tr><tr><th>Categorie</th><th>Flessen</th><th>Euro</th></tr></thead>
+          <tbody id="barrique-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div id="toast">Opgeslagen</div>
+<div class="save-bar" id="save-bar">
+  <span>Niet-opgeslagen wijzigingen</span>
+  <button onclick="saveData()">Opslaan</button>
+</div>
+
+<script>
+const STORAGE_KEY = 'wijnverdeling_2025';
+
+const DEFAULT = {
+  kostprijs: [
+    { wijn: 'Parel',      flessen: 1330, prijs: 4.64, extra: 0,   accijns: 0.819, etiket: 1.382, wax: 0.5, saalhof: 1.19  },
+    { wijn: 'Johanniter', flessen: 660,  prijs: 4.13, extra: 0,   accijns: 0,     etiket: 0,     wax: 0,   saalhof: 0     },
+    { wijn: 'Barrique',   flessen: 300,  prijs: 6.03, extra: 0,   accijns: 0,     etiket: 0,     wax: 0,   saalhof: 0     },
+  ],
+  verdeling: [
+    { wijn: 'Parel',      geert: 30,  wijngenoten: 267, verkoopprijs: 27.5 },
+    { wijn: 'Johanniter', geert: 112, wijngenoten: 337, verkoopprijs: 35   },
+    { wijn: 'Barrique',   geert: 51,  wijngenoten: 0,   verkoopprijs: 35   },
+  ],
+  parel: [
+    { cat: 'Totaal flessen',         flessen: 1330, euro: null },
+    { cat: 'Geert',                  flessen: 30,   euro: 0    },
+    { cat: 'Wijngenoten (regent+SG)',flessen: 264,  euro: 0    },
+    { cat: 'STIEL gasten',           flessen: 110,  euro: null },
+    { cat: 'STIEL verkoop verwacht', flessen: 308,  euro: 8470 },
+    { cat: 'Sponsoring Fels',        flessen: 24,   euro: null },
+  ],
+  johanniter: [
+    { cat: 'Totaal flessen',         flessen: 660, euro: null },
+    { cat: 'Geert',                  flessen: 112, euro: 0    },
+    { cat: 'Wijngenoten',            flessen: 268, euro: 0    },
+    { cat: 'STIEL verkoop verwacht', flessen: 0,   euro: 0    },
+  ],
+  barrique: [
+    { cat: 'Totaal flessen',  flessen: 300, euro: null },
+    { cat: 'Geert',           flessen: 51,  euro: 0    },
+    { cat: 'Wijngenoten',     flessen: 0,   euro: 0    },
+  ],
+};
+
+let data = JSON.parse(JSON.stringify(DEFAULT));
+let dirty = false;
+
+function load() {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) data = JSON.parse(stored);
+  } catch(e) {}
+}
+
+function saveData() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+  dirty = false;
+  document.getElementById('save-bar').classList.remove('visible');
+  showToast('Opgeslagen ✓');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function markDirty() {
+  dirty = true;
+  document.getElementById('save-bar').classList.add('visible');
+}
+
+function fmt(n, dec=2) {
+  if (n === null || n === undefined || isNaN(n)) return '—';
+  return n.toLocaleString('nl-NL', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+}
+function fmtEur(n) {
+  if (n === null || n === undefined || isNaN(n)) return '—';
+  return '€\u202f' + fmt(n);
+}
+function fmtInt(n) {
+  if (n === null || n === undefined || isNaN(n)) return '—';
+  return Math.round(n).toLocaleString('nl-NL');
+}
+
+function calcTotaalKostprijs(row) {
+  return row.prijs + (row.extra || 0) + (row.accijns || 0) + (row.etiket || 0) + (row.wax || 0) + (row.saalhof || 0);
+}
+
+function makeEditable(td, obj, key, type='float', onChange) {
+  td.setAttribute('contenteditable', 'true');
+  td.addEventListener('blur', () => {
+    let raw = td.textContent.replace(/[€\s\.]/g, '').replace(',', '.').trim();
+    let val = type === 'int' ? parseInt(raw) : parseFloat(raw);
+    if (!isNaN(val)) {
+      obj[key] = val;
+      markDirty();
+      if (onChange) onChange();
+    }
+    render();
+  });
+  td.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); td.blur(); }
+    if (e.key === 'Tab') { e.preventDefault(); td.blur(); }
+  });
+}
+
+function render() {
+  renderKostprijs();
+  renderVerdeling();
+  renderDetail('parel-body', data.parel, calcKostprijsTotaal('Parel'));
+  renderDetail('johanniter-body', data.johanniter, calcKostprijsTotaal('Johanniter'));
+  renderDetail('barrique-body', data.barrique, calcKostprijsTotaal('Barrique'));
+  renderSummary();
+  renderBars();
+}
+
+function calcKostprijsTotaal(naam) {
+  const row = data.kostprijs.find(r => r.wijn === naam);
+  return row ? calcTotaalKostprijs(row) : 0;
+}
+
+function renderKostprijs() {
+  const tbody = document.getElementById('kostprijs-body');
+  tbody.innerHTML = '';
+  data.kostprijs.forEach((row, i) => {
+    const totaal = calcTotaalKostprijs(row);
+    const tr = document.createElement('tr');
+    const fields = ['flessen','prijs','extra','accijns','etiket','wax','saalhof'];
+    let html = `<td class="wijn-name">${row.wijn}</td>`;
+    fields.forEach(f => {
+      html += `<td data-row="${i}" data-field="${f}">${f === 'flessen' ? fmtInt(row[f]) : fmt(row[f])}</td>`;
+    });
+    html += `<td class="calc">${fmt(totaal)}</td>`;
+    tr.innerHTML = html;
+    tbody.appendChild(tr);
+    fields.forEach(f => {
+      const td = tr.querySelector(`td[data-field="${f}"]`);
+      makeEditable(td, row, f, f === 'flessen' ? 'int' : 'float');
+    });
+  });
+}
+
+function renderVerdeling() {
+  const tbody = document.getElementById('verdeling-body');
+  tbody.innerHTML = '';
+  let totFlessen = 0, totGeert = 0, totWijn = 0, totVerkoop = 0, totOmzet = 0;
+
+  data.verdeling.forEach((row, i) => {
+    const kRow = data.kostprijs.find(r => r.wijn === row.wijn);
+    const flessen = kRow ? kRow.flessen : 0;
+    const verkoop = flessen - row.geert - row.wijngenoten;
+    const omzet = verkoop * row.verkoopprijs;
+    totFlessen += flessen; totGeert += row.geert; totWijn += row.wijngenoten;
+    totVerkoop += verkoop; totOmzet += omzet;
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="wijn-name">${row.wijn}</td>
+      <td>${fmtInt(flessen)}</td>
+      <td data-row="${i}" data-field="geert">${fmtInt(row.geert)}</td>
+      <td data-row="${i}" data-field="wijngenoten">${fmtInt(row.wijngenoten)}</td>
+      <td class="calc">${fmtInt(verkoop)}</td>
+      <td data-row="${i}" data-field="verkoopprijs">${fmt(row.verkoopprijs)}</td>
+      <td class="calc">${fmtEur(omzet)}</td>
+    `;
+    tbody.appendChild(tr);
+    ['geert','wijngenoten','verkoopprijs'].forEach(f => {
+      const td = tr.querySelector(`td[data-field="${f}"]`);
+      makeEditable(td, row, f, f === 'verkoopprijs' ? 'float' : 'int');
+    });
+  });
+
+  const totTr = document.createElement('tr');
+  totTr.className = 'totaal-row';
+  totTr.innerHTML = `
+    <td>Totaal</td>
+    <td>${fmtInt(totFlessen)}</td>
+    <td>${fmtInt(totGeert)}</td>
+    <td>${fmtInt(totWijn)}</td>
+    <td>${fmtInt(totVerkoop)}</td>
+    <td>—</td>
+    <td>${fmtEur(totOmzet)}</td>
+  `;
+  tbody.appendChild(totTr);
+}
+
+function renderDetail(tbodyId, rows, kostprijs) {
+  const tbody = document.getElementById(tbodyId);
+  tbody.innerHTML = '';
+  let totFlessen = 0, totEuro = 0;
+
+  rows.forEach((row, i) => {
+    const isTotal = row.cat.toLowerCase().startsWith('totaal');
+    const euro = row.euro !== null ? row.euro : (row.flessen * (row.verkoopprijs || 0)) || null;
+    if (!isTotal) { totFlessen += row.flessen; }
+
+    const tr = document.createElement('tr');
+    if (isTotal) tr.className = 'totaal-row';
+
+    let euroDisp = '—';
+    if (isTotal) {
+      const netEuro = -(row.flessen * kostprijs);
+      euroDisp = `<span class="${netEuro < 0 ? 'negative' : 'positive'}">${fmtEur(netEuro)}</span>`;
+      tr.innerHTML = `<td class="wijn-name">${row.cat}</td><td>${fmtInt(row.flessen)}</td><td>${euroDisp}</td>`;
+      tbody.appendChild(tr);
+      return;
+    }
+
+    tr.innerHTML = `<td class="wijn-name">${row.cat}</td>
+      <td data-idx="${i}" data-field="flessen">${fmtInt(row.flessen)}</td>
+      <td>${row.euro !== null ? (row.euro === 0 ? '€\u202f0' : fmtEur(row.euro)) : '—'}</td>`;
+    tbody.appendChild(tr);
+
+    const td = tr.querySelector(`td[data-field="flessen"]`);
+    makeEditable(td, row, 'flessen', 'int');
+  });
+}
+
+function renderSummary() {
+  const totaal = data.kostprijs.reduce((s,r) => s + r.flessen, 0);
+  const geert = data.verdeling.reduce((s,r) => s + r.geert, 0);
+  const wijn = data.verdeling.reduce((s,r) => s + r.wijngenoten, 0);
+  const kpTotaal = data.kostprijs.map(r => r.flessen);
+  const verkoop = data.verdeling.reduce((s,r,i) => {
+    const fl = data.kostprijs.find(k => k.wijn === r.wijn)?.flessen || 0;
+    return s + fl - r.geert - r.wijngenoten;
+  }, 0);
+  const omzet = data.verdeling.reduce((s,r) => {
+    const fl = data.kostprijs.find(k => k.wijn === r.wijn)?.flessen || 0;
+    const v = fl - r.geert - r.wijngenoten;
+    return s + v * r.verkoopprijs;
+  }, 0);
+
+  document.getElementById('s-totaal').textContent = fmtInt(totaal);
+  document.getElementById('s-geert').textContent = fmtInt(geert);
+  document.getElementById('s-wijngenoten').textContent = fmtInt(wijn);
+  document.getElementById('s-verkoop').textContent = fmtInt(verkoop);
+  document.getElementById('s-waarde').textContent = fmtEur(omzet);
+  document.getElementById('header-totaal').textContent = fmtInt(totaal);
+}
+
+function renderBars() {
+  const container = document.getElementById('verdeling-bars');
+  container.innerHTML = '';
+  const colors = { geert: '#8B1A2A', wijngenoten: '#C8A96E', verkoop: '#4A7C59' };
+
+  data.verdeling.forEach(row => {
+    const kRow = data.kostprijs.find(r => r.wijn === row.wijn);
+    const totaal = kRow ? kRow.flessen : 1;
+    const cats = [
+      { label: 'Geert', val: row.geert, color: colors.geert },
+      { label: 'Wijngenoten', val: row.wijngenoten, color: colors.wijngenoten },
+      { label: 'Verkoop', val: Math.max(0, totaal - row.geert - row.wijngenoten), color: colors.verkoop },
+    ];
+
+    const rowDiv = document.createElement('div');
+    rowDiv.style.cssText = 'margin-bottom: 1rem;';
+    rowDiv.innerHTML = `<div style="font-size:0.8rem;font-weight:500;color:var(--ink-mid);margin-bottom:0.5rem;">${row.wijn} <span style="font-weight:300;color:var(--ink-light);font-size:0.75rem;">(${fmtInt(totaal)} fl.)</span></div>`;
+
+    const stack = document.createElement('div');
+    stack.style.cssText = 'display:flex;height:20px;border-radius:4px;overflow:hidden;';
+    cats.forEach(c => {
+      const pct = (c.val / totaal * 100).toFixed(1);
+      const seg = document.createElement('div');
+      seg.title = `${c.label}: ${fmtInt(c.val)} (${pct}%)`;
+      seg.style.cssText = `width:${pct}%;background:${c.color};transition:width 0.4s;`;
+      stack.appendChild(seg);
+    });
+    rowDiv.appendChild(stack);
+
+    const legend = document.createElement('div');
+    legend.style.cssText = 'display:flex;gap:1rem;margin-top:0.4rem;';
+    cats.forEach(c => {
+      const pct = (c.val / totaal * 100).toFixed(0);
+      legend.innerHTML += `<span style="font-size:0.7rem;color:var(--ink-light);display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${c.color};"></span>${c.label}: ${fmtInt(c.val)} (${pct}%)</span>`;
+    });
+    rowDiv.appendChild(legend);
+    container.appendChild(rowDiv);
+  });
+}
+
+// Init
+load();
+render();
+
+// Auto-save hint on page leave
+window.addEventListener('beforeunload', e => {
+  if (dirty) { e.preventDefault(); e.returnValue = ''; }
+});
+</script>
+</body>
+</html>
