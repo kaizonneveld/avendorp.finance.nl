@@ -4,713 +4,436 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wijnverdeling 2025/2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --wine: #8B1A2A;
-    --wine-dark: #5C0F1A;
-    --wine-light: #C4415A;
-    --gold: #C8A96E;
-    --gold-light: #E8D5A8;
-    --cream: #FAF7F2;
-    --parchment: #F0EAD8;
-    --ink: #1A1208;
-    --ink-mid: #3D2B1F;
-    --ink-light: #7A6150;
-    --surface: #FFFCF7;
-    --border: rgba(139,26,42,0.12);
-    --border-gold: rgba(200,169,110,0.3);
-    --shadow: rgba(26,18,8,0.08);
-  }
+:root {
+  --blue:    #0066CC;
+  --blue-dk: #004EA8;
+  --blue-lt: #E8F0FB;
+  --blue-bg: #F0F5FF;
+  --green:   #1A7A4A;
+  --green-bg:#E6F4ED;
+  --red:     #C0392B;
+  --red-bg:  #FDECEA;
+  --gray-50: #F7F8FA;
+  --gray-100:#EEF0F3;
+  --gray-200:#D8DBE0;
+  --gray-400:#9AA0AA;
+  --gray-600:#5C6370;
+  --gray-800:#2C3038;
+  --black:   #1A1D22;
+  --white:   #FFFFFF;
+  --border:  1px solid var(--gray-200);
+  --radius:  6px;
+  --font:    'IBM Plex Sans', sans-serif;
+  --mono:    'IBM Plex Mono', monospace;
+}
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
-    color: var(--ink);
-    min-height: 100vh;
-  }
+html { font-size: 14px; }
+body { font-family: var(--font); background: var(--gray-50); color: var(--black); line-height: 1.5; min-height: 100vh; }
 
-  /* HEADER */
-  header {
-    background: var(--wine-dark);
-    color: var(--gold-light);
-    padding: 2rem 2.5rem 1.5rem;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    position: relative;
-    overflow: hidden;
-  }
-  header::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-      45deg, transparent, transparent 40px,
-      rgba(200,169,110,0.04) 40px, rgba(200,169,110,0.04) 41px
-    );
-  }
-  .header-brand { position: relative; }
-  .header-brand h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    color: var(--gold-light);
-    line-height: 1;
-  }
-  .header-brand p {
-    font-size: 0.75rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-top: 0.4rem;
-    font-weight: 300;
-  }
-  .header-meta {
-    position: relative;
-    text-align: right;
-    font-size: 0.8rem;
-    color: rgba(232,213,168,0.6);
-    font-weight: 300;
-  }
-  .header-meta strong {
-    display: block;
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--gold-light);
-    font-family: 'Playfair Display', serif;
-  }
+/* ── TOP BAR ── */
+.topbar {
+  background: var(--white);
+  border-bottom: var(--border);
+  padding: 0 32px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky; top: 0; z-index: 10;
+}
+.topbar-left { display: flex; align-items: center; gap: 20px; }
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 15px; font-weight: 600; color: var(--black); letter-spacing: -.01em;
+}
+.logo-mark {
+  width: 28px; height: 28px; background: var(--blue); border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-mark svg { width: 16px; height: 16px; fill: white; }
+.breadcrumb { font-size: 13px; color: var(--gray-400); display: flex; align-items: center; gap: 6px; }
+.breadcrumb span { color: var(--gray-800); }
+.topbar-right { font-size: 12px; color: var(--gray-400); }
+.topbar-right strong { color: var(--gray-800); font-weight: 500; }
 
-  /* LAYOUT */
-  .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+/* ── MAIN ── */
+.main { max-width: 1080px; margin: 0 auto; padding: 28px 32px 80px; }
 
-  /* SECTION TITLES */
-  .section-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--wine);
-    font-weight: 400;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-  .section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border-gold);
-  }
+/* ── PAGE HEADER ── */
+.page-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 24px;
+}
+.page-header h1 { font-size: 20px; font-weight: 600; color: var(--black); letter-spacing: -.01em; }
+.page-header p { font-size: 13px; color: var(--gray-600); margin-top: 2px; }
+.edit-badge {
+  font-size: 11px; background: var(--blue-lt); color: var(--blue);
+  padding: 4px 10px; border-radius: 20px; font-weight: 500; white-space: nowrap;
+  border: 1px solid #C5D9F5;
+}
 
-  /* SUMMARY CARDS */
-  .summary-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 1rem;
-    margin-bottom: 2.5rem;
-  }
-  .stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border-gold);
-    border-radius: 6px;
-    padding: 1.1rem 1.25rem;
-  }
-  .stat-card .label {
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink-light);
-    font-weight: 400;
-    margin-bottom: 0.5rem;
-  }
-  .stat-card .value {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--wine-dark);
-    line-height: 1;
-  }
-  .stat-card .sub {
-    font-size: 0.72rem;
-    color: var(--ink-light);
-    margin-top: 0.3rem;
-  }
+/* ── KPI ROW ── */
+.kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 28px; }
+.kpi {
+  background: var(--white); border: var(--border); border-radius: var(--radius);
+  padding: 16px 18px;
+}
+.kpi .k-label { font-size: 11px; color: var(--gray-400); font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+.kpi .k-val { font-size: 22px; font-weight: 600; color: var(--black); letter-spacing: -.02em; line-height: 1; }
+.kpi .k-sub { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
+.kpi.blue { border-top: 3px solid var(--blue); }
+.kpi.green { border-top: 3px solid var(--green); }
 
-  /* TABLE STYLES */
-  .table-wrap {
-    background: var(--surface);
-    border: 1px solid var(--border-gold);
-    border-radius: 8px;
-    overflow: hidden;
-    margin-bottom: 2.5rem;
-  }
-  table { width: 100%; border-collapse: collapse; }
-  th {
-    background: var(--parchment);
-    font-size: 0.68rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink-mid);
-    font-weight: 500;
-    padding: 0.75rem 1rem;
-    text-align: left;
-    border-bottom: 1px solid var(--border-gold);
-  }
-  th:not(:first-child) { text-align: right; }
-  td {
-    padding: 0.65rem 1rem;
-    font-size: 0.88rem;
-    border-bottom: 1px solid rgba(200,169,110,0.1);
-    vertical-align: middle;
-  }
-  td:not(:first-child) { text-align: right; }
-  tr:last-child td { border-bottom: none; }
-  tr.totaal-row td {
-    background: var(--parchment);
-    font-weight: 500;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.85rem;
-    color: var(--wine-dark);
-  }
-  td.wijn-name { font-weight: 500; color: var(--ink-mid); }
+/* ── SECTION ── */
+.section { margin-bottom: 28px; }
+.section-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 10px;
+}
+.section-title { font-size: 12px; font-weight: 600; color: var(--gray-600); text-transform: uppercase; letter-spacing: .07em; }
+.section-note { font-size: 11px; color: var(--gray-400); }
 
-  /* EDITABLE CELLS */
-  td[contenteditable="true"] {
-    cursor: text;
-    outline: none;
-    transition: background 0.15s;
-    min-width: 60px;
-  }
-  td[contenteditable="true"]:hover { background: rgba(200,169,110,0.08); }
-  td[contenteditable="true"]:focus {
-    background: rgba(139,26,42,0.06);
-    box-shadow: inset 0 0 0 1.5px var(--wine-light);
-    border-radius: 3px;
-  }
-  td[contenteditable="true"]::after {
-    content: '';
-    display: inline-block;
-    width: 0;
-  }
+/* ── ALERT BAR ── */
+.alert {
+  background: var(--blue-bg); border: 1px solid #C5D9F5; border-radius: var(--radius);
+  padding: 10px 16px; font-size: 12.5px; color: var(--blue-dk);
+  margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
+}
+.alert-icon { width: 16px; height: 16px; flex-shrink: 0; }
 
-  /* CALCULATED / READ-ONLY */
-  td.calc {
-    color: var(--wine);
-    font-weight: 500;
-  }
-  td.negative { color: #8B1A2A; }
-  td.positive { color: #2D6A4F; }
+/* ── TABLE ── */
+.tbl-wrap { background: var(--white); border: var(--border); border-radius: var(--radius); overflow: hidden; }
+table { width: 100%; border-collapse: collapse; }
+thead tr { border-bottom: var(--border); background: var(--gray-50); }
+th {
+  padding: 9px 14px; font-size: 11px; font-weight: 600; color: var(--gray-600);
+  text-transform: uppercase; letter-spacing: .06em; text-align: right; white-space: nowrap;
+}
+th:first-child { text-align: left; }
+td { padding: 10px 14px; font-size: 13px; color: var(--black); text-align: right; border-bottom: 1px solid var(--gray-100); }
+td:first-child { text-align: left; font-weight: 500; }
+tr:last-child td { border-bottom: none; }
+tr.tot-row td { background: var(--gray-50); font-weight: 600; border-top: var(--border); font-size: 12.5px; }
+tr:hover:not(.tot-row) td { background: #FAFBFF; }
+.num { font-family: var(--mono); font-size: 12.5px; }
+.pos { color: var(--green); }
+.neg { color: var(--red); }
+.muted { color: var(--gray-400); }
+.tag-blue { display: inline-block; background: var(--blue-lt); color: var(--blue); font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px; }
 
-  /* EDIT INDICATOR */
-  .edit-hint {
-    font-size: 0.7rem;
-    color: var(--ink-light);
-    margin-bottom: 0.6rem;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-  .edit-hint svg { opacity: 0.5; }
+/* ── EDITABLE ── */
+td[contenteditable="true"] { cursor: text; outline: none; border-radius: 4px; transition: background .1s, box-shadow .1s; }
+td[contenteditable="true"]:hover { background: var(--blue-lt) !important; }
+td[contenteditable="true"]:focus { background: #EEF5FF !important; box-shadow: inset 0 0 0 1.5px var(--blue); }
 
-  /* TWO-COL GRID */
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+/* ── BARS ── */
+.bar-section { background: var(--white); border: var(--border); border-radius: var(--radius); padding: 20px 22px; }
+.bar-block { margin-bottom: 20px; }
+.bar-block:last-child { margin-bottom: 0; }
+.bar-name { font-size: 13px; font-weight: 600; color: var(--black); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: baseline; }
+.bar-name span { font-size: 12px; color: var(--gray-400); font-weight: 400; }
+.bar-track { height: 14px; background: var(--gray-100); border-radius: 4px; overflow: hidden; display: flex; }
+.bar-seg { height: 100%; transition: width .4s; }
+.bar-legend { display: flex; gap: 16px; margin-top: 7px; flex-wrap: wrap; }
+.bl-item { display: flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--gray-600); }
+.bl-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
 
-  /* TOAST */
-  #toast {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    background: var(--wine-dark);
-    color: var(--gold-light);
-    padding: 0.6rem 1.2rem;
-    border-radius: 5px;
-    font-size: 0.82rem;
-    opacity: 0;
-    transition: opacity 0.25s;
-    pointer-events: none;
-    z-index: 999;
-  }
-  #toast.show { opacity: 1; }
+/* ── TWO / THREE COL ── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.col-title { font-size: 13px; font-weight: 600; color: var(--black); margin-bottom: 8px; }
+@media (max-width: 800px) { .kpi-row { grid-template-columns: repeat(2,1fr); } .two-col, .three-col { grid-template-columns: 1fr; } }
 
-  /* SAVE BAR */
-  .save-bar {
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    background: var(--wine-dark);
-    color: var(--gold-light);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.75rem 2rem;
-    font-size: 0.82rem;
-    transform: translateY(100%);
-    transition: transform 0.25s;
-    z-index: 100;
-  }
-  .save-bar.visible { transform: translateY(0); }
-  .save-bar button {
-    background: var(--gold);
-    color: var(--wine-dark);
-    border: none;
-    padding: 0.4rem 1.25rem;
-    border-radius: 4px;
-    font-size: 0.82rem;
-    font-weight: 500;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-  }
-  .save-bar button:hover { background: var(--gold-light); }
+/* ── SAVE BAR ── */
+.save-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--blue-dk); color: white;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 32px; font-size: 13px;
+  transform: translateY(100%); transition: transform .2s; z-index: 50;
+  border-top: 2px solid var(--blue);
+}
+.save-bar.on { transform: translateY(0); }
+.save-bar button {
+  background: white; color: var(--blue-dk); border: none;
+  padding: 6px 20px; border-radius: 4px; font-size: 13px; font-weight: 600;
+  cursor: pointer; font-family: var(--font);
+}
+.save-bar button:hover { background: var(--blue-lt); }
 
-  /* PROGRESS BAR */
-  .prog-wrap { margin-top: 0.6rem; }
-  .prog-label { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--ink-light); margin-bottom: 0.3rem; }
-  .prog-track { height: 6px; background: var(--parchment); border-radius: 3px; overflow: hidden; }
-  .prog-fill { height: 100%; border-radius: 3px; transition: width 0.4s; }
-  .prog-fill.geert { background: var(--wine); }
-  .prog-fill.wijngenoten { background: var(--gold); }
-  .prog-fill.verkoop { background: #4A7C59; }
+#toast {
+  position: fixed; bottom: 24px; right: 24px;
+  background: var(--black); color: white;
+  padding: 8px 16px; border-radius: 5px; font-size: 12.5px;
+  opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 100;
+}
+#toast.on { opacity: 1; }
 
-  /* VERDELING VISUAL */
-  .verdeling-bars { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.2rem; }
-  .vbar-row { display: flex; align-items: center; gap: 1rem; }
-  .vbar-label { width: 90px; font-size: 0.8rem; color: var(--ink-mid); text-align: right; flex-shrink: 0; }
-  .vbar-track { flex: 1; height: 22px; background: var(--parchment); border-radius: 4px; overflow: hidden; position: relative; }
-  .vbar-fill { height: 100%; border-radius: 4px; transition: width 0.5s; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; }
-  .vbar-fill span { font-size: 0.7rem; color: white; font-weight: 500; }
-
-  .section-gap { margin-top: 2.5rem; }
+/* divider */
+hr { border: none; border-top: var(--border); margin: 24px 0; }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-brand">
-    <h1>Wijnverdeling</h1>
-    <p>Seizoen 2025 / 2026 — Interactief beheer</p>
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
+      </div>
+      Wijnverdeling
+    </div>
+    <div class="breadcrumb">/ <span>Overzicht 2025–2026</span></div>
   </div>
-  <div class="header-meta">
-    <strong id="header-totaal">2.290</strong>
-    flessen totaal
-  </div>
-</header>
+  <div class="topbar-right">Saalhof &nbsp;·&nbsp; <strong id="h-totaal">2.290</strong> flessen</div>
+</div>
 
-<div class="container">
+<div class="main">
 
-  <!-- SUMMARY STATS -->
-  <div class="summary-grid" id="summary-cards">
-    <div class="stat-card">
-      <div class="label">Totaal flessen</div>
-      <div class="value" id="s-totaal">2.290</div>
-      <div class="sub">Parel + Johanniter + Barrique</div>
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div>
+      <h1>Wijnverdeling 2025 / 2026</h1>
+      <p>20% Geert (193 fl.) · verdeling Parel, Johanniter en Barrique · zie app contact 7 december</p>
     </div>
-    <div class="stat-card">
-      <div class="label">Geert (20%)</div>
-      <div class="value" id="s-geert">193</div>
-      <div class="sub">flessen gereserveerd</div>
-    </div>
-    <div class="stat-card">
-      <div class="label">Wijngenoten</div>
-      <div class="value" id="s-wijngenoten">604</div>
-      <div class="sub">flessen</div>
-    </div>
-    <div class="stat-card">
-      <div class="label">Voor verkoop</div>
-      <div class="value" id="s-verkoop">1.493</div>
-      <div class="sub">flessen</div>
-    </div>
-    <div class="stat-card">
-      <div class="label">Verkoopwaarde</div>
-      <div class="value" id="s-waarde">€44.508</div>
-      <div class="sub">verwacht totaal</div>
-    </div>
+    <div class="edit-badge">✎ &nbsp;Klik elk getal om te bewerken</div>
   </div>
+
+  <!-- KPI -->
+  <div class="kpi-row" id="kpi"></div>
 
   <!-- KOSTPRIJS -->
-  <div class="section-title">Kostprijs per fles</div>
-  <div class="edit-hint">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-    Klik op een cel om te bewerken — berekeningen worden automatisch bijgewerkt
-  </div>
-  <div class="table-wrap">
-    <table id="kostprijs-table">
-      <thead>
-        <tr>
-          <th>Wijn</th>
-          <th>Flessen</th>
-          <th>Prijs/fles (€)</th>
-          <th>Extra (€)</th>
-          <th>Accijns + Trans. (€)</th>
-          <th>Etiket (€)</th>
-          <th>Wax (€)</th>
-          <th>Inkoop Saalhof (€)</th>
-          <th>Totaal incl. btw (€)</th>
-        </tr>
-      </thead>
-      <tbody id="kostprijs-body">
-        <!-- filled by JS -->
-      </tbody>
-    </table>
-  </div>
-
-  <!-- VERKOOPVERDELING -->
-  <div class="section-title">Verkoopverdeling</div>
-  <div class="two-col">
-    <div>
-      <div class="table-wrap">
-        <table id="verdeling-table">
-          <thead>
-            <tr>
-              <th>Wijn</th>
-              <th>Totaal</th>
-              <th>Geert</th>
-              <th>Wijngenoten</th>
-              <th>Verkoop</th>
-              <th>Prijs (€)</th>
-              <th>Omzet (€)</th>
-            </tr>
-          </thead>
-          <tbody id="verdeling-body"></tbody>
-        </table>
-      </div>
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Kostprijs per fles</div>
+      <div class="section-note">Alle bedragen in euro's incl. btw</div>
     </div>
-    <div>
-      <div class="table-wrap" style="padding: 1.25rem;">
-        <div class="section-title" style="margin-bottom: 1rem;">Verdeling visueel</div>
-        <div class="verdeling-bars" id="verdeling-bars"></div>
-      </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr>
+          <th>Wijn</th><th>Flessen</th><th>Prijs/fles</th><th>Extra</th>
+          <th>Accijns + Trans.</th><th>Etiket</th><th>Wax</th><th>Saalhof</th><th>Totaal/fles</th>
+        </tr></thead>
+        <tbody id="kb"></tbody>
+      </table>
     </div>
   </div>
 
-  <!-- VERKOOP PER WIJN -->
-  <div class="section-gap"></div>
-  <div class="section-title">Verkoopdetail</div>
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
-
-    <div>
-      <div class="table-wrap">
+  <!-- VERDELING + BARS -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Verkoopverdeling</div>
+    </div>
+    <div class="two-col">
+      <div class="tbl-wrap">
         <table>
-          <thead><tr><th colspan="3" style="font-size:0.75rem; letter-spacing:0.08em;">Parel</th></tr><tr><th>Categorie</th><th>Flessen</th><th>Euro</th></tr></thead>
-          <tbody id="parel-body"></tbody>
+          <thead><tr>
+            <th>Wijn</th><th>Totaal</th><th>Geert</th><th>Wijngenoten</th><th>Verkoop</th><th>Prijs</th><th>Omzet</th>
+          </tr></thead>
+          <tbody id="vb"></tbody>
         </table>
       </div>
+      <div class="bar-section" id="bars"></div>
     </div>
+  </div>
 
-    <div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th colspan="3" style="font-size:0.75rem; letter-spacing:0.08em;">Johanniter</th></tr><tr><th>Categorie</th><th>Flessen</th><th>Euro</th></tr></thead>
-          <tbody id="johanniter-body"></tbody>
-        </table>
-      </div>
+  <!-- DETAIL PER WIJN -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title">Verkoopresultaat per wijn</div>
+      <div class="section-note">Kosten vs. verwachte opbrengst</div>
     </div>
-
-    <div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th colspan="3" style="font-size:0.75rem; letter-spacing:0.08em;">Barrique</th></tr><tr><th>Categorie</th><th>Flessen</th><th>Euro</th></tr></thead>
-          <tbody id="barrique-body"></tbody>
-        </table>
-      </div>
+    <div class="three-col">
+      <div><div class="col-title">Parel <span class="tag-blue">1.330 fl.</span></div><div class="tbl-wrap"><table><thead><tr><th>Categorie</th><th>Flessen</th><th>Euro</th></tr></thead><tbody id="parel"></tbody></table></div></div>
+      <div><div class="col-title">Johanniter <span class="tag-blue">660 fl.</span></div><div class="tbl-wrap"><table><thead><tr><th>Categorie</th><th>Flessen</th><th>Euro</th></tr></thead><tbody id="johanniter"></tbody></table></div></div>
+      <div><div class="col-title">Barrique <span class="tag-blue">300 fl.</span></div><div class="tbl-wrap"><table><thead><tr><th>Categorie</th><th>Flessen</th><th>Euro</th></tr></thead><tbody id="barrique"></tbody></table></div></div>
     </div>
-
   </div>
 
 </div>
 
-<div id="toast">Opgeslagen</div>
-<div class="save-bar" id="save-bar">
-  <span>Niet-opgeslagen wijzigingen</span>
-  <button onclick="saveData()">Opslaan</button>
+<div id="toast"></div>
+<div class="save-bar" id="sb">
+  <span>Je hebt onopgeslagen wijzigingen</span>
+  <button onclick="save()">Opslaan</button>
 </div>
 
 <script>
-const STORAGE_KEY = 'wijnverdeling_2025';
+const KEY = 'wijn2025v3';
 
-const DEFAULT = {
-  kostprijs: [
-    { wijn: 'Parel',      flessen: 1330, prijs: 4.64, extra: 0,   accijns: 0.819, etiket: 1.382, wax: 0.5, saalhof: 1.19  },
-    { wijn: 'Johanniter', flessen: 660,  prijs: 4.13, extra: 0,   accijns: 0,     etiket: 0,     wax: 0,   saalhof: 0     },
-    { wijn: 'Barrique',   flessen: 300,  prijs: 6.03, extra: 0,   accijns: 0,     etiket: 0,     wax: 0,   saalhof: 0     },
+const DEF = {
+  kost: [
+    {wijn:'Parel',      fl:1330, prijs:4.64,  extra:0, accijns:0.819, etiket:1.382, wax:0.5, saalhof:1.19},
+    {wijn:'Johanniter', fl:660,  prijs:4.13,  extra:0, accijns:0,     etiket:0,     wax:0,   saalhof:0},
+    {wijn:'Barrique',   fl:300,  prijs:6.03,  extra:0, accijns:0,     etiket:0,     wax:0,   saalhof:0},
   ],
-  verdeling: [
-    { wijn: 'Parel',      geert: 30,  wijngenoten: 267, verkoopprijs: 27.5 },
-    { wijn: 'Johanniter', geert: 112, wijngenoten: 337, verkoopprijs: 35   },
-    { wijn: 'Barrique',   geert: 51,  wijngenoten: 0,   verkoopprijs: 35   },
+  verd: [
+    {wijn:'Parel',      geert:30,  wjg:267, vprijs:27.5},
+    {wijn:'Johanniter', geert:112, wjg:337, vprijs:35},
+    {wijn:'Barrique',   geert:51,  wjg:0,   vprijs:35},
   ],
   parel: [
-    { cat: 'Totaal flessen',         flessen: 1330, euro: null },
-    { cat: 'Geert',                  flessen: 30,   euro: 0    },
-    { cat: 'Wijngenoten (regent+SG)',flessen: 264,  euro: 0    },
-    { cat: 'STIEL gasten',           flessen: 110,  euro: null },
-    { cat: 'STIEL verkoop verwacht', flessen: 308,  euro: 8470 },
-    { cat: 'Sponsoring Fels',        flessen: 24,   euro: null },
+    {cat:'Totaal inkoop',           fl:1330, euro:-13728.94},
+    {cat:'Geert',                   fl:30,   euro:0},
+    {cat:'Wijngenoten (regent+SG)', fl:264,  euro:0},
+    {cat:'STIEL gasten',            fl:110,  euro:1135.48},
+    {cat:'STIEL verkoop verwacht',  fl:308,  euro:8470},
+    {cat:'Sponsoring Fels',         fl:24,   euro:247.74},
+    {cat:'Totaal',                  fl:618,  euro:-3875.72, tot:true},
   ],
   johanniter: [
-    { cat: 'Totaal flessen',         flessen: 660, euro: null },
-    { cat: 'Geert',                  flessen: 112, euro: 0    },
-    { cat: 'Wijngenoten',            flessen: 268, euro: 0    },
-    { cat: 'STIEL verkoop verwacht', flessen: 0,   euro: 0    },
+    {cat:'Totaal inkoop',          fl:660, euro:-3298.22},
+    {cat:'Geert',                  fl:112, euro:0},
+    {cat:'Wijngenoten',            fl:268, euro:0},
+    {cat:'STIEL verkoop verwacht', fl:0,   euro:0},
+    {cat:'Totaal',                 fl:280, euro:-3298.22, tot:true},
   ],
   barrique: [
-    { cat: 'Totaal flessen',  flessen: 300, euro: null },
-    { cat: 'Geert',           flessen: 51,  euro: 0    },
-    { cat: 'Wijngenoten',     flessen: 0,   euro: 0    },
+    {cat:'Totaal inkoop', fl:300, euro:-2188.89},
+    {cat:'Geert',         fl:51,  euro:0},
+    {cat:'Wijngenoten',   fl:0,   euro:0},
+    {cat:'Totaal',        fl:249, euro:-2188.89, tot:true},
   ],
 };
 
-let data = JSON.parse(JSON.stringify(DEFAULT));
-let dirty = false;
+let D = JSON.parse(JSON.stringify(DEF));
 
-function load() {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) data = JSON.parse(stored);
-  } catch(e) {}
-}
+function loadStored() { try { const s = localStorage.getItem(KEY); if (s) D = JSON.parse(s); } catch(e) {} }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(D)); } catch(e) {} dirty(false); toast('Opgeslagen'); }
+function toast(m) { const t = document.getElementById('toast'); t.textContent = m; t.classList.add('on'); setTimeout(() => t.classList.remove('on'), 2000); }
+function dirty(on = true) { document.getElementById('sb').classList.toggle('on', on); }
 
-function saveData() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
-  dirty = false;
-  document.getElementById('save-bar').classList.remove('visible');
-  showToast('Opgeslagen ✓');
-}
+// Formatting
+function ni(v) { if (v == null || isNaN(v)) return '—'; return Math.round(v).toLocaleString('nl-NL'); }
+function nd(v, d=2) { if (v == null || isNaN(v)) return '—'; return v.toLocaleString('nl-NL', {minimumFractionDigits:d, maximumFractionDigits:d}); }
+function eur(v) { if (v == null || isNaN(v)) return '—'; const s = Math.abs(v).toLocaleString('nl-NL',{minimumFractionDigits:2,maximumFractionDigits:2}); return (v < 0 ? '−' : '') + '€\u202f' + s; }
 
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2000);
-}
+function kTot(r) { return r.prijs + (r.extra||0) + (r.accijns||0) + (r.etiket||0) + (r.wax||0) + (r.saalhof||0); }
 
-function markDirty() {
-  dirty = true;
-  document.getElementById('save-bar').classList.add('visible');
-}
-
-function fmt(n, dec=2) {
-  if (n === null || n === undefined || isNaN(n)) return '—';
-  return n.toLocaleString('nl-NL', { minimumFractionDigits: dec, maximumFractionDigits: dec });
-}
-function fmtEur(n) {
-  if (n === null || n === undefined || isNaN(n)) return '—';
-  return '€\u202f' + fmt(n);
-}
-function fmtInt(n) {
-  if (n === null || n === undefined || isNaN(n)) return '—';
-  return Math.round(n).toLocaleString('nl-NL');
-}
-
-function calcTotaalKostprijs(row) {
-  return row.prijs + (row.extra || 0) + (row.accijns || 0) + (row.etiket || 0) + (row.wax || 0) + (row.saalhof || 0);
-}
-
-function makeEditable(td, obj, key, type='float', onChange) {
+function ed(td, obj, key, int) {
   td.setAttribute('contenteditable', 'true');
   td.addEventListener('blur', () => {
-    let raw = td.textContent.replace(/[€\s\.]/g, '').replace(',', '.').trim();
-    let val = type === 'int' ? parseInt(raw) : parseFloat(raw);
-    if (!isNaN(val)) {
-      obj[key] = val;
-      markDirty();
-      if (onChange) onChange();
-    }
+    const raw = td.textContent.replace(/[€\s−]/g,'').replace(/\./g,'').replace(',','.').trim();
+    const v = int ? parseInt(raw) : parseFloat(raw);
+    if (!isNaN(v)) { obj[key] = v; dirty(); }
     render();
   });
-  td.addEventListener('keydown', e => {
-    if (e.key === 'Enter') { e.preventDefault(); td.blur(); }
-    if (e.key === 'Tab') { e.preventDefault(); td.blur(); }
-  });
+  td.addEventListener('keydown', e => { if (e.key==='Enter'||e.key==='Tab') { e.preventDefault(); td.blur(); } });
 }
 
 function render() {
-  renderKostprijs();
-  renderVerdeling();
-  renderDetail('parel-body', data.parel, calcKostprijsTotaal('Parel'));
-  renderDetail('johanniter-body', data.johanniter, calcKostprijsTotaal('Johanniter'));
-  renderDetail('barrique-body', data.barrique, calcKostprijsTotaal('Barrique'));
-  renderSummary();
+  renderKPI();
+  renderKost();
+  renderVerd();
+  renderDetail('parel', D.parel);
+  renderDetail('johanniter', D.johanniter);
+  renderDetail('barrique', D.barrique);
   renderBars();
 }
 
-function calcKostprijsTotaal(naam) {
-  const row = data.kostprijs.find(r => r.wijn === naam);
-  return row ? calcTotaalKostprijs(row) : 0;
+function renderKPI() {
+  const tot = D.kost.reduce((s,r) => s+r.fl, 0);
+  const geert = D.verd.reduce((s,r) => s+r.geert, 0);
+  const wjg = D.verd.reduce((s,r) => s+r.wjg, 0);
+  const vk = D.verd.reduce((s,r) => { const f=D.kost.find(k=>k.wijn===r.wijn)?.fl||0; return s+f-r.geert-r.wjg; }, 0);
+  const om = D.verd.reduce((s,r) => { const f=D.kost.find(k=>k.wijn===r.wijn)?.fl||0; return s+(f-r.geert-r.wjg)*r.vprijs; }, 0);
+  document.getElementById('h-totaal').textContent = ni(tot);
+  document.getElementById('kpi').innerHTML = `
+    <div class="kpi blue"><div class="k-label">Totaal flessen</div><div class="k-val">${ni(tot)}</div><div class="k-sub">3 wijnen</div></div>
+    <div class="kpi"><div class="k-label">Geert</div><div class="k-val">${ni(geert)}</div><div class="k-sub">20% reservering</div></div>
+    <div class="kpi"><div class="k-label">Wijngenoten</div><div class="k-val">${ni(wjg)}</div><div class="k-sub">flessen</div></div>
+    <div class="kpi"><div class="k-label">Voor verkoop</div><div class="k-val">${ni(vk)}</div><div class="k-sub">flessen</div></div>
+    <div class="kpi green"><div class="k-label">Verwachte omzet</div><div class="k-val">${eur(om)}</div><div class="k-sub">verkoopflessen</div></div>`;
 }
 
-function renderKostprijs() {
-  const tbody = document.getElementById('kostprijs-body');
-  tbody.innerHTML = '';
-  data.kostprijs.forEach((row, i) => {
-    const totaal = calcTotaalKostprijs(row);
+function renderKost() {
+  const tb = document.getElementById('kb'); tb.innerHTML = '';
+  D.kost.forEach(r => {
+    const tot = kTot(r);
     const tr = document.createElement('tr');
-    const fields = ['flessen','prijs','extra','accijns','etiket','wax','saalhof'];
-    let html = `<td class="wijn-name">${row.wijn}</td>`;
-    fields.forEach(f => {
-      html += `<td data-row="${i}" data-field="${f}">${f === 'flessen' ? fmtInt(row[f]) : fmt(row[f])}</td>`;
-    });
-    html += `<td class="calc">${fmt(totaal)}</td>`;
-    tr.innerHTML = html;
-    tbody.appendChild(tr);
-    fields.forEach(f => {
-      const td = tr.querySelector(`td[data-field="${f}"]`);
-      makeEditable(td, row, f, f === 'flessen' ? 'int' : 'float');
-    });
+    tr.innerHTML = `<td>${r.wijn}</td>
+      <td class="num" data-f="fl">${ni(r.fl)}</td>
+      <td class="num" data-f="prijs">${nd(r.prijs)}</td>
+      <td class="num" data-f="extra">${nd(r.extra)}</td>
+      <td class="num" data-f="accijns">${nd(r.accijns)}</td>
+      <td class="num" data-f="etiket">${nd(r.etiket)}</td>
+      <td class="num" data-f="wax">${nd(r.wax)}</td>
+      <td class="num" data-f="saalhof">${nd(r.saalhof)}</td>
+      <td class="num" style="font-weight:600;color:var(--blue-dk)">${nd(tot)}</td>`;
+    tb.appendChild(tr);
+    ['fl','prijs','extra','accijns','etiket','wax','saalhof'].forEach(f => ed(tr.querySelector(`[data-f="${f}"]`), r, f, f==='fl'));
   });
 }
 
-function renderVerdeling() {
-  const tbody = document.getElementById('verdeling-body');
-  tbody.innerHTML = '';
-  let totFlessen = 0, totGeert = 0, totWijn = 0, totVerkoop = 0, totOmzet = 0;
-
-  data.verdeling.forEach((row, i) => {
-    const kRow = data.kostprijs.find(r => r.wijn === row.wijn);
-    const flessen = kRow ? kRow.flessen : 0;
-    const verkoop = flessen - row.geert - row.wijngenoten;
-    const omzet = verkoop * row.verkoopprijs;
-    totFlessen += flessen; totGeert += row.geert; totWijn += row.wijngenoten;
-    totVerkoop += verkoop; totOmzet += omzet;
-
+function renderVerd() {
+  const tb = document.getElementById('vb'); tb.innerHTML = '';
+  let tf=0, tg=0, tw=0, tv=0, to=0;
+  D.verd.forEach(r => {
+    const fl = D.kost.find(k=>k.wijn===r.wijn)?.fl || 0;
+    const vk = fl - r.geert - r.wjg;
+    const om = vk * r.vprijs;
+    tf+=fl; tg+=r.geert; tw+=r.wjg; tv+=vk; to+=om;
     const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td class="wijn-name">${row.wijn}</td>
-      <td>${fmtInt(flessen)}</td>
-      <td data-row="${i}" data-field="geert">${fmtInt(row.geert)}</td>
-      <td data-row="${i}" data-field="wijngenoten">${fmtInt(row.wijngenoten)}</td>
-      <td class="calc">${fmtInt(verkoop)}</td>
-      <td data-row="${i}" data-field="verkoopprijs">${fmt(row.verkoopprijs)}</td>
-      <td class="calc">${fmtEur(omzet)}</td>
-    `;
-    tbody.appendChild(tr);
-    ['geert','wijngenoten','verkoopprijs'].forEach(f => {
-      const td = tr.querySelector(`td[data-field="${f}"]`);
-      makeEditable(td, row, f, f === 'verkoopprijs' ? 'float' : 'int');
-    });
+    tr.innerHTML = `<td>${r.wijn}</td>
+      <td class="num">${ni(fl)}</td>
+      <td class="num" data-f="geert">${ni(r.geert)}</td>
+      <td class="num" data-f="wjg">${ni(r.wjg)}</td>
+      <td class="num" style="color:var(--blue-dk);font-weight:600">${ni(vk)}</td>
+      <td class="num" data-f="vprijs">${nd(r.vprijs)}</td>
+      <td class="num pos">${eur(om)}</td>`;
+    tb.appendChild(tr);
+    ['geert','wjg'].forEach(f => ed(tr.querySelector(`[data-f="${f}"]`), r, f, true));
+    ed(tr.querySelector(`[data-f="vprijs"]`), r, 'vprijs', false);
   });
-
-  const totTr = document.createElement('tr');
-  totTr.className = 'totaal-row';
-  totTr.innerHTML = `
-    <td>Totaal</td>
-    <td>${fmtInt(totFlessen)}</td>
-    <td>${fmtInt(totGeert)}</td>
-    <td>${fmtInt(totWijn)}</td>
-    <td>${fmtInt(totVerkoop)}</td>
-    <td>—</td>
-    <td>${fmtEur(totOmzet)}</td>
-  `;
-  tbody.appendChild(totTr);
+  const tot = document.createElement('tr'); tot.className='tot-row';
+  tot.innerHTML = `<td>Totaal</td><td class="num">${ni(tf)}</td><td class="num">${ni(tg)}</td><td class="num">${ni(tw)}</td><td class="num">${ni(tv)}</td><td class="muted">—</td><td class="num pos">${eur(to)}</td>`;
+  tb.appendChild(tot);
 }
 
-function renderDetail(tbodyId, rows, kostprijs) {
-  const tbody = document.getElementById(tbodyId);
-  tbody.innerHTML = '';
-  let totFlessen = 0, totEuro = 0;
-
-  rows.forEach((row, i) => {
-    const isTotal = row.cat.toLowerCase().startsWith('totaal');
-    const euro = row.euro !== null ? row.euro : (row.flessen * (row.verkoopprijs || 0)) || null;
-    if (!isTotal) { totFlessen += row.flessen; }
-
+function renderDetail(id, rows) {
+  const tb = document.getElementById(id); tb.innerHTML = '';
+  rows.forEach(r => {
     const tr = document.createElement('tr');
-    if (isTotal) tr.className = 'totaal-row';
-
-    let euroDisp = '—';
-    if (isTotal) {
-      const netEuro = -(row.flessen * kostprijs);
-      euroDisp = `<span class="${netEuro < 0 ? 'negative' : 'positive'}">${fmtEur(netEuro)}</span>`;
-      tr.innerHTML = `<td class="wijn-name">${row.cat}</td><td>${fmtInt(row.flessen)}</td><td>${euroDisp}</td>`;
-      tbody.appendChild(tr);
-      return;
-    }
-
-    tr.innerHTML = `<td class="wijn-name">${row.cat}</td>
-      <td data-idx="${i}" data-field="flessen">${fmtInt(row.flessen)}</td>
-      <td>${row.euro !== null ? (row.euro === 0 ? '€\u202f0' : fmtEur(row.euro)) : '—'}</td>`;
-    tbody.appendChild(tr);
-
-    const td = tr.querySelector(`td[data-field="flessen"]`);
-    makeEditable(td, row, 'flessen', 'int');
+    if (r.tot) tr.className = 'tot-row';
+    const cls = r.euro < 0 ? 'neg' : r.euro > 0 ? 'pos' : 'muted';
+    const eStr = r.euro === 0 ? '<span class="muted">€ 0</span>' : `<span class="${cls}">${eur(r.euro)}</span>`;
+    tr.innerHTML = `<td>${r.cat}</td>
+      <td class="num"${r.tot?'':' data-f="fl"'}>${ni(r.fl)}</td>
+      <td>${eStr}</td>`;
+    tb.appendChild(tr);
+    if (!r.tot) ed(tr.querySelector(`[data-f="fl"]`), r, 'fl', true);
   });
-}
-
-function renderSummary() {
-  const totaal = data.kostprijs.reduce((s,r) => s + r.flessen, 0);
-  const geert = data.verdeling.reduce((s,r) => s + r.geert, 0);
-  const wijn = data.verdeling.reduce((s,r) => s + r.wijngenoten, 0);
-  const kpTotaal = data.kostprijs.map(r => r.flessen);
-  const verkoop = data.verdeling.reduce((s,r,i) => {
-    const fl = data.kostprijs.find(k => k.wijn === r.wijn)?.flessen || 0;
-    return s + fl - r.geert - r.wijngenoten;
-  }, 0);
-  const omzet = data.verdeling.reduce((s,r) => {
-    const fl = data.kostprijs.find(k => k.wijn === r.wijn)?.flessen || 0;
-    const v = fl - r.geert - r.wijngenoten;
-    return s + v * r.verkoopprijs;
-  }, 0);
-
-  document.getElementById('s-totaal').textContent = fmtInt(totaal);
-  document.getElementById('s-geert').textContent = fmtInt(geert);
-  document.getElementById('s-wijngenoten').textContent = fmtInt(wijn);
-  document.getElementById('s-verkoop').textContent = fmtInt(verkoop);
-  document.getElementById('s-waarde').textContent = fmtEur(omzet);
-  document.getElementById('header-totaal').textContent = fmtInt(totaal);
 }
 
 function renderBars() {
-  const container = document.getElementById('verdeling-bars');
-  container.innerHTML = '';
-  const colors = { geert: '#8B1A2A', wijngenoten: '#C8A96E', verkoop: '#4A7C59' };
-
-  data.verdeling.forEach(row => {
-    const kRow = data.kostprijs.find(r => r.wijn === row.wijn);
-    const totaal = kRow ? kRow.flessen : 1;
-    const cats = [
-      { label: 'Geert', val: row.geert, color: colors.geert },
-      { label: 'Wijngenoten', val: row.wijngenoten, color: colors.wijngenoten },
-      { label: 'Verkoop', val: Math.max(0, totaal - row.geert - row.wijngenoten), color: colors.verkoop },
+  const c = document.getElementById('bars'); c.innerHTML = '';
+  const COLORS = { geert:'#0066CC', wjg:'#F0A500', vk:'#1A7A4A' };
+  D.verd.forEach(r => {
+    const fl = D.kost.find(k=>k.wijn===r.wijn)?.fl || 1;
+    const vk = Math.max(0, fl - r.geert - r.wjg);
+    const segs = [
+      {l:'Geert', v:r.geert, c:COLORS.geert},
+      {l:'Wijngenoten', v:r.wjg, c:COLORS.wjg},
+      {l:'Verkoop', v:vk, c:COLORS.vk},
     ];
-
-    const rowDiv = document.createElement('div');
-    rowDiv.style.cssText = 'margin-bottom: 1rem;';
-    rowDiv.innerHTML = `<div style="font-size:0.8rem;font-weight:500;color:var(--ink-mid);margin-bottom:0.5rem;">${row.wijn} <span style="font-weight:300;color:var(--ink-light);font-size:0.75rem;">(${fmtInt(totaal)} fl.)</span></div>`;
-
-    const stack = document.createElement('div');
-    stack.style.cssText = 'display:flex;height:20px;border-radius:4px;overflow:hidden;';
-    cats.forEach(c => {
-      const pct = (c.val / totaal * 100).toFixed(1);
-      const seg = document.createElement('div');
-      seg.title = `${c.label}: ${fmtInt(c.val)} (${pct}%)`;
-      seg.style.cssText = `width:${pct}%;background:${c.color};transition:width 0.4s;`;
-      stack.appendChild(seg);
-    });
-    rowDiv.appendChild(stack);
-
-    const legend = document.createElement('div');
-    legend.style.cssText = 'display:flex;gap:1rem;margin-top:0.4rem;';
-    cats.forEach(c => {
-      const pct = (c.val / totaal * 100).toFixed(0);
-      legend.innerHTML += `<span style="font-size:0.7rem;color:var(--ink-light);display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${c.color};"></span>${c.label}: ${fmtInt(c.val)} (${pct}%)</span>`;
-    });
-    rowDiv.appendChild(legend);
-    container.appendChild(rowDiv);
+    const pct = v => (v/fl*100).toFixed(1);
+    const div = document.createElement('div'); div.className='bar-block';
+    div.innerHTML = `
+      <div class="bar-name">${r.wijn} <span>${ni(fl)} flessen</span></div>
+      <div class="bar-track">${segs.map(s=>`<div class="bar-seg" style="width:${pct(s.v)}%;background:${s.c}" title="${s.l}: ${ni(s.v)}"></div>`).join('')}</div>
+      <div class="bar-legend">${segs.map(s=>`<div class="bl-item"><div class="bl-dot" style="background:${s.c}"></div>${s.l}: <strong>${ni(s.v)}</strong> (${pct(s.v)}%)</div>`).join('')}</div>`;
+    c.appendChild(div);
   });
 }
 
-// Init
-load();
+loadStored();
 render();
-
-// Auto-save hint on page leave
-window.addEventListener('beforeunload', e => {
-  if (dirty) { e.preventDefault(); e.returnValue = ''; }
-});
+window.addEventListener('beforeunload', e => { if (document.getElementById('sb').classList.contains('on')) { e.preventDefault(); e.returnValue=''; } });
 </script>
 </body>
 </html>
